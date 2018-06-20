@@ -28,7 +28,7 @@
 - (void)showRotationWithAnimation {
     
     CALayer *layer = [CALayer layer];
-    layer.backgroundColor = greenColor.CGColor; //圆环底色
+    layer.backgroundColor = MAIN_TEXT_COLOR.CGColor; //圆环底色
     layer.frame = CGRectMake(0, 0, width, width);
     
     //创建一个圆环
@@ -37,7 +37,7 @@
     //圆环遮罩
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
     shapeLayer.fillColor = [UIColor clearColor].CGColor;
-    shapeLayer.strokeColor = greenColor.CGColor;
+    shapeLayer.strokeColor = MAIN_TEXT_COLOR.CGColor;
     shapeLayer.lineWidth = 5;
     shapeLayer.strokeStart = 0;
     shapeLayer.strokeEnd = 0.8;
@@ -46,7 +46,7 @@
     shapeLayer.path = bezierPath.CGPath;
     
     //颜色渐变
-    NSMutableArray *colors = [NSMutableArray arrayWithObjects:(id)greenColor.CGColor,(id)[UIColor whiteColor].CGColor, nil];
+    NSMutableArray *colors = [NSMutableArray arrayWithObjects:(id)MAIN_TEXT_COLOR.CGColor,(id)[UIColor whiteColor].CGColor, nil];
     CAGradientLayer *gradientLayer = [CAGradientLayer layer];
     gradientLayer.shadowPath = bezierPath.CGPath;
     gradientLayer.frame = CGRectMake(0, 0, width, width);

@@ -7,15 +7,27 @@
 //
 
 #import "ZHomeListView.h"
-#import "ZHomeListTableViewCellViewModel.h"
-#import "ZHomeListTableViewCell.h"
 #import "ZHomeListViewModel.h"
+#import "ZHomeListCollectionViewCell.h"
+#import "ZHomeListCollectionViewCellViewModel.h"
+#import "ZHomeAdView.h"
+#import "ZHomeAdViewModel.h"
 
-@interface ZHomeListView ()<UITableViewDelegate,UITableViewDataSource>
+@interface ZHomeListView ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate>
 
-@property (strong, nonatomic) UITableView *mainTableView;
+@property (strong, nonatomic) UICollectionView *mainCollectionView;
 
 @property (strong, nonatomic) ZHomeListViewModel *viewModel;
+
+@property (strong, nonatomic) ZHomeAdView *adView;
+
+@property (nonatomic, strong) UIImageView *bgImageView;
+
+@property (strong, nonatomic) ZHomeAdViewModel *adViewModel;
+
+@property (nonatomic, strong) ZView *buttonView;
+
+@property (nonatomic, strong) ZView *dailySpecialView;
 
 @end
 @implementation ZHomeListView
@@ -31,7 +43,7 @@
 - (void)updateConstraints {
     
     WS(weakSelf)
-    [self.mainTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.mainCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         
         make.edges.equalTo(weakSelf);
     }];
@@ -41,7 +53,7 @@
 #pragma mark - private
 - (void)z_setupViews {
     
-    [self addSubview:self.mainTableView];
+    [self addSubview:self.mainCollectionView];
     [self setNeedsUpdateConstraints];
     [self updateConstraintsIfNeeded];
 }
@@ -54,21 +66,21 @@
     [self.viewModel.refreshUI subscribeNext:^(id x) {
         
         @strongify(self);
-        [self.mainTableView reloadData];
+        [self.mainCollectionView reloadData];
     }];
     
     [self.viewModel.refreshEndSubject subscribeNext:^(id x) {
         @strongify(self);
         
-        [self.mainTableView reloadData];
+        [self.mainCollectionView reloadData];
         
         switch ([x integerValue]) {
             case LSHeaderRefresh_HasMoreData: {
                 
-                [self.mainTableView.mj_header endRefreshing];
+                [self.mainCollectionView.mj_header endRefreshing];
                 
-                if (self.mainTableView.mj_footer == nil) {
-                    self.mainTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+                if (self.mainCollectionView.mj_footer == nil) {
+                    self.mainCollectionView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
                         @strongify(self);
                         [self.viewModel.nextPageCommand execute:nil];
                     }];
@@ -77,26 +89,26 @@
                 break;
             case LSHeaderRefresh_HasNoMoreData: {
                 
-                [self.mainTableView.mj_header endRefreshing];
-                self.mainTableView.mj_footer = nil;
+                [self.mainCollectionView.mj_header endRefreshing];
+                self.mainCollectionView.mj_footer = nil;
             }
                 break;
             case LSFooterRefresh_HasMoreData: {
                 
-                [self.mainTableView.mj_header endRefreshing];
-                [self.mainTableView.mj_footer resetNoMoreData];
-                [self.mainTableView.mj_footer endRefreshing];
+                [self.mainCollectionView.mj_header endRefreshing];
+                [self.mainCollectionView.mj_footer resetNoMoreData];
+                [self.mainCollectionView.mj_footer endRefreshing];
             }
                 break;
             case LSFooterRefresh_HasNoMoreData: {
-                [self.mainTableView.mj_header endRefreshing];
-                [self.mainTableView.mj_footer endRefreshingWithNoMoreData];
+                [self.mainCollectionView.mj_header endRefreshing];
+                [self.mainCollectionView.mj_footer endRefreshingWithNoMoreData];
             }
                 break;
             case LSRefreshError: {
                 
-                [self.mainTableView.mj_footer endRefreshing];
-                [self.mainTableView.mj_header endRefreshing];
+                [self.mainCollectionView.mj_footer endRefreshing];
+                [self.mainCollectionView.mj_header endRefreshing];
             }
                 break;
                 
@@ -115,62 +127,207 @@
     
     return _viewModel;
 }
-
-- (UITableView *)mainTableView {
-    
-    if (!_mainTableView) {
-        
-        _mainTableView = [[UITableView alloc] init];
-        _mainTableView.delegate = self;
-        _mainTableView.dataSource = self;
-        _mainTableView.backgroundColor = white_color;
-        _mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        //tableView页面无导航栏时，顶部出现44高度的空白解决方法
+- (UICollectionView *)mainCollectionView
+{
+    if (!_mainCollectionView) {
+        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+        [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
+        //设置每个item的大小
+        flowLayout.itemSize = CGSizeMake(SCREEN_WIDTH * 0.5 - 5,SCREEN_WIDTH * 0.8);
+        //设置headerView的尺寸大小
+        flowLayout.headerReferenceSize = CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT);
+        //设置CollectionView的属性
+        _mainCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) collectionViewLayout:flowLayout];
+        _mainCollectionView.backgroundColor = white_color;
+        _mainCollectionView.delegate = self;
+        _mainCollectionView.dataSource = self;
         if (@available(iOS 11.0, *)) {
-            _mainTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+            _mainCollectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         }
-        [_mainTableView registerClass:[ZHomeListTableViewCell class] forCellReuseIdentifier:[NSString stringWithUTF8String:object_getClassName([ZHomeListTableViewCell class])]];
+        //注册Cell
+        [_mainCollectionView registerClass:[ZHomeListCollectionViewCell class] forCellWithReuseIdentifier:[NSString stringWithUTF8String:object_getClassName([ZHomeListCollectionViewCell class])]];
+        //注册headerView  此处的ReuseIdentifier 必须和 cellForItemAtIndexPath 方法中 一致  均为reusableView
+        [_mainCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"reusableView"];
         
         WS(weakSelf)
-        _mainTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        _mainCollectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
             
             [weakSelf.viewModel.refreshDataCommand execute:nil];
         }];
-        _mainTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-
+        _mainCollectionView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+            
             [weakSelf.viewModel.nextPageCommand execute:nil];
         }];
     }
-    
-    return _mainTableView;
+    return _mainCollectionView;
 }
-#pragma mark - table datasource
+- (ZHomeAdView *)adView
+{
+    if (!_adView) {
+        _adView = [[ZHomeAdView alloc] initWithViewModel:self.adViewModel];
+    }
+    return _adView;
+}
+- (ZHomeAdViewModel *)adViewModel
+{
+    if (!_adViewModel) {
+        _adViewModel = [[ZHomeAdViewModel alloc] init];
+    }
+    return _adViewModel;
+}
+- (ZView *)buttonView
+{
+    if (!_buttonView) {
+        _buttonView = [[ZView alloc] init];
+        
+        for (int i = 0; i<4; i++) {
+            MCButton *button = [[MCButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH * 0.25 * i, 0, SCREEN_WIDTH * 0.25, 100)];
+            button.buttonStyle = imageTop;
+            button.titleLabel.font = [UIFont systemFontOfSize:15.0];
+            [button setBackgroundColor:[UIColor lightGrayColor]];
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            
+            [_buttonView addSubview:button];
+            switch (i) {
+                case 0:
+                    [button setTitle:@"拦精灵" forState:UIControlStateNormal];
+                    [button setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+                    break;
+                    
+                case 1:
+                    [button setTitle:@"情趣衣" forState:UIControlStateNormal];
+                    [button setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+                    break;
+                    
+                case 2:
+                    [button setTitle:@"女用品" forState:UIControlStateNormal];
+                    [button setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+                    break;
+                    
+                case 3:
+                    [button setTitle:@"男用品" forState:UIControlStateNormal];
+                    [button setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+    }
+    return _buttonView;
+}
+- (ZView *)dailySpecialView
+{
+    if (!_dailySpecialView) {
+        _dailySpecialView = [[ZView alloc] init];
+        _dailySpecialView.backgroundColor = green_color;
+        
+        UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[UIImage resizableImage:@""]];
+        bgImageView.frame = CGRectMake(15, 30, SCREEN_WIDTH - 30, 200 - 40);
+        bgImageView.backgroundColor = lightGray_color;
+        [_dailySpecialView addSubview:bgImageView];
+        
+        UIImageView *contentImageView = [[UIImageView alloc] initWithImage:ImageNamed(@"")];
+        contentImageView.frame = CGRectMake(10, - 20, 120, 200 - 30);
+        contentImageView.backgroundColor = purple_color;
+        contentImageView.contentMode = UIViewContentModeScaleAspectFill;
+        [bgImageView addSubview:contentImageView];
+        
+    }
+    return _dailySpecialView;
+}
+- (UIImageView *)bgImageView
+{
+    if (!_bgImageView) {
+        _bgImageView = [[UIImageView alloc] initWithImage:ImageNamed(@"")];
+        _bgImageView.backgroundColor = purple_color;
+        _bgImageView.contentMode = UIViewContentModeScaleAspectFill;
+    }
+    return _bgImageView;
+}
+#pragma mark  设置CollectionView的组数
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
 
-- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+#pragma mark  设置CollectionView每组所包含的个数
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
     return self.viewModel.dataArray.count;
 }
 
-- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+#pragma mark  设置CollectionCell的内容
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    ZHomeListCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[NSString stringWithUTF8String:object_getClassName([ZHomeListCollectionViewCell class])] forIndexPath:indexPath];
     
-    ZHomeListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[NSString stringWithUTF8String:object_getClassName([ZHomeListTableViewCell class])] forIndexPath:indexPath];
+    cell.backgroundColor = randomColor;
     
-    if (self.viewModel.dataArray.count > indexPath.row) {
-        
-        cell.viewModel = self.viewModel.dataArray[indexPath.row];
+    if (self.viewModel.dataArray.count > indexPath.item) {
+        cell.viewModel = self.viewModel.dataArray[indexPath.item];
     }
-    
     return cell;
 }
 
-#pragma mark - UITableViewDelegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    return 100;
+#pragma mark  定义每个UICollectionView的大小
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return  CGSizeMake(SCREEN_WIDTH * 0.5 - 5,SCREEN_WIDTH * 0.8);
+}
+#pragma mark  定义整个CollectionViewCell与整个View的间距
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(0, 0 ,0, 0);//（上、左、下、右）
+}
+#pragma mark  定义每个UICollectionView的横向间距
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 10;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+#pragma mark  定义每个UICollectionView的纵向间距
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 10;
+}
+
+#pragma mark  点击CollectionView触发事件
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
     [self.viewModel.cellClickSubject sendNext:nil];
+}
+
+#pragma mark  设置CollectionViewCell是否可以被点击
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+#pragma mark  设置SupplementaryViewOfKind 来设置头部或者底部的view，其中 ReuseIdentifier 的值必须和 注册是填写的一致，本例都为 “reusableView”
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"reusableView" forIndexPath:indexPath];
+    headerView.backgroundColor =[UIColor grayColor];
+    
+    self.bgImageView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT * 0.5);
+    [headerView addSubview:self.bgImageView];
+    
+    self.adView.frame = CGRectMake(0, SCREEN_HEIGHT * 0.35, SCREEN_WIDTH, SCREEN_HEIGHT * 0.25);
+    [headerView addSubview:self.adView];
+    
+    self.buttonView.frame = CGRectMake(0, CGRectGetMaxY(self.adView.frame) - 20, SCREEN_WIDTH, 100);
+    [headerView addSubview:self.buttonView];
+    
+    self.dailySpecialView.frame = CGRectMake(0, CGRectGetMaxY(self.buttonView.frame), SCREEN_WIDTH, 200);
+    [headerView addSubview:self.dailySpecialView];
+    
+    return headerView;
+}
+#pragma mark - scrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (self.scroll) {
+        self.scroll(scrollView.contentOffset.y);
+    }
 }
 @end

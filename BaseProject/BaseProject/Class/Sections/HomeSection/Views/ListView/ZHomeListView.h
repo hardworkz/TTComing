@@ -10,4 +10,6 @@
 
 @interface ZHomeListView : ZView
 
+@property (nonatomic, copy) void(^scroll)(CGFloat y);
+
 @end

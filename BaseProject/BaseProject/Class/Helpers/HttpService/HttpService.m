@@ -7,7 +7,7 @@
 //
 
 #import "HttpService.h"
-#import "InterfaceConfig.h"
+#import "InterfaceConfigManager.h"
 
 @implementation HttpService {
     //一般的网络请求服务

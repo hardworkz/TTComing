@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define btnColor [UIColor colorWithRed:33.0/255.0 green:197.0/255.0 blue:131.0/255.0 alpha:1]
+#define btnColor [UIColor colorWithRed:33.0/255.0 green:33.0/255.0 blue:33.0/255.0 alpha:1]
 #define changedBgColor [UIColor colorWithRed:172.0/255.0 green:172.0/255.0 blue:172.0/255.0 alpha:1]
  
 

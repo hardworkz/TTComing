@@ -12,7 +12,8 @@
 
 @interface UserLoginManager : NSObject
 
-singleH(UserLoginManager)
++(instancetype)shareUserLoginManager;
+
 //全局登录信息
 @property (nonatomic, strong) Identity *identity;
 //全局的用户信息

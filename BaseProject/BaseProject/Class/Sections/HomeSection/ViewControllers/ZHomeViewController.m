@@ -7,74 +7,36 @@
 //
 
 #import "ZHomeViewController.h"
-#import "ZHomeScreenSwitchListView.h"
-#import "ZHomeScreenSwitchListViewModel.h"
 #import "ZHomeListView.h"
 #import "ZHomeListViewModel.h"
-#import "ZHomeCommentListView.h"
-#import "ZHomeCommentListViewModel.h"
+#import "ZHomeSearchView.h"
 
-@interface ZHomeViewController ()
+@interface ZHomeViewController ()<UITextFieldDelegate>
 
-@property (nonatomic, strong) ZHomeScreenSwitchListView *mainView;
-@property (nonatomic, strong) ZHomeListView *allListView;
+@property (nonatomic, strong) ZHomeListView *mainView;
 
-@property (nonatomic, strong) ZHomeScreenSwitchListViewModel *viewModel;
-@property (nonatomic, strong) ZHomeListViewModel *allListViewModel;
+@property (nonatomic, strong) ZHomeListViewModel *viewModel;
 
-@property (nonatomic, strong) ZHomeCommentListViewModel *commentViewModel;
-@property (nonatomic, strong) ZHomeCommentListView *commentListView;
+@property (nonatomic, strong) ZHomeSearchView *searchView;
 
-@property (nonatomic, strong) ZView *headerSwitchView;
+@property (nonatomic, strong) CustomTextField *searchBar;
 
-@property (nonatomic, strong) UIButton *selectedSwitchButton;
-
-@property (nonatomic, strong) MASConstraint *topConstant;
+@property (nonatomic, strong) UIButton *cover;
 @end
 
 @implementation ZHomeViewController
-//-(void)viewWillAppear:(BOOL)animated
-//{
-//    [super viewWillAppear:animated];
-//    
-//    [[self rdv_tabBarController] setTabBarHidden:NO animated:YES];
-//}
-//- (void)viewWillDisappear:(BOOL)animated {
-//    
-//    [super viewWillDisappear:animated];
-//    
-//    [[self rdv_tabBarController] setTabBarHidden:YES animated:YES];
-//}
 #pragma mark - system
 - (void)updateViewConstraints {
     
     WS(weakSelf)
     [self.mainView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(weakSelf.view);
-        make.right.equalTo(weakSelf.view);
-        make.left.equalTo(weakSelf.view);
-        if (iPhoneX) {
-            make.bottom.equalTo(weakSelf.view).offset(- IPHONEX_BOTTOM_BACK_BAR_H);
-        }else{
-            make.bottom.equalTo(weakSelf.view);
-        }
+        make.edges.equalTo(weakSelf.view).insets(UIEdgeInsetsMake(0, 0, iPhoneX?IPHONEX_BOTTOM_BACK_BAR_H:0, 0));
     }];
-    self.allListView.hidden = YES;
-    [self.allListView mas_makeConstraints:^(MASConstraintMaker *make) {
-        
+    [self.searchView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(weakSelf.view);
-        make.right.equalTo(weakSelf.view);
         make.left.equalTo(weakSelf.view);
-        if (iPhoneX) {
-            make.bottom.equalTo(weakSelf.view).offset(- IPHONEX_BOTTOM_BACK_BAR_H);
-        }else{
-            make.bottom.equalTo(weakSelf.view);
-        }
-    }];
-    [self.headerSwitchView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(weakSelf.view).offset(iPhoneX?IPHONEX_TOP_STATUS_BAR_H + 10:30);
-        make.centerX.equalTo(weakSelf.view);
-        make.size.equalTo(CGSizeMake(150, 50));
+        make.right.equalTo(weakSelf.view);
+        make.height.equalTo(kNavHeight);
     }];
     
     [super updateViewConstraints];
@@ -84,12 +46,28 @@
 - (void)z_addSubviews {
     
     [self.view addSubview:self.mainView];
+    [self.view addSubview:self.searchView];
     
-    [self.view insertSubview:self.allListView aboveSubview:self.mainView];
-    
-    [self.view insertSubview:self.headerSwitchView aboveSubview:self.allListView];
-    
-    [self.view insertSubview:self.commentListView aboveSubview:self.headerSwitchView];
+    WS(weakSelf)
+    self.mainView.scroll = ^(CGFloat y) {
+//        ZLog(@"%f",y);
+        float alpha = y/(SCREEN_HEIGHT * 0.6 - kNavHeight);
+        if (alpha >= 1) {
+            alpha = 1;
+            if ([weakSelf firstColor:[weakSelf.searchBar valueForKeyPath:@"_placeholderLabel.textColor"] secondColor:white_color]) {
+                [weakSelf.searchBar setValue:gray_color forKeyPath:@"_placeholderLabel.textColor"];
+                weakSelf.searchBar.tintColor = gray_color;
+                weakSelf.searchBar.textColor = MAIN_TEXT_COLOR;
+            }
+        }else{
+            if ([weakSelf firstColor:[weakSelf.searchBar valueForKeyPath:@"_placeholderLabel.textColor"] secondColor:gray_color]) {
+                [weakSelf.searchBar setValue:white_color forKeyPath:@"_placeholderLabel.textColor"];
+                weakSelf.searchBar.tintColor = white_color;
+                weakSelf.searchBar.textColor = white_color;
+            }
+        }
+        weakSelf.searchView.backgroundColor = COLOR(255, 255, 255, alpha);
+    };
 }
 
 - (void)z_bindViewModel {
@@ -99,159 +77,100 @@
     [[self.viewModel.cellClickSubject takeUntil:self.rac_willDeallocSignal] subscribeNext:^(id x) {
         
         @strongify(self);
-//        YDViewController *circleMainVC = [[YDViewController alloc] init];
-//        [self.navigationController pushViewController:circleMainVC animated:YES];
-    }];
-    [[self.viewModel.cellCommentClickSubject takeUntil:self.rac_willDeallocSignal]subscribeNext:^(id  _Nullable x) {
-        
-        @strongify(self);
-        [self.view insertSubview:self.commentListView.cover belowSubview:self.commentListView];
-        //添加评论view
-        //设置动画
-        [UIView animateWithDuration:0.25 animations:^{
-            self.commentListView.y = SCREEN_HEIGHT * 0.3;
-        }];
+        ZGoodsDetailController *goodsDetailVC = [[ZGoodsDetailController alloc] init];
+        [self.navigationController pushViewController:goodsDetailVC animated:YES];
     }];
 }
 - (void)z_layoutNavigation {
     [self hideNavigationBar:YES animated:NO];
 }
 #pragma mark - layzLoad
-- (ZHomeScreenSwitchListView *)mainView {
-    
+- (ZHomeListView *)mainView
+{
     if (!_mainView) {
-        
-        _mainView = [[ZHomeScreenSwitchListView alloc] initWithViewModel:self.viewModel];
+        _mainView = [[ZHomeListView alloc] initWithViewModel:self.viewModel];
     }
-    
     return _mainView;
 }
-
-- (ZHomeScreenSwitchListViewModel *)viewModel {
+- (ZHomeListViewModel *)viewModel {
     
     if (!_viewModel) {
         
-        _viewModel = [[ZHomeScreenSwitchListViewModel alloc] init];
+        _viewModel = [[ZHomeListViewModel alloc] init];
     }
     
     return _viewModel;
 }
-- (ZHomeListView *)allListView
+- (ZHomeSearchView *)searchView
 {
-    if (!_allListView) {
-        _allListView = [[ZHomeListView alloc] initWithViewModel:self.allListViewModel];
-    }
-    return _allListView;
-}
-- (ZHomeListViewModel *)allListViewModel {
-    
-    if (!_allListViewModel) {
+    if (!_searchView) {
+        _searchView = [[ZHomeSearchView alloc] init];
+        _searchView.backgroundColor = COLOR(255, 255, 255, 0);
         
-        _allListViewModel = [[ZHomeListViewModel alloc] init];
+        CGFloat Height = 40;
+        
+        _searchBar = [[CustomTextField alloc] init];
+        _searchBar.returnKeyType = UIReturnKeySearch;
+        _searchBar.placeholder = @"冈本十八号";
+        _searchBar.font = FONT(17);
+        _searchBar.frame = CGRectMake(20, kStatusBarHeight + (kNavHeight - kStatusBarHeight - Height) * 0.5 - 5, SCREEN_WIDTH - Height, Height);
+        _searchBar.layer.cornerRadius = _searchBar.height * 0.5;
+        _searchBar.borderStyle = UITextBorderStyleNone;
+        _searchBar.backgroundColor = MAIN_HOME_SEARCH_BG_COLOR;
+        _searchBar.textColor = white_color;
+        _searchBar.tintColor = white_color;
+        _searchBar.delegate = self;
+        [_searchBar setValue:white_color forKeyPath:@"_placeholderLabel.textColor"];
+        [_searchView addSubview:_searchBar];
+        
+        UIImageView *searchIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"")];
+        searchIcon.frame = CGRectMake(_searchBar.width - Height - 10, 0, Height, Height);
+        searchIcon.backgroundColor = red_color;
+        searchIcon.contentMode = UIViewContentModeCenter;
+        [_searchBar addSubview:searchIcon];
     }
-    
-    return _allListViewModel;
+    return _searchView;
 }
-- (ZHomeCommentListView *)commentListView
+- (UIButton *)cover
 {
-    if (!_commentListView) {
-        _commentListView = [[ZHomeCommentListView alloc] initWithViewModel:self.commentViewModel];
-        _commentListView.backgroundColor = white_color;
-        _commentListView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT * 0.7);
-        _commentListView.layer.cornerRadius = 10;
-        _commentListView.layer.masksToBounds = YES;
-    }
-    return _commentListView;
-}
-- (ZHomeCommentListViewModel *)commentViewModel
-{
-    if (!_commentViewModel) {
-        
-        _commentViewModel = [[ZHomeCommentListViewModel alloc] init];
-    }
-    
-    return _commentViewModel;
-}
-
-- (ZView *)headerSwitchView
-{
-    if (!_headerSwitchView) {
-        _headerSwitchView = [[ZView alloc] init];
-        
-        UIButton *recommendBtn = [[UIButton alloc] init];
-        [recommendBtn setTitle:@"推荐" forState:UIControlStateNormal];
-        recommendBtn.titleLabel.font = BOLDSYSTEMFONT(17);
-        recommendBtn.backgroundColor = clear_color;
-        recommendBtn.tag = 10000;
-        recommendBtn.selected = YES;
-        [recommendBtn addTarget:self action:@selector(switch_Clicked:)];
-        [_headerSwitchView addSubview:recommendBtn];
-        self.selectedSwitchButton = recommendBtn;
-        
-        UIButton *allBtn = [[UIButton alloc] init];
-        [allBtn setTitle:@"全部" forState:UIControlStateNormal];
-        allBtn.titleLabel.font = BOLDSYSTEMFONT(14);
-        allBtn.backgroundColor = clear_color;
-        allBtn.tag = 20000;
-        [allBtn addTarget:self action:@selector(switch_Clicked:)];
-        [_headerSwitchView addSubview:allBtn];
-        
-        UIView *deviderView = [[UIView alloc] init];
-        deviderView.layer.cornerRadius = 2;
-        deviderView.backgroundColor = white_color;
-        [_headerSwitchView addSubview:deviderView];
-        
-        WS(weakSelf);
-        [recommendBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(weakSelf.headerSwitchView);
-            make.left.equalTo(weakSelf.headerSwitchView);
-            make.bottom.equalTo(weakSelf.headerSwitchView);
-            make.size.equalTo(CGSizeMake(75, 50));
-        }];
-        [allBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(weakSelf.headerSwitchView);
-            make.right.equalTo(weakSelf.headerSwitchView);
-            make.bottom.equalTo(weakSelf.headerSwitchView);
-            make.size.equalTo(CGSizeMake(75, 50));
-        }];
-        
-        [deviderView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(weakSelf.headerSwitchView).offset(15);
-            make.centerX.equalTo(weakSelf.headerSwitchView);
-            make.size.equalTo(CGSizeMake(4, 20));
+    if (!_cover) {
+        _cover = [UIButton buttonWithType:UIButtonTypeCustom];
+        _cover.backgroundColor = clear_color;
+        _cover.frame = self.view.bounds;
+        [[_cover rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(__kindof UIControl * _Nullable x) {
+            [self.cover removeFromSuperview];
+            [self.searchBar resignFirstResponder];
         }];
     }
-    return _headerSwitchView;
+    return _cover;
 }
 #pragma mark - action
-/**
- 切换推荐和全部的显示内容
- */
-- (void)switch_Clicked:(UIButton *)button{
-    
-    if ([self.selectedSwitchButton isEqual:button]) {
-        return;
-    }
-    [UIView animateWithDuration:0.25 animations:^{
-        self.selectedSwitchButton.titleLabel.font = BOLDSYSTEMFONT(14);
-        button.titleLabel.font = BOLDSYSTEMFONT(17);
-    }];
-    self.selectedSwitchButton.selected = NO;
-    button.selected = YES;
-    self.selectedSwitchButton = button;
-    
-    switch (button.tag) {
-        case 10000:
-            self.allListView.hidden = YES;
-            self.mainView.hidden = NO;
-            break;
-        case 20000:
-            self.allListView.hidden = NO;
-            self.mainView.hidden = YES;
-            break;
-        default:
-            break;
+
+#pragma mark - textfield delegate
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self.view insertSubview:self.cover belowSubview:self.searchView];
+}
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField.text != nil) {
+        [self.cover removeFromSuperview];
     }
 }
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (![textField.text isEqualToString:@""]) {
+        
+        [textField resignFirstResponder];
+        [self.cover removeFromSuperview];
+    }
+    return YES;
+}
+- (void)textDidChange:(NSNotification *)note
+{
+    UITextField *textField = note.object;
+    NSLog(@"textDidChange:%@",textField.text);
+}
+#pragma mark - scrollViewDelegate
 
 @end

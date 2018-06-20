@@ -13,13 +13,15 @@
 
 @interface SubmitView : UIView
 
+@property (nonatomic, strong) NSString *title;
+
 @property (nonatomic, copy) void (^clickedSubmitBlock)(SubmitButton *button);
 /**
  加载完成，结束动画
  */
-- (void)loadCompleteSuccess;
+- (void)loadCompleteSuccess:(void (^)(id))success;
 /**
  加载失败，结束动画
  */
-- (void)loadCompletefailure;
+- (void)loadCompletefailure:(void (^)(id))failure;
 @end

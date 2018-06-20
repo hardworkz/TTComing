@@ -53,6 +53,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
+    manager.keyboardDistanceFromTextField = 0;
+    
     [self setIsExtendLayout:NO];
     
     [self z_removeNavgationBarLine];
@@ -217,12 +220,25 @@
         [navigationBarView addSubview:rightBtn];
     }
     
-//    UIView *seperatorLine = [[UIView alloc]initWithFrame:CGRectMake(0, kNavHeight - 0.5, SCREEN_WIDTH, 0.5)];
-//    [seperatorLine setBackgroundColor:[UIColor lightGrayColor]];
-//    [navigationBarView addSubview:seperatorLine];
+    UIView *seperatorLine = [[UIView alloc]initWithFrame:CGRectMake(0, kNavHeight - 0.5, SCREEN_WIDTH, 0.5)];
+    [seperatorLine setBackgroundColor:lightGray_color];
+    [navigationBarView addSubview:seperatorLine];
 }
 - (void)backClicked{
     [self.navigationController popViewControllerAnimated:YES];
+}
+-(BOOL)firstColor:(UIColor*)firstColor secondColor:(UIColor*)secondColor
+{
+    if (CGColorEqualToColor(firstColor.CGColor, secondColor.CGColor))
+    {
+        ZLog(@"颜色相同");
+        return YES;
+    }
+    else
+    {
+        ZLog(@"颜色不同");
+        return NO;
+    }
 }
 #pragma mark - 屏幕旋转
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {

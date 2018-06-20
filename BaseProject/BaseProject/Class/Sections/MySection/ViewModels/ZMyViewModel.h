@@ -12,9 +12,9 @@
 
 @property (nonatomic, strong) RACSubject *refreshUI;
 
-@property (nonatomic, strong) RACSubject *headClickSubject;
+@property (nonatomic, strong) RACSubject *userIconClickSubject;
 
-@property (nonatomic, strong) NSArray *dataArray;
+@property (nonatomic, strong) NSMutableArray *sectionDataArray;
 
 @property (nonatomic, strong) RACSubject *cellClickSubject;
 @end

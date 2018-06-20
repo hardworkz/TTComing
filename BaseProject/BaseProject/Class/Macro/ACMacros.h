@@ -92,6 +92,17 @@
 #define RECT_CHANGE_height(v,h)     CGRectMake(X(v), Y(v), WIDTH(v), h)
 #define RECT_CHANGE_size(v,w,h)     CGRectMake(X(v), Y(v), w, h)
 
+//这里的375我是针对X为标准适配的,如果需要其他标准可以修改
+#define kX(R) (R)*(SCREEN_WIDTH)/375
+//这里的812我是针对X为标准适配的,如果需要其他标准可以修改
+#define kY(R) (R)*(SCREEN_HEIGHT)/812
+
+//代码简单我就不介绍了,
+//以此思想,我们可以对字体下手
+#define font(R) (R)*(kScreenWidth)/320.0  这里是5s屏幕字体
+#define kFONT16   [UIFont systemFontOfSize:font(16.0f)]
+
+
 /// 系统控件默认高度
 #define kStatusBarHeight        (iPhoneX?IPHONEX_TOP_STATUS_BAR_H:20.f)
 
@@ -136,9 +147,9 @@
 #define s_Integer(num1) [NSString stringWithFormat:@"%ld",num1]
 
 // 字体大小(常规/粗体)
-#define BOLDSYSTEMFONT(FONTSIZE)[UIFont boldSystemFontOfSize:FONTSIZE]
-#define SYSTEMFONT(FONTSIZE)    [UIFont systemFontOfSize:FONTSIZE]
-#define FONT(NAME, FONTSIZE)    [UIFont fontWithName:(NAME) size:(FONTSIZE)]
+#define BOLD_SYSTEM_FONT(FONTSIZE)[UIFont boldSystemFontOfSize:FONTSIZE]
+#define SYSTEM_FONT(FONTSIZE)    [UIFont systemFontOfSize:FONTSIZE]
+#define FONT_NAME(NAME, FONTSIZE)    [UIFont fontWithName:(NAME) size:(FONTSIZE)]
 
 // 微软雅黑
 #define YC_YAHEI_FONT(FONTSIZE) [UIFont fontWithName:@"MicrosoftYaHei" size:(FONTSIZE)]

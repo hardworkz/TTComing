@@ -19,19 +19,6 @@
 @end
 
 @implementation ZMyViewController
-
-//-(void)viewWillAppear:(BOOL)animated
-//{
-//    [super viewWillAppear:animated];
-//    
-//    [[self rdv_tabBarController] setTabBarHidden:NO animated:YES];
-//}
-//- (void)viewWillDisappear:(BOOL)animated {
-//    
-//    [super viewWillDisappear:animated];
-//    
-//    [[self rdv_tabBarController] setTabBarHidden:YES animated:YES];
-//}
 #pragma mark - system
 - (void)updateViewConstraints {
     WS(weakSelf)
@@ -52,7 +39,7 @@
         @strongify(self);
         //点击cell操作
     }];
-    [self.viewModel.headClickSubject subscribeNext:^(id  _Nullable x) {
+    [self.viewModel.userIconClickSubject subscribeNext:^(id  _Nullable x) {
         @strongify(self);
         //点击头像操作
         ZLoginViewController *loginVC = [[ZLoginViewController alloc] init];
@@ -62,6 +49,7 @@
 - (void)z_layoutNavigation
 {
     [self hideNavigationBar:YES animated:NO];
+    
 }
 #pragma mark - lazyload
 - (ZMyView *)mainView
@@ -79,5 +67,9 @@
     }
     
     return _viewModel;
+}
+#pragma mark - action
+- (void)settingClicked {
+    
 }
 @end

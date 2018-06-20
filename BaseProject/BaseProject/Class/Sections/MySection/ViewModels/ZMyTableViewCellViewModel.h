@@ -14,4 +14,7 @@
 
 @property (nonatomic, copy) NSString *icon;
 
+@property (assign, nonatomic) BOOL hideDevider;
+
+@property (nonatomic, assign) UIRectCorner rectCorner;
 @end

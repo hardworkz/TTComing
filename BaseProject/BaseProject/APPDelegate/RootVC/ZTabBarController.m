@@ -23,16 +23,16 @@
     ZViewController *Home = [[ZHomeViewController alloc]init];
     ZNavigationController *NAV1 = [[ZNavigationController alloc] initWithRootViewController:Home];
     
-    ZViewController *News = [[ZNewsViewController alloc]init];
+    ZViewController *News = [[ZStoreViewController alloc]init];
     ZNavigationController *NAV2 = [[ZNavigationController alloc] initWithRootViewController:News];
     
-    ZViewController *Market = [[ZMarketViewController alloc]init];
+    ZViewController *Market = [[ZShoppingCartController alloc]init];
     ZNavigationController *NAV3 = [[ZNavigationController alloc] initWithRootViewController:Market];
     
     ZViewController *My = [[ZMyViewController alloc]init];
     ZNavigationController *NAV4 = [[ZNavigationController alloc] initWithRootViewController:My];
     
-    self.viewControllers = @[NAV2,NAV1,NAV3,NAV4];
+    self.viewControllers = @[NAV1,NAV2,NAV3,NAV4];
     [self customizeTabBarForController:self];
     
     self.rdv_tabBarItem.y = iPhoneX? SCREEN_HEIGHT - IPHONEX_BOTTOM_H : self.rdv_tabBarItem.y;
@@ -49,13 +49,13 @@
                 tabberItem.title = @"首页";
                 break;
             case 1:
-                tabberItem.title = @"快讯";
+                tabberItem.title = @"商城";
                 break;
             case 2:
-                tabberItem.title = @"行情";
+                tabberItem.title = @"购物车";
                 break;
             case 3:
-                tabberItem.title = @"我";
+                tabberItem.title = @"我的";
                 break;
             default:
                 break;

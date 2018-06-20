@@ -12,17 +12,46 @@
 @implementation ZMyViewModel
 - (void)z_initialize {
     
-    NSMutableArray *array = [[NSMutableArray alloc] init];
-    for (int i = 0; i < 1; i++) {
+    NSMutableArray *oneSectionArray = [[NSMutableArray alloc] init];
+    NSMutableArray *twoSectionArray = [[NSMutableArray alloc] init];
+    for (int i = 0; i < 2; i++) {
         
         if (i == 0) {
             ZMyTableViewCellViewModel *viewModel = [[ZMyTableViewCellViewModel alloc] init];
-            viewModel.title = @"设置";
+            viewModel.title = @"全部订单";
             viewModel.icon = @"icon_setting";
-            [array addObject:viewModel];
+            viewModel.hideDevider = NO;
+            viewModel.rectCorner = UIRectCornerTopLeft | UIRectCornerTopRight;
+            [oneSectionArray addObject:viewModel];
+        }else  if (i == 1) {
+            ZMyTableViewCellViewModel *viewModel = [[ZMyTableViewCellViewModel alloc] init];
+            viewModel.title = @"我的收藏";
+            viewModel.icon = @"icon_setting";
+            viewModel.hideDevider = YES;
+            viewModel.rectCorner = UIRectCornerBottomLeft | UIRectCornerBottomRight;
+            [oneSectionArray addObject:viewModel];
         }
     }
-    self.dataArray = array;
+    [self.sectionDataArray addObject:oneSectionArray];
+    for (int i = 0; i < 2; i++) {
+        
+        if (i == 0) {
+            ZMyTableViewCellViewModel *viewModel = [[ZMyTableViewCellViewModel alloc] init];
+            viewModel.title = @"个人信息";
+            viewModel.icon = @"icon_setting";
+            viewModel.hideDevider = NO;
+            viewModel.rectCorner = UIRectCornerTopLeft | UIRectCornerTopRight;
+            [twoSectionArray addObject:viewModel];
+        }else  if (i == 1) {
+            ZMyTableViewCellViewModel *viewModel = [[ZMyTableViewCellViewModel alloc] init];
+            viewModel.title = @"账户安全";
+            viewModel.icon = @"icon_setting";
+            viewModel.hideDevider = YES;
+            viewModel.rectCorner = UIRectCornerBottomLeft | UIRectCornerBottomRight;
+            [twoSectionArray addObject:viewModel];
+        }
+    }
+    [self.sectionDataArray addObject:twoSectionArray];
     
     [self.refreshUI sendNext:nil];
 }
@@ -36,23 +65,23 @@
     return _refreshUI;
 }
 
-- (NSArray *)dataArray {
+- (NSMutableArray *)sectionDataArray {
     
-    if (!_dataArray) {
+    if (!_sectionDataArray) {
         
-        _dataArray = [[NSArray alloc] init];
+        _sectionDataArray = [[NSMutableArray alloc] init];
     }
     
-    return _dataArray;
+    return _sectionDataArray;
 }
-- (RACSubject *)headClickSubject
+- (RACSubject *)userIconClickSubject
 {
-    if (!_headClickSubject) {
+    if (!_userIconClickSubject) {
         
-        _headClickSubject = [RACSubject subject];
+        _userIconClickSubject = [RACSubject subject];
     }
     
-    return _headClickSubject;
+    return _userIconClickSubject;
 }
 - (RACSubject *)cellClickSubject {
     

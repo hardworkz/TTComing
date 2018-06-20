@@ -10,7 +10,5 @@
 #define MySectionHeader_h
 
 #import "ZMyViewController.h"
-#import "ZLoginViewController.h"
-#import "ZRegisterViewController.h"
 
 #endif /* MySectionHeader_h */

@@ -7,7 +7,7 @@
 //
 
 #import "ZHomeListViewModel.h"
-#import "ZHomeListTableViewCellViewModel.h"
+#import "ZHomeListCollectionViewCellViewModel.h"
 
 @implementation ZHomeListViewModel
 
@@ -20,7 +20,7 @@
         NSMutableArray *reArray = [[NSMutableArray alloc] init];
         for (int i = 0; i < 8; i++) {
             
-            ZHomeListTableViewCellViewModel *viewModel = [[ZHomeListTableViewCellViewModel alloc] init];
+            ZHomeListCollectionViewCellViewModel *viewModel = [[ZHomeListCollectionViewCellViewModel alloc] init];
             viewModel.title = [NSString stringWithFormat:@"index:%d",i];
             [reArray addObject:viewModel];
         }
@@ -30,14 +30,7 @@
         [self.refreshEndSubject sendNext:@(LSFooterRefresh_HasMoreData)];
         DismissHud();
     }];
-    
-//    [[[self.refreshDataCommand.executing skip:1] take:1] subscribeNext:^(id x) {
-//        
-//        if ([x isEqualToNumber:@(YES)]) {
-//            
-//            ShowMaskStatus(@"正在加载");
-//        }
-//    }];
+
     [self.nextPageCommand.executionSignals.switchToLatest subscribeNext:^(NSDictionary *dict) {
         
         @strongify(self);
@@ -45,7 +38,7 @@
         NSMutableArray *reArray = [[NSMutableArray alloc] initWithArray:self.dataArray];
         for (int i = 0; i < 8; i++) {
             
-            ZHomeListTableViewCellViewModel *viewModel = [[ZHomeListTableViewCellViewModel alloc] init];
+            ZHomeListCollectionViewCellViewModel *viewModel = [[ZHomeListCollectionViewCellViewModel alloc] init];
             viewModel.title = [NSString stringWithFormat:@"index:%ld",i+self.dataArray.count];
             [reArray addObject:viewModel];
         }

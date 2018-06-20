@@ -10,5 +10,6 @@
 #define HomeSectionHeader_h
 
 #import "ZHomeViewController.h"
+#import "ZGoodsDetailController.h"
 
 #endif /* HomeSectionHeader_h */

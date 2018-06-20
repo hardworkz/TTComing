@@ -62,4 +62,10 @@
  @param rightAction 右边按钮方法
  */
 - (void)customNavigationBarWithTitle:(NSString *)title bgColor:(UIColor *)color backBtn:(NSString *)string sel:(SEL)backSel rightBtn:(NSString *)rightString sel:(SEL)rightAction;
+
+/**
+ 判断颜色是否相同
+ @return yes表示相同
+ */
+-(BOOL)firstColor:(UIColor*)firstColor secondColor:(UIColor*)secondColor;
 @end

@@ -9,14 +9,18 @@
 #import "ZMyView.h"
 #import "ZMyViewModel.h"
 #import "ZMyTableViewCell.h"
+#import "ZMyHeadView.h"
+#import "ZMyHeadViewModel.h"
 
 @interface ZMyView ()<UITableViewDelegate,UITableViewDataSource>
-
-@property (nonatomic, strong) ZView *headerView;
 
 @property (nonatomic, strong) UITableView *mainTableView;
 
 @property (nonatomic, strong) ZMyViewModel *viewModel;
+
+@property (nonatomic, strong) ZMyHeadView *headerView;
+
+@property (nonatomic, strong) ZMyHeadViewModel *headViewModel;
 
 @end
 @implementation ZMyView
@@ -57,7 +61,7 @@
 #pragma mark - action
 - (void)headerTap:(UIGestureRecognizer *)gesture
 {
-    [self.viewModel.headClickSubject sendNext:nil];
+    [self.viewModel.userIconClickSubject sendNext:nil];
 }
 #pragma mark - lazyLoad
 - (ZMyViewModel *)viewModel {
@@ -69,53 +73,29 @@
     
     return _viewModel;
 }
-- (ZView *)headerView
+- (ZMyHeadView *)headerView
 {
     if (!_headerView) {
-        _headerView = [[ZView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 300)];
-        _headerView.backgroundColor = blue_color;
-        
-        //用户头像
-        UIImageView *header = [[UIImageView alloc] init];
-        [header setImage:ImageNamed(@"icon_head")];
-        header.contentMode = UIViewContentModeScaleAspectFill;
-        header.clipsToBounds = YES;
-        header.layer.cornerRadius = 50;
-        header.layer.borderColor = white_color.CGColor;
-        header.layer.borderWidth = 3.0;
-        WS(weakSelf)
-        [header addTapGestureWithTarget:self action:@selector(headerTap:)];
-        [_headerView addSubview:header];
-        
-        //用户昵称
-        UILabel *name = [[UILabel alloc] init];
-        name.text = @"test";
-        name.textColor = white_color;
-        name.textAlignment = NSTextAlignmentCenter;
-        name.font = FONT(15.0);
-        [_headerView addSubview:name];
-        
-        [header mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(weakSelf.headerView);
-            make.centerY.equalTo(weakSelf.headerView);
-            make.size.equalTo(CGSizeMake(100, 100));
-        }];
-        [name mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(header).offset(100 + 20);
-            make.centerX.equalTo(header);
-            make.size.equalTo(CGSizeMake(SCREEN_WIDTH, 20));
-        }];
+        _headerView = [[ZMyHeadView alloc] initWithViewModel:self.headViewModel];
+        _headerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT * 0.4);
     }
     return _headerView;
+}
+- (ZMyHeadViewModel *)headViewModel
+{
+    if (!_headViewModel) {
+        _headViewModel = [[ZMyHeadViewModel alloc] init];
+    }
+    return _headViewModel;
 }
 - (UITableView *)mainTableView {
     
     if (!_mainTableView) {
         
-        _mainTableView = [[UITableView alloc] init];
+        _mainTableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStyleGrouped];
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
-        _mainTableView.backgroundColor = white_color;
+        _mainTableView.backgroundColor = MAIN_LIGHT_LINE_COLOR;
         _mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         //tableView页面无导航栏时，顶部出现44高度的空白解决方法
         if (@available(iOS 11.0, *)) {
@@ -128,18 +108,22 @@
 }
 
 #pragma mark - table datasource
-
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return self.viewModel.sectionDataArray.count;
+}
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.viewModel.dataArray.count;
+    NSMutableArray *array = self.viewModel.sectionDataArray[section];
+    return array.count;
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
     ZMyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[NSString stringWithUTF8String:object_getClassName([ZMyTableViewCell class])] forIndexPath:indexPath];
-    
-    if (self.viewModel.dataArray.count > indexPath.row) {
+    NSMutableArray *array = self.viewModel.sectionDataArray[indexPath.section];
+    if (array.count > indexPath.row) {
 
-        cell.viewModel = self.viewModel.dataArray[indexPath.row];
+        cell.viewModel = array[indexPath.row];
     }
     
     return cell;
@@ -155,5 +139,21 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [self.viewModel.cellClickSubject sendNext:nil];
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 5;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 5)];
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 5;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    return [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 5)];
 }
 @end

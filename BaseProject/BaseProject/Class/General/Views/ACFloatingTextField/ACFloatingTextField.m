@@ -317,7 +317,7 @@
     if (selected) {
         bottomLineView.backgroundColor = showingError ? self.errorLineColor : self.selectedLineColor;
         self.labelPlaceholder.textColor = self.selectedPlaceHolderColor;
-        bottomLineViewHeight.constant = 2;
+        bottomLineViewHeight.constant = 1;
         [self setValue:self.selectedPlaceHolderColor forKeyPath:@"_placeholderLabel.textColor"];
 
     }
@@ -325,7 +325,7 @@
         
         bottomLineView.backgroundColor = showingError ? self.errorLineColor : self.lineColor;
         self.labelPlaceholder.textColor = self.placeHolderColor;
-        bottomLineViewHeight.constant = 1;
+        bottomLineViewHeight.constant = 0.5;
         [self setValue:self.placeHolderColor forKeyPath:@"_placeholderLabel.textColor"];
     }
     

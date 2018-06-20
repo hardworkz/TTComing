@@ -18,10 +18,10 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.text = defaultText;
+//        self.text = defaultText;
         self.textColor = defaultTextColor;
         self.backgroundColor = [UIColor clearColor];
-        self.font = textFont;
+        self.font = [UIFont boldSystemFontOfSize:17];
         self.textAlignment = NSTextAlignmentCenter;
     }
     return self;

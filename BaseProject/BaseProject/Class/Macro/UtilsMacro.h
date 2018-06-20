@@ -51,23 +51,35 @@
 #define YC_USER_PHONE IF_NULL_TO_STRING(((NSString *)SEEKPLISTTHING(USER_PHONE)))
 #define YC_USER_EASEMOB_NAME IF_NULL_TO_STRING(((NSString *)SEEKPLISTTHING(USER_EASEMOB_NAME)))
 
-#define MAINCOLOR UIColorFromRGB(0x21C1F7)
-
-#define SUBCOLOR UIColorFromRGB(0xFF4C4C)
-
-#define GX_BGCOLOR COLOR(234, 234, 234, 1)
-
-#define MAIN_TEXT_COLOR COLOR(109, 109, 109, 1)
-
+//app主体颜色-----------------------
+#define MAIN_COLOR UIColorFromRGB(0xfdb63c)
+//app主体背景颜色
+#define MAIN_BG_COLOR COLOR(255, 255, 255, 1)
+//app主体字体颜色-------------------
+#define MAIN_TEXT_COLOR COLOR(33, 33, 33, 1)
+//app主体字体颜色-------------------
+#define MAIN_HOME_SEARCH_BG_COLOR COLOR(33, 33, 33, 0.25)
+//app浅灰色字体颜色
+#define MAIN_LIGHT_GRAY_TEXT_COLOR UIColorFromRGB(0xCBCBCB)
+//app线颜色-----------------------
 #define MAIN_LINE_COLOR COLOR(135, 135, 135, 1)
-
-#define MAIN_LIGHT_LINE_COLOR COLOR(174, 174, 174, 1)
-
-#define MAIN_BLACK_TEXT_COLOR COLOR(38, 38, 38, 1)
+//app浅色线颜色
+#define MAIN_LIGHT_LINE_COLOR UIColorFromRGB(0xCBCBCB)
 
 #define WS(weakSelf)  __weak __typeof(&*self)weakSelf = self;
 
-
+//字体大小
+#define FONT_NORMAL_10 FONT(10)
+#define FONT_NORMAL_11 FONT(11)
+#define FONT_NORMAL_12 FONT(12)
+#define FONT_NORMAL_13 FONT(13)
+#define FONT_NORMAL_14 FONT(14)
+#define FONT_NORMAL_15 FONT(15)
+#define FONT_NORMAL_16 FONT(16)
+#define FONT_NORMAL_17 FONT(17)
+#define FONT_NORMAL_18 FONT(18)
+#define FONT_NORMAL_19 FONT(19)
+#define FONT_NORMAL_20 FONT(20)
 
 
 

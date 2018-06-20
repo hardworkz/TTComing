@@ -15,7 +15,6 @@
 
 @interface HMSegmentedControl ()
 
-@property (nonatomic, strong) CALayer *selectionIndicatorStripLayer;
 @property (nonatomic, strong) CALayer *selectionIndicatorBoxLayer;
 @property (nonatomic, strong) CALayer *selectionIndicatorArrowLayer;
 @property (nonatomic, readwrite) CGFloat segmentWidth;
@@ -158,6 +157,8 @@
     self.selectionIndicatorBoxLayer.opacity = self.selectionIndicatorBoxOpacity;
     self.selectionIndicatorBoxLayer.borderWidth = 1.0f;
     self.selectionIndicatorBoxOpacity = 0.2;
+    //设置标题下方指示线的圆角
+    self.selectionIndicatorStripLayer.cornerRadius = 3;
     
     self.contentMode = UIViewContentModeRedraw;
 }

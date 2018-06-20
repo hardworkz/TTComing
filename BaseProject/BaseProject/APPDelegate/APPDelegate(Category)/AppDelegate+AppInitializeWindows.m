@@ -20,13 +20,19 @@
 - (void)setRootViewController
 {
     //获取当前应用版本和上一个应用版本进行比较，如果不相同则为进行过更新
-//    IdentityManager *identityManager = [IdentityManager manager];
-//    [identityManager readAuthorizeData];
+    UserLoginManager *manager = [UserLoginManager shareUserLoginManager];
+    [manager readAuthorizeData];
     NSString *currentVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"];
-    if (/*[identityManager.identity.lastSoftVersion isEqualToString:currentVersion]*/YES)
+    if ([manager.identity.lastSoftVersion isEqualToString:currentVersion])
     {
         //不是第一次安装
-        [self setRoot];
+        if ([manager.user.userNo intValue] != 0) {
+            //设置主控制器
+            [self setTabbarController];
+        }else{
+            //设置登录控制器
+            [self setLoginController];
+        }
     }
     else
     {
@@ -36,47 +42,39 @@
         [self createLoadingScrollView];
         
         //保存当前版本号
-//        identityManager.identity.lastSoftVersion = currentVersion;
-//        identityManager.identity.realmDataVersion += 0.1;
-//        [identityManager saveAuthorizeData];
+        manager.identity.lastSoftVersion = currentVersion;
+        [manager saveAuthorizeData];
     }
 }
 - (void)setTabbarController
 {
+    [[[UIApplication sharedApplication].delegate window] setRootViewController:[[ZTabBarController alloc] init]/*需要切换的控制器*/];
     
+    //切换根控制器动画方案二
+    CATransition *animation = [CATransition animation];
+    
+    [animation setDuration:0.6];//设置动画时间
+    
+    animation.type = kCATransitionFade;//设置动画类型
+    
+    [[UIApplication sharedApplication].keyWindow.layer addAnimation:animation forKey:@"animation"];
 }
 - (void)setLoginController
 {
+    [[[UIApplication sharedApplication].delegate window] setRootViewController:[[ZLoginViewController alloc] init]/*需要切换的控制器*/];
     
+    //切换根控制器动画方案二
+    CATransition *animation = [CATransition animation];
+    
+    [animation setDuration:0.6];//设置动画时间
+    
+    animation.type = kCATransitionFade;//设置动画类型
+    
+    [[UIApplication sharedApplication].keyWindow.layer addAnimation:animation forKey:@"animation"];
 }
 - (void)setRoot
 {
-    [[[UIApplication sharedApplication].delegate window] setRootViewController:[[ZTabBarController alloc] init]/*需要切换的控制器*/];
-    
-    //切换根控制器动画方案一
-//    [UIView transitionWithView:[[UIApplication sharedApplication].delegate window]
-//                      duration:0.4
-//                       options:UIViewAnimationOptionTransitionCrossDissolve|UIViewAnimationOptionCurveEaseInOut
-//    animations:^{
-//
-//        BOOL oldState = [UIView areAnimationsEnabled];
-//
-//        [UIView setAnimationsEnabled:NO];
-//
-//        [[[UIApplication sharedApplication].delegate window] setRootViewController:tabBarController/*需要切换的控制器*/];
-//
-//        [UIView setAnimationsEnabled:oldState];
-//
-//    }completion:nil];
-    
-    //切换根控制器动画方案二
-//    CATransition *animation = [CATransition animation];
-//
-//    [animation setDuration:0.6];//设置动画时间
-//
-//    animation.type = kCATransitionFade;//设置动画类型
-//
-//    [[UIApplication sharedApplication].keyWindow.layer addAnimation:animation forKey:nil];
+    [[[UIApplication sharedApplication].delegate window] setRootViewController:[[ZLoginViewController alloc] init]/*需要切换的控制器*/];
 }
 #pragma mark - 引导页
 /**

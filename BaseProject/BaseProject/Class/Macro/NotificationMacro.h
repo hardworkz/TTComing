@@ -19,3 +19,6 @@ selector:_selector name:_name object:nil];
 
 #define SendNotify(_name, _object)  \
 [[NSNotificationCenter defaultCenter] postNotificationName:_name object:_object];
+
+//通知名称
+static NSString *const HomeAdViewChangeSelectedIndexNotification = @"HomeAdViewChangeSelectedIndexNotification";

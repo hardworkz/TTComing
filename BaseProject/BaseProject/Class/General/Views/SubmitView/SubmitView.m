@@ -35,6 +35,12 @@
     return self;
 }
 
+- (void)setTitle:(NSString *)title
+{
+    _title = title;
+    self.showLabel.text = title;
+}
+
 - (void)setupSubViews {
     _submitButton = [SubmitButton creatSubmitButtonWithFrame:self.bounds]; 
     [_submitButton addTarget:self action:@selector(submitBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -53,7 +59,7 @@
     //缩小动画
     [self scaleLayerAnimtaion];
     
-    [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    [UIView animateWithDuration:1.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         //隐藏按钮
         self.showLabel.alpha = 0;
         [self.submitButton setHiddenSubmitButton];
@@ -156,17 +162,25 @@
     anima.fillMode = kCAFillModeForwards;
     [self.submitButton.layer addAnimation:anima forKey:nil];
 }
-- (void)loadCompleteSuccess
+- (void)loadCompleteSuccess:(void (^)(id))success
 {
     //改代码放在登录请求成功的回调里面
     [UIView animateWithDuration:0.5 animations:^{
         [self expandLayerAnimation];
+    }completion:^(BOOL finished) {
+        if (success) {
+            success(0);
+        }
     }];
 }
-- (void)loadCompletefailure
+- (void)loadCompletefailure:(void (^)(id))failure
 {
     [UIView animateWithDuration:0.5 animations:^{
         [self expandLayerAnimationFailure];
+    }completion:^(BOOL finished) {
+        if (failure) {
+            failure(0);
+        }
     }];
 }
 @end

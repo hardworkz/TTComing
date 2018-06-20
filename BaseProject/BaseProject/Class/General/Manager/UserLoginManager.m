@@ -9,7 +9,29 @@
 #import "UserLoginManager.h"
 
 @implementation UserLoginManager
-singleM(UserLoginManager)
+static id _instance;
++(instancetype)allocWithZone:(struct _NSZone *)zone
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _instance = [super allocWithZone:zone];
+    });
+    return _instance;
+}
+
++(instancetype)shareUserLoginManager
+{
+    return [[self alloc]init];
+}
+-(id)copyWithZone:(NSZone *)zone
+{
+    return _instance;
+}
+
+-(id)mutableCopyWithZone:(NSZone *)zone
+{
+    return _instance;
+}
 
 - (void)readAuthorizeData {
     _identity = [DataCache loadCache:@"IdentityLocCache"];
