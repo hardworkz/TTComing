@@ -47,6 +47,7 @@
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     RDVTabBarController *VC = (RDVTabBarController *)self.parentViewController;
+    ZLog(@"%lu",(unsigned long)self.childViewControllers.count);
     if (self.childViewControllers.count > 0) {
         [VC setTabBarHidden:YES animated:NO];
     }
@@ -55,6 +56,7 @@
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
     
     RDVTabBarController *VC = (RDVTabBarController *)self.parentViewController;
+    ZLog(@"%lu",(unsigned long)self.childViewControllers.count);
     if (self.childViewControllers.count <= 2) {
         [VC setTabBarHidden:NO animated:NO];
     }

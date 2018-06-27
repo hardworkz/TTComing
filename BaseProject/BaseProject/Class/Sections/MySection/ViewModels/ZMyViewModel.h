@@ -14,7 +14,9 @@
 
 @property (nonatomic, strong) RACSubject *userIconClickSubject;
 
-@property (nonatomic, strong) NSMutableArray *sectionDataArray;
+@property (nonatomic, strong) NSMutableArray *dataArray;
 
 @property (nonatomic, strong) RACSubject *cellClickSubject;
+
+@property (nonatomic, strong) RACSubject *orderClickSubject;
 @end

@@ -11,5 +11,6 @@
 
 #import "ZHomeViewController.h"
 #import "ZGoodsDetailController.h"
+#import "ZCommentViewController.h"
 
 #endif /* HomeSectionHeader_h */

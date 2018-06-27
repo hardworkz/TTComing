@@ -161,6 +161,15 @@
     }
 }
 
+/**
+ 设置返回手势
+ */
+- (void)rightSwipeWithView:(UIView *)view {
+    
+    UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(backClicked)];
+    [rightSwipe setDirection:UISwipeGestureRecognizerDirectionRight];
+    [view addGestureRecognizer:rightSwipe];
+}
 - (void)layoutNavigationBar:(UIImage*)backGroundImage
                  titleColor:(UIColor*)titleColor
                   titleFont:(UIFont*)titleFont
@@ -186,7 +195,7 @@
         self.navigationItem.rightBarButtonItem=rightItem;
     }
 }
-- (void)customNavigationBarWithTitle:(NSString *)title bgColor:(UIColor *)color backBtn:(NSString *)string sel:(SEL)backSel rightBtn:(NSString *)rightString sel:(SEL)rightAction
+- (void)customNavigationBarWithTitle:(NSString *)title bgColor:(UIColor *)color backBtn:(NSString *)string sel:(SEL)backSel rightBtn:(NSString *)rightString sel:(SEL)rightAction devider:(BOOL)show
 {
     UIView *navigationBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, kNavHeight)];
     navigationBarView.backgroundColor = color;
@@ -220,9 +229,11 @@
         [navigationBarView addSubview:rightBtn];
     }
     
-    UIView *seperatorLine = [[UIView alloc]initWithFrame:CGRectMake(0, kNavHeight - 0.5, SCREEN_WIDTH, 0.5)];
-    [seperatorLine setBackgroundColor:lightGray_color];
-    [navigationBarView addSubview:seperatorLine];
+    if (show) {
+        UIView *seperatorLine = [[UIView alloc]initWithFrame:CGRectMake(0, kNavHeight - 0.5, SCREEN_WIDTH, 0.5)];
+        [seperatorLine setBackgroundColor:lightGray_color];
+        [navigationBarView addSubview:seperatorLine];
+    }
 }
 - (void)backClicked{
     [self.navigationController popViewControllerAnimated:YES];

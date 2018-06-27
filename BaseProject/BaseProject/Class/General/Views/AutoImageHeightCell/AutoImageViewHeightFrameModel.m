@@ -8,36 +8,37 @@
 
 #import "AutoImageViewHeightFrameModel.h"
 #import "UIImageView+WebCache.h"
+#import <SDWebImage/SDWebImageDownloader.h>
 
 @implementation AutoImageViewHeightFrameModel
 - (void)setImageUrl:(NSString *)imageUrl
 {
     _imageUrl = imageUrl;
     //判断图片URL获取的图片是否在缓存中，如果已经缓存，则直接获取如果未缓存，则进行下载
-    if([[SDWebImageManager sharedManager] cachedImageExistsForURL:[NSURL URLWithString:imageUrl]]){
-        UIImage* img = [[SDWebImageManager sharedManager].imageCache imageFromMemoryCacheForKey:[[SDWebImageManager sharedManager] cacheKeyForURL:[NSURL URLWithString:imageUrl]]];
-        
-        if(!img)
-            img = [[SDWebImageManager sharedManager].imageCache imageFromDiskCacheForKey:[[SDWebImageManager sharedManager] cacheKeyForURL:[NSURL URLWithString:imageUrl]]];
-        _image = img;
-        _imageViewF = CGRectMake(_leftRightMargin?_leftRightMargin:5, _topBottomMargin?_topBottomMargin:5, SCREEN_WIDTH - 10, (SCREEN_WIDTH - 10)/img.size.width * img.size.height);
-        _cellHeight = CGRectGetMaxY(_imageViewF) + 2* _topBottomMargin?_topBottomMargin:5;
-        ZLog(@"%f",_cellHeight);
-        
-    }else{
-        [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageRetryFailed|SDWebImageLowPriority progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-            if (image) {
-                _image = image;
-                _imageViewF = CGRectMake(_leftRightMargin?_leftRightMargin:5, _topBottomMargin?_topBottomMargin:5, SCREEN_WIDTH - 10, (SCREEN_WIDTH - 10)/image.size.width * image.size.height);
-                _cellHeight = CGRectGetMaxY(_imageViewF) + 2* _topBottomMargin?_topBottomMargin:5;
-                ZLog(@"%f",_cellHeight);
-                //block通知界面刷新对应行cell
-                if (self.downLoadImageSuccess) {
-                    self.downLoadImageSuccess(image);
+    WS(weakSelf)
+    [[SDWebImageManager sharedManager] cachedImageExistsForURL:[NSURL URLWithString:imageUrl] completion:^(BOOL isInCache) {
+        if (isInCache) {
+            UIImage* img = [[SDWebImageManager sharedManager].imageCache imageFromMemoryCacheForKey:[[SDWebImageManager sharedManager] cacheKeyForURL:[NSURL URLWithString:imageUrl]]];
+            
+            if(!img)
+                img = [[SDWebImageManager sharedManager].imageCache imageFromDiskCacheForKey:[[SDWebImageManager sharedManager] cacheKeyForURL:[NSURL URLWithString:imageUrl]]];
+            weakSelf.image = img;
+            weakSelf.imageViewF = CGRectMake(weakSelf.leftRightMargin?weakSelf.leftRightMargin:5, weakSelf.topBottomMargin?weakSelf.topBottomMargin:5, SCREEN_WIDTH - 10, (SCREEN_WIDTH - 10)/img.size.width * img.size.height);
+            weakSelf.cellHeight = CGRectGetMaxY(weakSelf.imageViewF) + 2* weakSelf.topBottomMargin?weakSelf.topBottomMargin:5;
+        }else{
+            [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageRetryFailed|SDWebImageLowPriority progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, BOOL finished) {
+                if (image) {
+                    weakSelf.image = image;
+                    weakSelf.imageViewF = CGRectMake(weakSelf.leftRightMargin?weakSelf.leftRightMargin:5, weakSelf.topBottomMargin?weakSelf.topBottomMargin:5, SCREEN_WIDTH - 10, (SCREEN_WIDTH - 10)/image.size.width * image.size.height);
+                    weakSelf.cellHeight = CGRectGetMaxY(weakSelf.imageViewF) + 2* weakSelf.topBottomMargin?weakSelf.topBottomMargin:5;
+                    //block通知界面刷新对应行cell
+                    if (weakSelf.downLoadImageSuccess) {
+                        weakSelf.downLoadImageSuccess(image);
+                    }
                 }
-            }
-        }];
-    }
+            }];
+        }
+    }];
 }
 /**
  调用该方法将图片数据数组转为图片frame模型数组

@@ -10,8 +10,6 @@
 
 @interface ZMyTableViewCell ()
 
-@property (nonatomic, strong) UIView *bgView;
-
 @property (nonatomic, strong) UIImageView *icon;
 
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -23,13 +21,11 @@
 @end
 @implementation ZMyTableViewCell
 - (void)z_setupViews {
-    self.backgroundColor = MAIN_LIGHT_LINE_COLOR;
     
-    [self.contentView addSubview:self.bgView];
-    [self.bgView addSubview:self.icon];
-    [self.bgView addSubview:self.titleLabel];
-    [self.bgView addSubview:self.devider];
-    [self.bgView addSubview:self.arrow];
+    [self.contentView addSubview:self.icon];
+    [self.contentView addSubview:self.titleLabel];
+    [self.contentView addSubview:self.devider];
+    [self.contentView addSubview:self.arrow];
     
     [self setNeedsUpdateConstraints];
     [self updateConstraintsIfNeeded];
@@ -39,24 +35,26 @@
     WS(weakSelf)
     
     CGFloat paddingEdge = 10;
-    [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(weakSelf.contentView).insets(UIEdgeInsetsMake(0, 10, 0, 10));
-    }];
     [self.icon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(weakSelf.bgView).offset(paddingEdge + 5);
-        make.bottom.equalTo(weakSelf.bgView).offset(-paddingEdge - 5);
-        make.left.equalTo(weakSelf.bgView).offset(paddingEdge);
+        make.centerY.equalTo(weakSelf.contentView);
+        make.leading.equalTo(weakSelf.contentView).offset(paddingEdge);
         make.size.equalTo(CGSizeMake(20, 20));
     }];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(weakSelf.bgView).offset(30 + 10);
-        make.centerY.equalTo(weakSelf.bgView);
-        make.size.equalTo(CGSizeMake(80, 50));
+        make.leading.equalTo(weakSelf.icon.mas_trailing).offset(MARGIN_5);
+        make.trailing.equalTo(weakSelf.arrow.mas_leading).offset(-MARGIN_10);
+        make.centerY.equalTo(weakSelf.contentView);
+    }];
+    [self.arrow mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.trailing.equalTo(-MARGIN_5);
+        make.centerY.equalTo(weakSelf.contentView);
+        make.width.equalTo(20);
     }];
     [self.devider mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(weakSelf.bgView);
-        make.left.equalTo(weakSelf.bgView).offset(paddingEdge);
-        make.size.equalTo(CGSizeMake(SCREEN_WIDTH, 0.5));
+        make.leading.equalTo(weakSelf.titleLabel.mas_leading);
+        make.trailing.equalTo(-MARGIN_10);
+        make.bottom.equalTo(weakSelf.contentView);
+        make.height.equalTo(0.5);
     }];
     
     [super updateConstraints];
@@ -73,32 +71,14 @@
     self.titleLabel.text = viewModel.title;
     
     self.icon.image = ImageNamed(viewModel.icon);
-
-    self.devider.hidden = viewModel.hideDevider;
-    
-    //设置圆角
-    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, SCREEN_WIDTH - 20, 50)      byRoundingCorners:self.viewModel.rectCorner    cornerRadii:CGSizeMake(10, 10)];
-    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-    maskLayer.frame = CGRectMake(0, 0, SCREEN_WIDTH - 20, 50);
-    maskLayer.path = maskPath.CGPath;
-    self.bgView.layer.mask = maskLayer;
 }
 
 #pragma mark - lazyLoad
-- (UIView *)bgView
-{
-    if (!_bgView) {
-        _bgView = [[UIView alloc] init];
-        _bgView.backgroundColor = white_color;
-    }
-    return _bgView;
-}
 - (UIImageView *)icon
 {
     if (!_icon) {
         _icon = [[UIImageView alloc] init];
         _icon.contentMode = UIViewContentModeCenter;
-        
     }
     return _icon;
 }
@@ -108,17 +88,17 @@
         
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.textColor = MAIN_TEXT_COLOR;
-        _titleLabel.font = SYSTEM_FONT(17);
+        _titleLabel.font = SYSTEM_FONT(15);
     }
     return _titleLabel;
 }
 - (UIImageView *)arrow
 {
     if (!_arrow) {
-        _arrow = [[UIImageView alloc] init];
+        _arrow = [[UIImageView alloc] initWithImage:ImageNamed(@"三角箭头")];
         _arrow.contentMode = UIViewContentModeCenter;
     }
-    return _icon;
+    return _arrow;
 }
 - (UIView *)devider
 {

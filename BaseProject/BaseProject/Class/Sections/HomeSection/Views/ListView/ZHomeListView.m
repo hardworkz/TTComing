@@ -133,7 +133,7 @@
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
         [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
         //设置每个item的大小
-        flowLayout.itemSize = CGSizeMake(SCREEN_WIDTH * 0.5 - 5,SCREEN_WIDTH * 0.8);
+        flowLayout.itemSize = CGSizeMake(SCREEN_WIDTH * 0.5 - 5,242);
         //设置headerView的尺寸大小
         flowLayout.headerReferenceSize = CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT);
         //设置CollectionView的属性
@@ -183,30 +183,30 @@
         for (int i = 0; i<4; i++) {
             MCButton *button = [[MCButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH * 0.25 * i, 0, SCREEN_WIDTH * 0.25, 100)];
             button.buttonStyle = imageTop;
+            button.imageView.contentMode = UIViewContentModeCenter;
             button.titleLabel.font = [UIFont systemFontOfSize:15.0];
-            [button setBackgroundColor:[UIColor lightGrayColor]];
-            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button setTitleColor:MAIN_TEXT_COLOR forState:UIControlStateNormal];
             
             [_buttonView addSubview:button];
             switch (i) {
                 case 0:
                     [button setTitle:@"拦精灵" forState:UIControlStateNormal];
-                    [button setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+                    [button setImage:[UIImage imageNamed:@"拦精灵"] forState:UIControlStateNormal];
                     break;
                     
                 case 1:
                     [button setTitle:@"情趣衣" forState:UIControlStateNormal];
-                    [button setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+                    [button setImage:[UIImage imageNamed:@"情趣衣"] forState:UIControlStateNormal];
                     break;
                     
                 case 2:
                     [button setTitle:@"女用品" forState:UIControlStateNormal];
-                    [button setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+                    [button setImage:[UIImage imageNamed:@"女用品"] forState:UIControlStateNormal];
                     break;
                     
                 case 3:
                     [button setTitle:@"男用品" forState:UIControlStateNormal];
-                    [button setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+                    [button setImage:[UIImage imageNamed:@"男用品"] forState:UIControlStateNormal];
                     break;
                     
                 default:
@@ -220,15 +220,14 @@
 {
     if (!_dailySpecialView) {
         _dailySpecialView = [[ZView alloc] init];
-        _dailySpecialView.backgroundColor = green_color;
+        _dailySpecialView.backgroundColor = white_color;
         
-        UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[UIImage resizableImage:@""]];
-        bgImageView.frame = CGRectMake(15, 30, SCREEN_WIDTH - 30, 200 - 40);
-        bgImageView.backgroundColor = lightGray_color;
+        UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[UIImage resizableImage:@"外发光背景"]];
+        bgImageView.frame = CGRectMake(MARGIN_10, MARGIN_20, SCREEN_WIDTH - MARGIN_10*2, 200 - 30);
         [_dailySpecialView addSubview:bgImageView];
         
         UIImageView *contentImageView = [[UIImageView alloc] initWithImage:ImageNamed(@"")];
-        contentImageView.frame = CGRectMake(10, - 20, 120, 200 - 30);
+        contentImageView.frame = CGRectMake(MARGIN_15 + MARGIN_10, - MARGIN_15, 150, 200 - 40);
         contentImageView.backgroundColor = purple_color;
         contentImageView.contentMode = UIViewContentModeScaleAspectFill;
         [bgImageView addSubview:contentImageView];
@@ -240,7 +239,7 @@
 {
     if (!_bgImageView) {
         _bgImageView = [[UIImageView alloc] initWithImage:ImageNamed(@"")];
-        _bgImageView.backgroundColor = purple_color;
+        _bgImageView.backgroundColor = white_color;
         _bgImageView.contentMode = UIViewContentModeScaleAspectFill;
     }
     return _bgImageView;
@@ -262,8 +261,6 @@
 {
     ZHomeListCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[NSString stringWithUTF8String:object_getClassName([ZHomeListCollectionViewCell class])] forIndexPath:indexPath];
     
-    cell.backgroundColor = randomColor;
-    
     if (self.viewModel.dataArray.count > indexPath.item) {
         cell.viewModel = self.viewModel.dataArray[indexPath.item];
     }
@@ -273,7 +270,7 @@
 #pragma mark  定义每个UICollectionView的大小
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return  CGSizeMake(SCREEN_WIDTH * 0.5 - 5,SCREEN_WIDTH * 0.8);
+    return CGSizeMake(SCREEN_WIDTH * 0.5 - 5,242);
 }
 #pragma mark  定义整个CollectionViewCell与整个View的间距
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
@@ -307,7 +304,7 @@
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"reusableView" forIndexPath:indexPath];
-    headerView.backgroundColor =[UIColor grayColor];
+    headerView.backgroundColor = white_color;
     
     self.bgImageView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT * 0.5);
     [headerView addSubview:self.bgImageView];

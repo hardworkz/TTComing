@@ -13,5 +13,8 @@
 #import "CustomTextField.h"
 #import "ACFloatingTextField.h"
 #import "SubmitView.h"
+#import "CustomBottomAlertContentView.h"
+#import "DQAlertView.h"
+#import "TZImagePickerController.h"
 
 #endif /* ViewsHeader_h */

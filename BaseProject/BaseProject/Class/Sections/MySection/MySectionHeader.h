@@ -10,5 +10,13 @@
 #define MySectionHeader_h
 
 #import "ZMyViewController.h"
+#import "ZMyOrderController.h"
+#import "ZMyAllOrderViewController.h"
+#import "ZMyWaitPayViewController.h"
+#import "ZMyWaitReceiveViewController.h"
+#import "ZMyWaitCommentViewController.h"
+
+#import "ZMyOrderTableViewCell.h"
+#import "ZMyOrderTableViewCellViewModel.h"
 
 #endif /* MySectionHeader_h */

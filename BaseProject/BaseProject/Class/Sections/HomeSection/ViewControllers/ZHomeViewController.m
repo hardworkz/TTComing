@@ -123,9 +123,8 @@
         [_searchBar setValue:white_color forKeyPath:@"_placeholderLabel.textColor"];
         [_searchView addSubview:_searchBar];
         
-        UIImageView *searchIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"")];
+        UIImageView *searchIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"搜索")];
         searchIcon.frame = CGRectMake(_searchBar.width - Height - 10, 0, Height, Height);
-        searchIcon.backgroundColor = red_color;
         searchIcon.contentMode = UIViewContentModeCenter;
         [_searchBar addSubview:searchIcon];
     }

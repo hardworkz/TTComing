@@ -104,8 +104,7 @@
         _loginView.backgroundColor = white_color;
         _loginView.layer.cornerRadius = 20;
         
-        UIImageView *accountIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"")];
-        accountIcon.backgroundColor = red_color;
+        UIImageView *accountIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"请输入手机号")];
         accountIcon.contentMode = UIViewContentModeCenter;
         [_loginView addSubview:accountIcon];
         
@@ -122,8 +121,7 @@
         _account.disableFloatingLabel = YES;
         [_loginView addSubview:_account];
         
-        UIImageView *passwordIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"")];
-        passwordIcon.backgroundColor = blue_color;
+        UIImageView *passwordIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"请输入密码")];
         passwordIcon.contentMode = UIViewContentModeCenter;
         [_loginView addSubview:passwordIcon];
         
@@ -144,8 +142,8 @@
         UIButton *rememberPwdBtn = [[UIButton alloc] init];
         [rememberPwdBtn setTitle:@"记住密码" forState:UIControlStateNormal];
         [rememberPwdBtn setTitleColor:MAIN_LIGHT_GRAY_TEXT_COLOR forState:UIControlStateNormal];
-        [rememberPwdBtn setImage:ImageNamed(@"") forState:UIControlStateNormal];
-        [rememberPwdBtn setImage:ImageNamed(@"") forState:UIControlStateSelected];
+        [rememberPwdBtn setImage:ImageNamed(@"记住密码-未选择") forState:UIControlStateNormal];
+        [rememberPwdBtn setImage:ImageNamed(@"记住密码") forState:UIControlStateSelected];
         rememberPwdBtn.titleLabel.font = FONT_NORMAL_14;
         [_loginView addSubview:rememberPwdBtn];
         
@@ -226,8 +224,7 @@
         _registerView.backgroundColor = white_color;
         _registerView.layer.cornerRadius = 20;
         
-        UIImageView *accountIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"")];
-        accountIcon.backgroundColor = red_color;
+        UIImageView *accountIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"请输入手机号")];
         accountIcon.contentMode = UIViewContentModeCenter;
         [_registerView addSubview:accountIcon];
         
@@ -244,8 +241,7 @@
         _registerAccount.disableFloatingLabel = YES;
         [_registerView addSubview:_registerAccount];
         
-        UIImageView *passwordIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"")];
-        passwordIcon.backgroundColor = blue_color;
+        UIImageView *passwordIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"请输入密码")];
         passwordIcon.contentMode = UIViewContentModeCenter;
         [_registerView addSubview:passwordIcon];
         
@@ -263,8 +259,7 @@
         _registerPassword.disableFloatingLabel = YES;
         [_registerView addSubview:_registerPassword];
         
-        UIImageView *repeatPasswordIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"")];
-        repeatPasswordIcon.backgroundColor = blue_color;
+        UIImageView *repeatPasswordIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"请输入密码")];
         repeatPasswordIcon.contentMode = UIViewContentModeCenter;
         [_registerView addSubview:repeatPasswordIcon];
         

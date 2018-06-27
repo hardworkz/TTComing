@@ -35,6 +35,11 @@
  */
 -(void)hideNavigationBar:(BOOL)isHide
                 animated:(BOOL)animated;
+/**
+ 设置返回手势
+ * 参数：（1）设置手势的控件：view
+ */
+- (void)rightSwipeWithView:(UIView *)view;
 
 /**
  * 功能： 布局导航栏界面
@@ -61,7 +66,7 @@
  @param rightString 右边按钮图片名称
  @param rightAction 右边按钮方法
  */
-- (void)customNavigationBarWithTitle:(NSString *)title bgColor:(UIColor *)color backBtn:(NSString *)string sel:(SEL)backSel rightBtn:(NSString *)rightString sel:(SEL)rightAction;
+- (void)customNavigationBarWithTitle:(NSString *)title bgColor:(UIColor *)color backBtn:(NSString *)string sel:(SEL)backSel rightBtn:(NSString *)rightString sel:(SEL)rightAction devider:(BOOL)show;
 
 /**
  判断颜色是否相同

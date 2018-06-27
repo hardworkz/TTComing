@@ -9,18 +9,18 @@
 #import "ZMyView.h"
 #import "ZMyViewModel.h"
 #import "ZMyTableViewCell.h"
-#import "ZMyHeadView.h"
-#import "ZMyHeadViewModel.h"
 
 @interface ZMyView ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *mainTableView;
 
+@property (nonatomic, strong) ZView *headerView;
+
 @property (nonatomic, strong) ZMyViewModel *viewModel;
 
-@property (nonatomic, strong) ZMyHeadView *headerView;
-
-@property (nonatomic, strong) ZMyHeadViewModel *headViewModel;
+@property (nonatomic, strong) UIImageView *bgImageView
+;
+@property (nonatomic, strong) UIImageView *contentView;
 
 @end
 @implementation ZMyView
@@ -45,6 +45,8 @@
 - (void)z_setupViews {
     
     [self addSubview:self.mainTableView];
+    [self addSubview:self.bgImageView];
+    [self addSubview:self.contentView];
     self.mainTableView.tableHeaderView = self.headerView;
 
     [self setNeedsUpdateConstraints];
@@ -73,21 +75,7 @@
     
     return _viewModel;
 }
-- (ZMyHeadView *)headerView
-{
-    if (!_headerView) {
-        _headerView = [[ZMyHeadView alloc] initWithViewModel:self.headViewModel];
-        _headerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT * 0.4);
-    }
-    return _headerView;
-}
-- (ZMyHeadViewModel *)headViewModel
-{
-    if (!_headViewModel) {
-        _headViewModel = [[ZMyHeadViewModel alloc] init];
-    }
-    return _headViewModel;
-}
+
 - (UITableView *)mainTableView {
     
     if (!_mainTableView) {
@@ -95,7 +83,7 @@
         _mainTableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStyleGrouped];
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
-        _mainTableView.backgroundColor = MAIN_LIGHT_LINE_COLOR;
+        _mainTableView.backgroundColor = white_color;
         _mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         //tableView页面无导航栏时，顶部出现44高度的空白解决方法
         if (@available(iOS 11.0, *)) {
@@ -106,24 +94,108 @@
     
     return _mainTableView;
 }
-
-#pragma mark - table datasource
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (UIImageView *)bgImageView
 {
-    return self.viewModel.sectionDataArray.count;
+    if (!_bgImageView) {
+        _bgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT * 0.2)];
+        _bgImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _bgImageView.backgroundColor = yellow_color;
+        
+    }
+    return _bgImageView;
 }
+- (UIImageView *)contentView
+{
+    if (!_contentView) {
+        _contentView = [[UIImageView alloc] initWithFrame:CGRectMake(5, SCREEN_HEIGHT * 0.2 - 55, SCREEN_WIDTH - 10, SCREEN_HEIGHT * 0.2 + 50)];
+        _contentView.image = [UIImage resizableImage:@"头像信息背景外发光"];
+        
+        CGFloat userIconH = 100;
+        
+        UIImageView *userIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"小形象图")];
+        userIcon.frame = CGRectMake((_contentView.width - userIconH) * 0.5, -userIconH * 0.5, userIconH, userIconH);
+        userIcon.layer.cornerRadius = userIconH * 0.5;
+        userIcon.clipsToBounds = YES;
+        userIcon.backgroundColor = white_color;
+        userIcon.contentMode = UIViewContentModeScaleAspectFill;
+        [_contentView addSubview:userIcon];
+        
+        UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(userIcon.frame) + 5, _contentView.width, 25)];
+        name.text = @"黄三岁";
+        name.font = FONT(17.0);
+        name.textAlignment = NSTextAlignmentCenter;
+        name.textColor = MAIN_TEXT_COLOR;
+        [_contentView addSubview:name];
+        
+        UILabel *sign = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(name.frame), _contentView.width, 20)];
+        sign.text = @"哈哈哈哈哈哈哈哈哈哈哈";
+        sign.font = FONT(14.0);
+        sign.textAlignment = NSTextAlignmentCenter;
+        sign.textColor = MAIN_TEXT_COLOR;
+        [_contentView addSubview:sign];
+        
+        for (int i = 0; i<3; i++) {
+            MCButton *button = [[MCButton alloc] initWithFrame:CGRectMake(_contentView.width / 3 * i, CGRectGetMaxY(sign.frame), _contentView.width / 3, _contentView.height - CGRectGetMaxY(sign.frame))];
+            button.buttonStyle = imageTop;
+            button.layer.cornerRadius = _contentView.layer.cornerRadius;
+            button.titleLabel.font = [UIFont systemFontOfSize:15.0];
+            button.imageView.contentMode = UIViewContentModeCenter;
+            [button setTitleColor:MAIN_TEXT_COLOR forState:UIControlStateNormal];
+            [_contentView addSubview:button];
+            WS(weakSelf)
+            switch (i) {
+                case 0:{
+                    [button setTitle:@"待付款" forState:UIControlStateNormal];
+                    [button setImage:[UIImage imageNamed:@"待付款"] forState:UIControlStateNormal];
+                    [[button rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(__kindof UIControl * _Nullable x) {
+                        [weakSelf.viewModel.orderClickSubject sendNext:@"waitPay"];
+                    }];}
+                    break;
+                    
+                case 1:{
+                    [button setTitle:@"待收货" forState:UIControlStateNormal];
+                    [button setImage:[UIImage imageNamed:@"待收货"] forState:UIControlStateNormal];
+                    [[button rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(__kindof UIControl * _Nullable x) {
+                        [weakSelf.viewModel.orderClickSubject sendNext:@"waitReceive"];
+                    }];}
+                    break;
+                    
+                case 2:{
+                    [button setTitle:@"待留言" forState:UIControlStateNormal];
+                    [button setImage:[UIImage imageNamed:@"待留言"] forState:UIControlStateNormal];
+                    [[button rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(__kindof UIControl * _Nullable x) {
+                        [weakSelf.viewModel.orderClickSubject sendNext:@"waitComment"];
+                    }];}
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+    }
+    return _contentView;
+}
+- (ZView *)headerView
+{
+    if (!_headerView) {
+        _headerView = [[ZView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT * 0.4)];
+        [_headerView addSubview:self.bgImageView];
+        [_headerView addSubview:self.contentView];
+    }
+    return _headerView;
+}
+#pragma mark - table datasource
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSMutableArray *array = self.viewModel.sectionDataArray[section];
-    return array.count;
+    return self.viewModel.dataArray.count;
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
     ZMyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[NSString stringWithUTF8String:object_getClassName([ZMyTableViewCell class])] forIndexPath:indexPath];
-    NSMutableArray *array = self.viewModel.sectionDataArray[indexPath.section];
-    if (array.count > indexPath.row) {
+    
+    if (self.viewModel.dataArray.count > indexPath.row) {
 
-        cell.viewModel = array[indexPath.row];
+        cell.viewModel = self.viewModel.dataArray[indexPath.row];
     }
     
     return cell;
@@ -133,27 +205,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    return 50;
+    return 60;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [self.viewModel.cellClickSubject sendNext:nil];
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 5;
-}
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 5)];
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 5;
-}
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    return [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 5)];
 }
 @end

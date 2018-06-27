@@ -10,5 +10,11 @@
 #define ShoppingCartHeader_h
 
 #import "ZShoppingCartController.h"
+#import "ZSettleCenterController.h"
+#import "ZOrderPayViewController.h"
+#import "ZOrderDetailViewController.h"
+
+#import "ZSettleCenterContentCellViewModel.h"
+#import "ZOrderDetailCenterTableViewCellViewModel.h"
 
 #endif /* ShoppingCartHeader_h */

@@ -45,6 +45,19 @@
         ZLoginViewController *loginVC = [[ZLoginViewController alloc] init];
         [self.navigationController presentViewController:loginVC animated:YES completion:nil];
     }];
+    [self.viewModel.orderClickSubject subscribeNext:^(id  _Nullable x) {
+        @strongify(self);
+        if ([x isEqualToString:@"waitPay"]) {
+            
+        }else if ([x isEqualToString:@"waitReceive"]) {
+            
+        }else if ([x isEqualToString:@"waitComment"]) {
+            
+        }
+        //点击头像操作
+        ZMyOrderController *orderVC = [[ZMyOrderController alloc] init];
+        [self.navigationController pushViewController:orderVC animated:YES];
+    }];
 }
 - (void)z_layoutNavigation
 {

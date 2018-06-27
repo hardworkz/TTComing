@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "ZTableViewCellProtocol.h"
+#import "ZViewModel.h"
 
 @interface ZTableViewCell : UITableViewCell <ZTableViewCellProtocol>
-
+/**
+ 根绝数据计算cell的高度
+ */
+- (CGFloat)cellHeight;
 @end

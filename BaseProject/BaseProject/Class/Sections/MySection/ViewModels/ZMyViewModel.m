@@ -12,46 +12,37 @@
 @implementation ZMyViewModel
 - (void)z_initialize {
     
-    NSMutableArray *oneSectionArray = [[NSMutableArray alloc] init];
-    NSMutableArray *twoSectionArray = [[NSMutableArray alloc] init];
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 5; i++) {
         
-        if (i == 0) {
-            ZMyTableViewCellViewModel *viewModel = [[ZMyTableViewCellViewModel alloc] init];
-            viewModel.title = @"全部订单";
-            viewModel.icon = @"icon_setting";
-            viewModel.hideDevider = NO;
-            viewModel.rectCorner = UIRectCornerTopLeft | UIRectCornerTopRight;
-            [oneSectionArray addObject:viewModel];
-        }else  if (i == 1) {
-            ZMyTableViewCellViewModel *viewModel = [[ZMyTableViewCellViewModel alloc] init];
-            viewModel.title = @"我的收藏";
-            viewModel.icon = @"icon_setting";
-            viewModel.hideDevider = YES;
-            viewModel.rectCorner = UIRectCornerBottomLeft | UIRectCornerBottomRight;
-            [oneSectionArray addObject:viewModel];
-        }
-    }
-    [self.sectionDataArray addObject:oneSectionArray];
-    for (int i = 0; i < 2; i++) {
+        ZMyTableViewCellViewModel *viewModel = [[ZMyTableViewCellViewModel alloc] init];
         
-        if (i == 0) {
-            ZMyTableViewCellViewModel *viewModel = [[ZMyTableViewCellViewModel alloc] init];
-            viewModel.title = @"个人信息";
-            viewModel.icon = @"icon_setting";
-            viewModel.hideDevider = NO;
-            viewModel.rectCorner = UIRectCornerTopLeft | UIRectCornerTopRight;
-            [twoSectionArray addObject:viewModel];
-        }else  if (i == 1) {
-            ZMyTableViewCellViewModel *viewModel = [[ZMyTableViewCellViewModel alloc] init];
-            viewModel.title = @"账户安全";
-            viewModel.icon = @"icon_setting";
-            viewModel.hideDevider = YES;
-            viewModel.rectCorner = UIRectCornerBottomLeft | UIRectCornerBottomRight;
-            [twoSectionArray addObject:viewModel];
+        switch (i) {
+            case 0:
+                viewModel.title = @"全部订单";
+                viewModel.icon = @"全部订单";
+                break;
+            case 1:
+                viewModel.title = @"我的收藏";
+                viewModel.icon = @"我的收藏";
+                break;
+            case 2:
+                viewModel.title = @"个人信息";
+                viewModel.icon = @"个人信息";
+                break;
+            case 3:
+                viewModel.title = @"账户安全";
+                viewModel.icon = @"账户安全";
+                break;
+            case 4:
+                viewModel.title = @"设置中心";
+                viewModel.icon = @"设置中心";
+                break;
+                
+            default:
+                break;
         }
+        [self.dataArray addObject:viewModel];
     }
-    [self.sectionDataArray addObject:twoSectionArray];
     
     [self.refreshUI sendNext:nil];
 }
@@ -65,14 +56,14 @@
     return _refreshUI;
 }
 
-- (NSMutableArray *)sectionDataArray {
+- (NSMutableArray *)dataArray {
     
-    if (!_sectionDataArray) {
+    if (!_dataArray) {
         
-        _sectionDataArray = [[NSMutableArray alloc] init];
+        _dataArray = [[NSMutableArray alloc] init];
     }
     
-    return _sectionDataArray;
+    return _dataArray;
 }
 - (RACSubject *)userIconClickSubject
 {
@@ -91,5 +82,14 @@
     }
     
     return _cellClickSubject;
+}
+- (RACSubject *)orderClickSubject {
+    
+    if (!_orderClickSubject) {
+        
+        _orderClickSubject = [RACSubject subject];
+    }
+    
+    return _orderClickSubject;
 }
 @end

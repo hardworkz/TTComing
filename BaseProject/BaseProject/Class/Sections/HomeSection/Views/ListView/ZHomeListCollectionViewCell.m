@@ -10,14 +10,21 @@
 
 @interface ZHomeListCollectionViewCell ()
 
-@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UIImageView *productImage;
 
+@property (nonatomic, strong) UILabel *name;
+
+@property (nonatomic, strong) UILabel *Description;
+
+@property (nonatomic, strong) UILabel *price;
 @end
 @implementation ZHomeListCollectionViewCell
 - (void)z_setupViews {
     
-    [self.contentView addSubview:self.titleLabel];
-    self.titleLabel.backgroundColor = green_color;
+    [self.contentView addSubview:self.productImage];
+    [self.contentView addSubview:self.name];
+    [self.contentView addSubview:self.Description];
+    [self.contentView addSubview:self.price];
     
     [self setNeedsUpdateConstraints];
     [self updateConstraintsIfNeeded];
@@ -25,15 +32,27 @@
 - (void)updateConstraints {
     
     WS(weakSelf)
-    
-//    CGFloat paddingEdge = 10;
-    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.productImage mas_makeConstraints:^(MASConstraintMaker *make) {
 
-        make.left.equalTo(weakSelf.contentView);
+        make.leading.trailing.equalTo(0);
         make.top.equalTo(weakSelf.contentView);
-        make.size.equalTo(CGSizeMake(100, 100));
+        make.height.equalTo(150);
     }];
-    
+    [self.name mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(weakSelf.productImage.mas_bottom).offset(MARGIN_10);
+        make.leading.equalTo(MARGIN_10);
+        make.trailing.equalTo(-MARGIN_10);
+    }];
+    [self.Description mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(weakSelf.name.mas_bottom);
+        make.leading.equalTo(MARGIN_10);
+        make.trailing.equalTo(-MARGIN_10);
+    }];
+    [self.price mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(weakSelf.Description.mas_bottom).offset(MARGIN_10);
+        make.leading.equalTo(MARGIN_10);
+        make.trailing.equalTo(-MARGIN_10);
+    }];
     [super updateConstraints];
     
 }
@@ -44,21 +63,50 @@
     }
     
     _viewModel = viewModel;
-    
-    self.titleLabel.text = @"haha";
+
 }
 
 #pragma mark - lazyLoad
-- (UILabel *)titleLabel {
-    
-    if (!_titleLabel) {
-        
-        _titleLabel = [[UILabel alloc] init];
-        _titleLabel.textColor = MAIN_TEXT_COLOR;
-        _titleLabel.font = SYSTEM_FONT(14);
-        _titleLabel.text = @"haha";
+- (UIImageView *)productImage
+{
+    if (!_productImage) {
+        _productImage = [[UIImageView alloc] init];
+        _productImage.backgroundColor = yellow_color;
+        _productImage.contentMode = UIViewContentModeScaleAspectFill;
     }
+    return _productImage;
+}
+- (UILabel *)name {
     
-    return _titleLabel;
+    if (!_name) {
+        
+        _name = [[UILabel alloc] init];
+        _name.textColor = MAIN_TEXT_COLOR;
+        _name.font = SYSTEM_FONT(15);
+        _name.text = @"拦精灵";
+    }
+    return _name;
+}
+- (UILabel *)Description {
+    
+    if (!_Description) {
+        
+        _Description = [[UILabel alloc] init];
+        _Description.textColor = MAIN_TEXT_COLOR;
+        _Description.font = SYSTEM_FONT(13);
+        _Description.text = @"整装 6 盒 特别推荐";
+    }
+    return _Description;
+}
+- (UILabel *)price {
+    
+    if (!_price) {
+        
+        _price = [[UILabel alloc] init];
+        _price.textColor = MAIN_TEXT_COLOR;
+        _price.font = BOLD_SYSTEM_FONT(17);
+        _price.text = @"¥128";
+    }
+    return _price;
 }
 @end

@@ -92,6 +92,12 @@
 #define RECT_CHANGE_height(v,h)     CGRectMake(X(v), Y(v), WIDTH(v), h)
 #define RECT_CHANGE_size(v,w,h)     CGRectMake(X(v), Y(v), w, h)
 
+//间距常量
+#define MARGIN_5 5
+#define MARGIN_10 10
+#define MARGIN_15 15
+#define MARGIN_20 20
+
 //这里的375我是针对X为标准适配的,如果需要其他标准可以修改
 #define kX(R) (R)*(SCREEN_WIDTH)/375
 //这里的812我是针对X为标准适配的,如果需要其他标准可以修改

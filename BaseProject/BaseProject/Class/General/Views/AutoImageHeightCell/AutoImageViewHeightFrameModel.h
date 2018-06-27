@@ -32,12 +32,12 @@
 /**
  图片对象
  */
-@property (strong, nonatomic,readonly) UIImage *image;
+@property (strong, nonatomic) UIImage *image;
 
 /**
  图片控件frame
  */
-@property (assign, nonatomic,readonly) CGRect imageViewF;
+@property (assign, nonatomic) CGRect imageViewF;
 
 /**
  返回cell高度

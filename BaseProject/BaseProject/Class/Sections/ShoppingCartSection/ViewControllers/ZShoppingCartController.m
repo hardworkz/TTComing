@@ -36,15 +36,17 @@
 - (void)z_bindViewModel
 {
     @weakify(self)
-//    [self.viewModel.cellClickSubject subscribeNext:^(id  _Nullable x) {
-//        @strongify(self);
-//        //点击cell操作
-//    }];
+    [self.viewModel.cellClickSubject subscribeNext:^(id  _Nullable x) {
+        @strongify(self);
+        //点击cell操作
+        ZOrderDetailViewController *orderDetailVC = [[ZOrderDetailViewController alloc] init];
+        [self.navigationController pushViewController:orderDetailVC animated:YES];
+    }];
 }
 - (void)z_layoutNavigation
 {
     [self hideNavigationBar:YES animated:NO];
-    [self customNavigationBarWithTitle:@"购物车" bgColor:white_color backBtn:nil sel:nil rightBtn:nil sel:nil];
+    [self customNavigationBarWithTitle:@"购物车" bgColor:white_color backBtn:nil sel:nil rightBtn:nil sel:nil devider:YES];
 }
 #pragma mark - lazyload
 - (ZShoppingCartView *)mainView
