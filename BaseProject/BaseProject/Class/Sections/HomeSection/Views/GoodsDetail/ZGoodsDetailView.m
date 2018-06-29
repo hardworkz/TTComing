@@ -29,6 +29,8 @@
 
 @property (nonatomic, strong) ZView *imagePickerView;
 
+@property (nonatomic, strong) UILabel *indexImage;
+
 @property (nonatomic, strong) ZView *goodsDetailView;
 
 @property (nonatomic, strong) ZView *benefitsView;
@@ -36,6 +38,8 @@
 @property (nonatomic, strong) ZView *commentHeadView;
 
 @property (nonatomic, strong) ZView *instructionsView;
+
+@property (nonatomic, strong) ZHomeListCollectionViewCell *tempCell;
 
 @end
 @implementation ZGoodsDetailView
@@ -78,6 +82,11 @@
         [self.mainCollectionView reloadData];
         [self.imageCollectionView reloadData];
         [self.commentCollectionView reloadData];
+        if (self.viewModel.imageDataArray.count > 1) {
+            self.indexImage.hidden = NO;
+        }else{
+            self.indexImage.hidden = YES;
+        }
     }];
     
     [self.viewModel.refreshEndSubject subscribeNext:^(id x) {
@@ -146,7 +155,7 @@
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
         [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
         //设置每个item的大小
-        flowLayout.itemSize = CGSizeMake(SCREEN_WIDTH * 0.5 - 5,242);
+//        flowLayout.itemSize = CGSizeMake(SCREEN_WIDTH * 0.5 - 5,242);
         //设置headerView的尺寸大小
         flowLayout.headerReferenceSize = CGSizeMake(SCREEN_WIDTH, 770);
         //设置CollectionView的属性
@@ -171,6 +180,8 @@
             
             [weakSelf.viewModel.nextPageCommand execute:nil];
         }];
+        
+        self.tempCell = [[ZHomeListCollectionViewCell alloc] init];
     }
     return _mainCollectionView;
 }
@@ -187,6 +198,7 @@
         _imageCollectionView.delegate = self;
         _imageCollectionView.dataSource = self;
         _imageCollectionView.pagingEnabled = YES;
+        _imageCollectionView.showsHorizontalScrollIndicator = NO;
         if (@available(iOS 11.0, *)) {
             _imageCollectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         }
@@ -207,6 +219,7 @@
         _commentCollectionView.backgroundColor = white_color;
         _commentCollectionView.delegate = self;
         _commentCollectionView.dataSource = self;
+        _commentCollectionView.showsHorizontalScrollIndicator = NO;
         if (@available(iOS 11.0, *)) {
             _commentCollectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         }
@@ -290,21 +303,21 @@
         //图片轮播控件
         [_imagePickerView addSubview:self.imageCollectionView];
         
-        UILabel *indexImage = [[UILabel alloc] init];
-        indexImage.text = @"1/3";
-        indexImage.font = FONT(10);
-        indexImage.textAlignment = NSTextAlignmentCenter;
-        indexImage.textColor = white_color;
-        indexImage.layer.cornerRadius = 10;
-        indexImage.layer.masksToBounds = YES;
-        indexImage.backgroundColor = COLOR(33, 33, 33, 0.5);
-        [_imagePickerView addSubview:indexImage];
+        _indexImage = [[UILabel alloc] init];
+        _indexImage.text = @"1/3";
+        _indexImage.font = FONT(10);
+        _indexImage.textAlignment = NSTextAlignmentCenter;
+        _indexImage.textColor = white_color;
+        _indexImage.layer.cornerRadius = 10;
+        _indexImage.layer.masksToBounds = YES;
+        _indexImage.backgroundColor = COLOR(33, 33, 33, 0.5);
+        [_imagePickerView addSubview:_indexImage];
         
         WS(weakSelf)
         [self.imageCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(weakSelf.imagePickerView);
         }];
-        [indexImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        [self.indexImage mas_makeConstraints:^(MASConstraintMaker *make) {
             make.trailing.equalTo(-MARGIN_10);
             make.bottom.equalTo(weakSelf.imagePickerView).offset(-MARGIN_10);
             make.size.equalTo(CGSizeMake(40, 20));
@@ -496,8 +509,6 @@
     if ([collectionView isEqual:self.mainCollectionView]) {
         ZHomeListCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[NSString stringWithUTF8String:object_getClassName([ZHomeListCollectionViewCell class])] forIndexPath:indexPath];
         
-        cell.backgroundColor = randomColor;
-        
         if (self.viewModel.dataArray.count > indexPath.item) {
             cell.viewModel = self.viewModel.dataArray[indexPath.item];
         }
@@ -507,8 +518,8 @@
         
         cell.backgroundColor = randomColor;
         
-        if (self.viewModel.dataArray.count > indexPath.item) {
-            cell.viewModel = self.viewModel.dataArray[indexPath.item];
+        if (self.viewModel.imageDataArray.count > indexPath.item) {
+            cell.viewModel = self.viewModel.imageDataArray[indexPath.item];
         }
         return cell;
     }else{
@@ -525,7 +536,17 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([collectionView isEqual:self.mainCollectionView]) {
-        return CGSizeMake(SCREEN_WIDTH * 0.5 - 5,242);
+        ZHomeListCollectionViewCellViewModel *viewModel = self.viewModel.dataArray[indexPath.row];
+        if (viewModel.cellHeight == 0) {
+            CGFloat cellHeight = [self.tempCell cellHeightForViewModel:viewModel];
+            
+            // 缓存给model
+            viewModel.cellHeight = cellHeight;
+            
+            return CGSizeMake(SCREEN_WIDTH * 0.5 - 5,cellHeight);
+        } else {
+            return CGSizeMake(SCREEN_WIDTH * 0.5 - 5,viewModel.cellHeight);
+        }
     }else if ([collectionView isEqual:self.imageCollectionView]) {
         return CGSizeMake(SCREEN_WIDTH,300);
     }else{

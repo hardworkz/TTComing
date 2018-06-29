@@ -27,15 +27,15 @@
                 break;
             case 2:
                 viewModel.title = @"个人信息";
-                viewModel.icon = @"个人信息";
+                viewModel.icon = @"全部订单";
                 break;
             case 3:
                 viewModel.title = @"账户安全";
-                viewModel.icon = @"账户安全";
+                viewModel.icon = @"我的收藏";
                 break;
             case 4:
                 viewModel.title = @"设置中心";
-                viewModel.icon = @"设置中心";
+                viewModel.icon = @"全部订单";
                 break;
                 
             default:

@@ -107,7 +107,7 @@
         _searchView = [[ZHomeSearchView alloc] init];
         _searchView.backgroundColor = COLOR(255, 255, 255, 0);
         
-        CGFloat Height = 40;
+        CGFloat Height = 30;
         
         _searchBar = [[CustomTextField alloc] init];
         _searchBar.returnKeyType = UIReturnKeySearch;

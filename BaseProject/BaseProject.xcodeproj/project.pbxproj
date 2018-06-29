@@ -156,6 +156,14 @@
 		69AD53B120E3BC0D00B3624E /* ZCommentListViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 69AD53B020E3BC0D00B3624E /* ZCommentListViewModel.m */; };
 		69AD53B420E3BC5C00B3624E /* ZCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 69AD53B320E3BC5C00B3624E /* ZCommentTableViewCell.m */; };
 		69AD53B720E3BC7100B3624E /* ZCommentTableViewCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 69AD53B620E3BC7100B3624E /* ZCommentTableViewCellViewModel.m */; };
+		69AD53BB20E4716600B3624E /* ZAddAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69AD53BA20E4716600B3624E /* ZAddAddressViewController.m */; };
+		69AD53BE20E4738B00B3624E /* ZSetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69AD53BD20E4738B00B3624E /* ZSetPasswordViewController.m */; };
+		69AD53C120E4739E00B3624E /* ZSetNicknameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69AD53C020E4739E00B3624E /* ZSetNicknameViewController.m */; };
+		69AD53C420E473B800B3624E /* ZSetSignatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69AD53C320E473B800B3624E /* ZSetSignatureViewController.m */; };
+		69AD53C720E473CC00B3624E /* ZAboutUSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69AD53C620E473CC00B3624E /* ZAboutUSViewController.m */; };
+		69AD53CA20E473E500B3624E /* ZUserCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69AD53C920E473E500B3624E /* ZUserCenterViewController.m */; };
+		69AD53CD20E4740B00B3624E /* ZFeedBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69AD53CC20E4740B00B3624E /* ZFeedBackViewController.m */; };
+		69AD53D120E477F600B3624E /* IWTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 69AD53D020E477F500B3624E /* IWTextView.m */; };
 		69C0A28020D8AB9C00437F12 /* ZGoodsDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69C0A27F20D8AB9C00437F12 /* ZGoodsDetailController.m */; };
 		69D97A7A20D9E607004EBC33 /* ZShoppingCartController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69D97A7920D9E607004EBC33 /* ZShoppingCartController.m */; };
 		69D97A7D20D9E626004EBC33 /* ZShoppingCartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 69D97A7C20D9E626004EBC33 /* ZShoppingCartView.m */; };
@@ -511,6 +519,22 @@
 		69AD53B320E3BC5C00B3624E /* ZCommentTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZCommentTableViewCell.m; sourceTree = "<group>"; };
 		69AD53B520E3BC7100B3624E /* ZCommentTableViewCellViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZCommentTableViewCellViewModel.h; sourceTree = "<group>"; };
 		69AD53B620E3BC7100B3624E /* ZCommentTableViewCellViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZCommentTableViewCellViewModel.m; sourceTree = "<group>"; };
+		69AD53B920E4716600B3624E /* ZAddAddressViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZAddAddressViewController.h; sourceTree = "<group>"; };
+		69AD53BA20E4716600B3624E /* ZAddAddressViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZAddAddressViewController.m; sourceTree = "<group>"; };
+		69AD53BC20E4738B00B3624E /* ZSetPasswordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZSetPasswordViewController.h; sourceTree = "<group>"; };
+		69AD53BD20E4738B00B3624E /* ZSetPasswordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZSetPasswordViewController.m; sourceTree = "<group>"; };
+		69AD53BF20E4739E00B3624E /* ZSetNicknameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZSetNicknameViewController.h; sourceTree = "<group>"; };
+		69AD53C020E4739E00B3624E /* ZSetNicknameViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZSetNicknameViewController.m; sourceTree = "<group>"; };
+		69AD53C220E473B800B3624E /* ZSetSignatureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZSetSignatureViewController.h; sourceTree = "<group>"; };
+		69AD53C320E473B800B3624E /* ZSetSignatureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZSetSignatureViewController.m; sourceTree = "<group>"; };
+		69AD53C520E473CC00B3624E /* ZAboutUSViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZAboutUSViewController.h; sourceTree = "<group>"; };
+		69AD53C620E473CC00B3624E /* ZAboutUSViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZAboutUSViewController.m; sourceTree = "<group>"; };
+		69AD53C820E473E500B3624E /* ZUserCenterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZUserCenterViewController.h; sourceTree = "<group>"; };
+		69AD53C920E473E500B3624E /* ZUserCenterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZUserCenterViewController.m; sourceTree = "<group>"; };
+		69AD53CB20E4740B00B3624E /* ZFeedBackViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFeedBackViewController.h; sourceTree = "<group>"; };
+		69AD53CC20E4740B00B3624E /* ZFeedBackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFeedBackViewController.m; sourceTree = "<group>"; };
+		69AD53CF20E477F500B3624E /* IWTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IWTextView.h; sourceTree = "<group>"; };
+		69AD53D020E477F500B3624E /* IWTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IWTextView.m; sourceTree = "<group>"; };
 		69C0A27E20D8AB9C00437F12 /* ZGoodsDetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZGoodsDetailController.h; sourceTree = "<group>"; };
 		69C0A27F20D8AB9C00437F12 /* ZGoodsDetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZGoodsDetailController.m; sourceTree = "<group>"; };
 		69D97A7720D8DDC0004EBC33 /* ViewsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewsHeader.h; sourceTree = "<group>"; };
@@ -960,6 +984,7 @@
 		6988F1D520BBE0D600414C5B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				69AD53CE20E477F500B3624E /* IWTextView */,
 				69AD532120E1C8E600B3624E /* TZImagePickerController */,
 				694B76E020E10BB600C80912 /* DQAlertView */,
 				694B762820DC9DAB00C80912 /* CustomBottomAlertContentView */,
@@ -1388,18 +1413,23 @@
 		6988F3FB20BD435E00414C5B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				69AD53B820E4703D00B3624E /* OrderVC */,
 				6988F44C20BFA02E00414C5B /* ZMyViewController.h */,
 				6988F44D20BFA02E00414C5B /* ZMyViewController.m */,
-				694B765520DCF39E00C80912 /* ZMyOrderController.h */,
-				694B765620DCF39E00C80912 /* ZMyOrderController.m */,
-				694B764920DCF0F500C80912 /* ZMyAllOrderViewController.h */,
-				694B764A20DCF0F500C80912 /* ZMyAllOrderViewController.m */,
-				694B764C20DCF10700C80912 /* ZMyWaitPayViewController.h */,
-				694B764D20DCF10700C80912 /* ZMyWaitPayViewController.m */,
-				694B764F20DCF11C00C80912 /* ZMyWaitReceiveViewController.h */,
-				694B765020DCF11C00C80912 /* ZMyWaitReceiveViewController.m */,
-				694B765220DCF13300C80912 /* ZMyWaitCommentViewController.h */,
-				694B765320DCF13300C80912 /* ZMyWaitCommentViewController.m */,
+				69AD53B920E4716600B3624E /* ZAddAddressViewController.h */,
+				69AD53BA20E4716600B3624E /* ZAddAddressViewController.m */,
+				69AD53BC20E4738B00B3624E /* ZSetPasswordViewController.h */,
+				69AD53BD20E4738B00B3624E /* ZSetPasswordViewController.m */,
+				69AD53BF20E4739E00B3624E /* ZSetNicknameViewController.h */,
+				69AD53C020E4739E00B3624E /* ZSetNicknameViewController.m */,
+				69AD53C220E473B800B3624E /* ZSetSignatureViewController.h */,
+				69AD53C320E473B800B3624E /* ZSetSignatureViewController.m */,
+				69AD53C520E473CC00B3624E /* ZAboutUSViewController.h */,
+				69AD53C620E473CC00B3624E /* ZAboutUSViewController.m */,
+				69AD53C820E473E500B3624E /* ZUserCenterViewController.h */,
+				69AD53C920E473E500B3624E /* ZUserCenterViewController.m */,
+				69AD53CB20E4740B00B3624E /* ZFeedBackViewController.h */,
+				69AD53CC20E4740B00B3624E /* ZFeedBackViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -1756,6 +1786,32 @@
 			path = GoodsDetail;
 			sourceTree = "<group>";
 		};
+		69AD53B820E4703D00B3624E /* OrderVC */ = {
+			isa = PBXGroup;
+			children = (
+				694B765520DCF39E00C80912 /* ZMyOrderController.h */,
+				694B765620DCF39E00C80912 /* ZMyOrderController.m */,
+				694B764920DCF0F500C80912 /* ZMyAllOrderViewController.h */,
+				694B764A20DCF0F500C80912 /* ZMyAllOrderViewController.m */,
+				694B764C20DCF10700C80912 /* ZMyWaitPayViewController.h */,
+				694B764D20DCF10700C80912 /* ZMyWaitPayViewController.m */,
+				694B764F20DCF11C00C80912 /* ZMyWaitReceiveViewController.h */,
+				694B765020DCF11C00C80912 /* ZMyWaitReceiveViewController.m */,
+				694B765220DCF13300C80912 /* ZMyWaitCommentViewController.h */,
+				694B765320DCF13300C80912 /* ZMyWaitCommentViewController.m */,
+			);
+			path = OrderVC;
+			sourceTree = "<group>";
+		};
+		69AD53CE20E477F500B3624E /* IWTextView */ = {
+			isa = PBXGroup;
+			children = (
+				69AD53CF20E477F500B3624E /* IWTextView.h */,
+				69AD53D020E477F500B3624E /* IWTextView.m */,
+			);
+			path = IWTextView;
+			sourceTree = "<group>";
+		};
 		69D97AAE20DA2C4C004EBC33 /* UITableViewAndUICollectionViewNoData+ */ = {
 			isa = PBXGroup;
 			children = (
@@ -2020,6 +2076,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				69AD53C120E4739E00B3624E /* ZSetNicknameViewController.m in Sources */,
 				694B764E20DCF10700C80912 /* ZMyWaitPayViewController.m in Sources */,
 				69A592D520C65BC500F1CC4C /* ZMyTableViewCell.m in Sources */,
 				69C0A28020D8AB9C00437F12 /* ZGoodsDetailController.m in Sources */,
@@ -2035,6 +2092,7 @@
 				69AD534A20E1C8E600B3624E /* TZPhotoPreviewController.m in Sources */,
 				69AD53AE20E3BBF700B3624E /* ZCommentListView.m in Sources */,
 				694B764B20DCF0F500C80912 /* ZMyAllOrderViewController.m in Sources */,
+				69AD53BE20E4738B00B3624E /* ZSetPasswordViewController.m in Sources */,
 				6988F3EB20BD371F00414C5B /* UINavigationController+Cloudox.m in Sources */,
 				694B763720DCBF9B00C80912 /* ZSettleCenterTipTableViewCellViewModel.m in Sources */,
 				694B764220DCD4A600C80912 /* ZOrderPayViewModel.m in Sources */,
@@ -2061,7 +2119,9 @@
 				698FDEC620CA5564000384D2 /* UserLoginManager.m in Sources */,
 				69AD53B120E3BC0D00B3624E /* ZCommentListViewModel.m in Sources */,
 				6988F23D20BC094F00414C5B /* UIImage+Scale.m in Sources */,
+				69AD53CD20E4740B00B3624E /* ZFeedBackViewController.m in Sources */,
 				69AD535820E1D7E800B3624E /* ZGoodsDetailCommentCell.m in Sources */,
+				69AD53BB20E4716600B3624E /* ZAddAddressViewController.m in Sources */,
 				698FDEA720C8CBE6000384D2 /* User.m in Sources */,
 				69AD535520E1CE5800B3624E /* ZGoodsDetailViewModel.m in Sources */,
 				697CE30520D255C8008FD9D4 /* ZLoginViewController.m in Sources */,
@@ -2105,6 +2165,7 @@
 				6988F22420BBFFED00414C5B /* NSData+Initialize.m in Sources */,
 				697CE2F420D208CD008FD9D4 /* ZHomeAdContentViewModel.m in Sources */,
 				694B76B120E0BA0700C80912 /* ZMyWaitCommentOrderViewModel.m in Sources */,
+				69AD53D120E477F600B3624E /* IWTextView.m in Sources */,
 				6988F41C20BD579300414C5B /* AutoImageViewHeightFrameModel.m in Sources */,
 				6988F24C20BCE42200414C5B /* UIViewController+Extension.m in Sources */,
 				69AD534020E1C8E600B3624E /* TZAssetCell.m in Sources */,
@@ -2120,6 +2181,7 @@
 				694B76E320E10BB600C80912 /* DQAlertView.m in Sources */,
 				6988F1F820BBE6BB00414C5B /* ZViewController.m in Sources */,
 				6988F25920BD23E700414C5B /* DataCache.m in Sources */,
+				69AD53CA20E473E500B3624E /* ZUserCenterViewController.m in Sources */,
 				6988F42820BD58DB00414C5B /* ZHomeViewController.m in Sources */,
 				698FDEBF20CA1648000384D2 /* SubmitButton.m in Sources */,
 				69AD534920E1C8E600B3624E /* TZPhotoPreviewCell.m in Sources */,
@@ -2146,6 +2208,7 @@
 				694B763F20DCD41B00C80912 /* ZOrderPayView.m in Sources */,
 				6988F24920BCE3E700414C5B /* UIView+Extension.m in Sources */,
 				6988F24020BC098100414C5B /* UIImage+Resize.m in Sources */,
+				69AD53C420E473B800B3624E /* ZSetSignatureViewController.m in Sources */,
 				697CE30920D256D7008FD9D4 /* ZStoreViewController.m in Sources */,
 				69AD53AB20E3BBDD00B3624E /* ZCommentViewController.m in Sources */,
 				69D97AC020DA5AC5004EBC33 /* ZSettleCenterController.m in Sources */,
@@ -2175,6 +2238,7 @@
 				694B76D320E0D6B100C80912 /* ZOrderDetailGoodsTableViewCell.m in Sources */,
 				69A592CF20C659CD00F1CC4C /* ZMyView.m in Sources */,
 				6988F42020BD579300414C5B /* BJNoDataView.m in Sources */,
+				69AD53C720E473CC00B3624E /* ZAboutUSViewController.m in Sources */,
 				69AD534820E1C8E600B3624E /* TZPhotoPickerController.m in Sources */,
 				694B76B320E0BA0700C80912 /* ZMyOrderListViewModel.m in Sources */,
 				69D97ACD20DB364C004EBC33 /* ZSettleCenterAddressTableViewCell.m in Sources */,
@@ -2340,6 +2404,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = BaseProject/BaseProject.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JA62234AND;
@@ -2363,6 +2428,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = BaseProject/BaseProject.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JA62234AND;

@@ -10,4 +10,6 @@
 
 @interface ZGoodsDetailImageCellViewModel : ZViewModel
 
+@property (nonatomic, copy) NSString *image;
+
 @end

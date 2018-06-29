@@ -113,7 +113,7 @@
         _toobarView = [[ZView alloc] init];
         
         UILabel *settleLabel = [[UILabel alloc] init];
-        settleLabel.textColor = MAIN_LIGHT_GRAY_TEXT_COLOR;
+        settleLabel.textColor = MAIN_TEXT_COLOR;
         settleLabel.font = SYSTEM_FONT(15);
         settleLabel.text = @"结算总计:";
         settleLabel.textAlignment = NSTextAlignmentRight;

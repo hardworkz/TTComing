@@ -124,7 +124,7 @@
         
         WS(weakSelf)
         [_title mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(weakSelf.headView);
+            make.edges.equalTo(weakSelf.headView).insets(UIEdgeInsetsMake(0, MARGIN_15, 0, 0));
         }];
     }
     return _headView;

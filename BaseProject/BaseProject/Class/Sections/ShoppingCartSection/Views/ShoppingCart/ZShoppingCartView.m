@@ -16,6 +16,8 @@
 
 @property (strong, nonatomic) UIView *editingView;
 
+@property (nonatomic, strong) ZView *headView;
+
 @property (nonatomic, strong) ZShoppingCartViewModel *viewModel;
 
 @end
@@ -48,8 +50,9 @@
 - (void)z_setupViews {
     
     [self addSubview:self.mainTableView];
+    self.mainTableView.tableHeaderView = self.headView;
     [self addSubview:self.editingView];
-    //    [self showEitingView:YES];
+    
     [self setNeedsUpdateConstraints];
     [self updateConstraintsIfNeeded];
 }
@@ -88,7 +91,50 @@
     }
     return _mainTableView;
 }
-
+- (ZView *)headView
+{
+    if (!_headView) {
+        _headView = [[ZView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 50)];
+        _headView.backgroundColor = white_color;
+        
+        UIImageView *bgImage = [[UIImageView alloc] initWithImage:[UIImage resizableImage:@"背景外发光"]];
+        [_headView addSubview:bgImage];
+        
+        UIImageView *logoIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"小形象图")];
+        logoIcon.contentMode = UIViewContentModeCenter;
+        [_headView addSubview:logoIcon];
+        
+        UILabel *title = [[UILabel alloc] init];
+        title.text = @"悄悄告诉你！再满20可包邮哦~~~";
+        title.textColor = lightGray_color;
+        title.font = SYSTEM_FONT(15);
+        [_headView addSubview:title];
+        
+        UIImageView *arrow = [[UIImageView alloc] initWithImage:ImageNamed(@"三角箭头")];
+        arrow.contentMode = UIViewContentModeCenter;
+        [_headView addSubview:arrow];
+        
+        WS(weakSelf)
+        [bgImage mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(weakSelf.headView);
+        }];
+        [logoIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.equalTo(MARGIN_10);
+            make.size.equalTo(CGSizeMake(50, 50));
+        }];
+        [title mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(weakSelf.headView);
+            make.leading.equalTo(logoIcon.mas_trailing).offset(MARGIN_10);
+        }];
+        [arrow mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(weakSelf.headView);
+            make.size.equalTo(CGSizeMake(20, 20));
+            make.trailing.equalTo(-MARGIN_5);
+            make.leading.equalTo(title.mas_trailing).offset(MARGIN_10);
+        }];
+    }
+    return _headView;
+}
 - (UIView *)editingView{
     if (!_editingView) {
         _editingView = [[UIView alloc] init];
@@ -165,18 +211,18 @@
 #pragma mark - TableView 占位图
 
 - (UIImage *)xy_noDataViewImage {
-    return [UIImage imageNamed:@"note_list_no_data"];
+    return [UIImage imageNamed:@"购物车提示"];
 }
 
-- (NSString *)xy_noDataViewMessage {
-    return @"啊哦，你的购物车空空如也\n~~~";
-}
-- (NSInteger)xy_noDataViewMessageLineNum {
-    return 2;
-}
-- (UIColor *)xy_noDataViewMessageColor {
-    return MAIN_LIGHT_GRAY_TEXT_COLOR;
-}
+//- (NSString *)xy_noDataViewMessage {
+//    return @"啊哦，你的购物车空空如也\n~~~";
+//}
+//- (NSInteger)xy_noDataViewMessageLineNum {
+//    return 2;
+//}
+//- (UIColor *)xy_noDataViewMessageColor {
+//    return MAIN_LIGHT_GRAY_TEXT_COLOR;
+//}
 
 #pragma mark -- event response
 
@@ -198,6 +244,7 @@
              [self.tableView.footer resetNoMoreData];
              [self.tableView reloadData];
              */
+            [self.mainTableView reloadData];
         }
         
     }else if ([[sender titleForState:UIControlStateNormal] isEqualToString:@"全选"]) {

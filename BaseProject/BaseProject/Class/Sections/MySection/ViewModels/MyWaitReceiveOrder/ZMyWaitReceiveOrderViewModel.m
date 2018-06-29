@@ -18,6 +18,7 @@
         for (int i = 0; i < 10; i++) {
             
             ZMyOrderTableViewCellViewModel *viewModel = [[ZMyOrderTableViewCellViewModel alloc] init];
+            viewModel.image = @"11";
             [reArray addObject:viewModel];
         }
         

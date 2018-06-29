@@ -77,7 +77,7 @@
     [self.devider mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(weakSelf.bgView).offset(45);
         make.trailing.leading.equalTo(0);
-        make.height.equalTo(0.5);
+        make.height.equalTo(1);
     }];
     [self.productIcon mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(weakSelf.devider).offset(0.5 + paddingEdge);
@@ -111,7 +111,7 @@
     [self.deviderTwo mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(weakSelf.productIcon.mas_bottom).offset(paddingEdge);
         make.leading.trailing.equalTo(0);
-        make.height.equalTo(0.5);
+        make.height.equalTo(1);
     }];
     [self.productPriceTotal mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(weakSelf.deviderTwo).offset(paddingEdge + 0.5);
@@ -136,14 +136,17 @@
     
     _viewModel = viewModel;
 
+    self.productIcon.image = ImageNamed(viewModel.image);
     switch (self.orderType) {
         case OrderTypeWaitPay:
-            
+            self.orderState.text = @"待付款";
             break;
         case OrderTypeWaitReceived:
+            self.orderState.text = @"待收货";
             
             break;
         case OrderTypeWaitComment:
+            self.orderState.text = @"待留言";
             
             break;
         default:
@@ -186,7 +189,7 @@
 {
     if (!_devider) {
         _devider = [[UIView alloc] init];
-        _devider.backgroundColor = lightGray_color;
+        _devider.backgroundColor = MAIN_LINE_COLOR;
     }
     return _devider;
 }
@@ -195,7 +198,6 @@
     if (!_productIcon) {
         _productIcon = [[UIImageView alloc] init];
         _productIcon.contentMode = UIViewContentModeScaleAspectFill;
-        _productIcon.backgroundColor = yellow_color;
     }
     return _productIcon;
 }
@@ -249,7 +251,7 @@
 {
     if (!_deviderTwo) {
         _deviderTwo = [[UIView alloc] init];
-        _deviderTwo.backgroundColor = lightGray_color;
+        _deviderTwo.backgroundColor = MAIN_LINE_COLOR;
     }
     return _deviderTwo;
 }

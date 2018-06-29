@@ -101,7 +101,7 @@
         _productDescription = [[UILabel alloc] init];
         _productDescription.textColor = MAIN_TEXT_COLOR;
         _productDescription.font = SYSTEM_FONT(14);
-        _productDescription.backgroundColor = MAIN_LIGHT_LINE_COLOR;
+        _productDescription.backgroundColor = MAIN_LINE_COLOR;
         _productDescription.text = @"整装 6 盒 特别推荐";
     }
     return _productDescription;
@@ -119,9 +119,8 @@
 - (UIImageView *)productIcon
 {
     if (!_productIcon) {
-        _productIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"")];
+        _productIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"11")];
         _productIcon.contentMode = UIViewContentModeScaleAspectFill;
-        _productIcon.backgroundColor = gray_color;
     }
     return _productIcon;
 }

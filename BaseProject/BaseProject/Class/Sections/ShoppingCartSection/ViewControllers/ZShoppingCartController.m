@@ -46,7 +46,7 @@
 - (void)z_layoutNavigation
 {
     [self hideNavigationBar:YES animated:NO];
-    [self customNavigationBarWithTitle:@"购物车" bgColor:white_color backBtn:nil sel:nil rightBtn:nil sel:nil devider:YES];
+    [self customNavigationBarWithTitle:@"购物车" bgColor:white_color backBtn:nil sel:nil rightBtn:nil sel:nil devider:NO];
 }
 #pragma mark - lazyload
 - (ZShoppingCartView *)mainView

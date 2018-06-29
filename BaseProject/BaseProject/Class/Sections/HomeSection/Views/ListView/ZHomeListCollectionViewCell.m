@@ -36,7 +36,7 @@
 
         make.leading.trailing.equalTo(0);
         make.top.equalTo(weakSelf.contentView);
-        make.height.equalTo(150);
+        make.height.equalTo(SCREEN_WIDTH * 0.5 - 5);
     }];
     [self.name mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(weakSelf.productImage.mas_bottom).offset(MARGIN_10);
@@ -52,6 +52,7 @@
         make.top.equalTo(weakSelf.Description.mas_bottom).offset(MARGIN_10);
         make.leading.equalTo(MARGIN_10);
         make.trailing.equalTo(-MARGIN_10);
+        make.bottom.equalTo(weakSelf.contentView).offset(-MARGIN_15);
     }];
     [super updateConstraints];
     
@@ -64,15 +65,26 @@
     
     _viewModel = viewModel;
 
+    self.productImage.image = ImageNamed(viewModel.image);
 }
-
+/**
+ 根绝数据计算cell的高度
+ */
+- (CGFloat)cellHeightForViewModel:(ZHomeListCollectionViewCellViewModel *)viewModel {
+    [self setViewModel:viewModel];
+    [self layoutIfNeeded];
+    
+    CGFloat cellHeight = [self.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    
+    return cellHeight;
+}
 #pragma mark - lazyLoad
 - (UIImageView *)productImage
 {
     if (!_productImage) {
         _productImage = [[UIImageView alloc] init];
-        _productImage.backgroundColor = yellow_color;
-        _productImage.contentMode = UIViewContentModeScaleAspectFill;
+        _productImage.clipsToBounds = YES;
+        _productImage.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _productImage;
 }

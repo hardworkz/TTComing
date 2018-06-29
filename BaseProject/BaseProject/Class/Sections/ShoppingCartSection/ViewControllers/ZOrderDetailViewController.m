@@ -104,6 +104,7 @@
         _deleteOrderButton.titleLabel.font = BOLD_SYSTEM_FONT(15.0);
         [_deleteOrderButton setTitleColor:MAIN_TEXT_COLOR forState:UIControlStateNormal];
         [_deleteOrderButton setTitle:@"删除订单" forState:UIControlStateNormal];
+        _deleteOrderButton.hidden = YES;
         [_toobarView addSubview:_deleteOrderButton];
         
         WS(weakSelf)

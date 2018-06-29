@@ -48,13 +48,13 @@
     [self.productName mas_makeConstraints:^(MASConstraintMaker *make) {
         
      make.leading.equalTo(weakSelf.productIcon.mas_trailing).offset(paddingEdge);
-        make.centerY.equalTo(weakSelf.productIcon).offset(-labelH - 2 * MARGIN_10);
+        make.top.equalTo(weakSelf.productIcon);
         make.trailing.equalTo(-paddingEdge);
     }];
     [self.productDescription mas_makeConstraints:^(MASConstraintMaker *make) {
         
         make.leading.equalTo(weakSelf.productIcon.mas_trailing).offset(paddingEdge);
-        make.top.equalTo(weakSelf.productName).offset(labelH);
+        make.top.equalTo(weakSelf.productName).offset(labelH + MARGIN_5);
 //        make.trailing.equalTo(- paddingEdge);
         make.height.equalTo(30);
     }];
@@ -102,7 +102,7 @@
         _productDescription = [[UILabel alloc] init];
         _productDescription.textColor = MAIN_TEXT_COLOR;
         _productDescription.font = SYSTEM_FONT(14);
-        _productDescription.backgroundColor = MAIN_LIGHT_LINE_COLOR;
+        _productDescription.backgroundColor = MAIN_LINE_COLOR;
         _productDescription.text = @"整装 6 盒 特别推荐...";
     }
     return _productDescription;
@@ -120,9 +120,8 @@
 - (UIImageView *)productIcon
 {
     if (!_productIcon) {
-        _productIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"")];
-        _productIcon.contentMode = UIViewContentModeCenter;
-        _productIcon.backgroundColor = gray_color;
+        _productIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"11")];
+        _productIcon.contentMode = UIViewContentModeScaleAspectFill;
     }
     return _productIcon;
 }

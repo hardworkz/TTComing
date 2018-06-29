@@ -19,12 +19,14 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
+    
     [APPDELEGATE setAppWindows];
+    
+    [NSThread sleepForTimeInterval:2];
     
     [APPDELEGATE setRootViewController];
     
-    [APPDELEGATE setTabbarController];
+//    [APPDELEGATE setTabbarController];
     
     return YES;
 }

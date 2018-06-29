@@ -81,8 +81,5 @@
     
     return _viewModel;
 }
-#pragma mark - action
-- (void)settingClicked {
-    
-}
+
 @end

@@ -40,6 +40,7 @@
     
     _viewModel = viewModel;
     
+    self.contentImageView.image = ImageNamed(viewModel.image);
 }
 
 #pragma mark - lazyLoad
@@ -48,7 +49,6 @@
     if (!_contentImageView) {
         _contentImageView = [[UIImageView alloc] init];
         _contentImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _contentImageView.backgroundColor = randomColor;
     }
     return _contentImageView;
 }

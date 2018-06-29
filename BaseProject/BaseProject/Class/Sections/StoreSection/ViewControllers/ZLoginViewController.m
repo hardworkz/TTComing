@@ -330,10 +330,9 @@
 - (UIImageView *)bgView
 {
     if (!_bgView) {
-        _bgView = [[UIImageView alloc] init];
+        _bgView = [[UIImageView alloc] initWithImage:ImageNamed(@"登录背景")];
         _bgView.frame = self.view.bounds;
         _bgView.contentMode = UIViewContentModeScaleAspectFill;
-        _bgView.backgroundColor = blue_color;
     }
     return _bgView;
 }

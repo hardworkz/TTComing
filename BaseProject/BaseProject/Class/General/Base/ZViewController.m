@@ -231,7 +231,7 @@
     
     if (show) {
         UIView *seperatorLine = [[UIView alloc]initWithFrame:CGRectMake(0, kNavHeight - 0.5, SCREEN_WIDTH, 0.5)];
-        [seperatorLine setBackgroundColor:lightGray_color];
+        [seperatorLine setBackgroundColor:MAIN_LINE_COLOR];
         [navigationBarView addSubview:seperatorLine];
     }
 }

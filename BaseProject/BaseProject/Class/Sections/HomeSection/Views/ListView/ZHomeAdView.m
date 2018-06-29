@@ -74,7 +74,7 @@
     
     if (view == nil) {
         view = [[ZHomeAdContentView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH * 0.6, SCREEN_WIDTH * 0.3)];
-        view.backgroundColor = green_color;
+        view.backgroundColor = clear_color;
     }
     if (self.viewModel.dataArray.count > (index%self.viewModel.dataArray.count)) {
         view.viewModel = self.viewModel.dataArray[index%self.viewModel.dataArray.count];
@@ -112,8 +112,8 @@
 
 -(CATransform3D)carousel:(iCarousel *)carousel itemTransformForOffset:(CGFloat)offset baseTransform:(CATransform3D)transform {
     
-    static CGFloat max_sacle = 1.0f;
-    static CGFloat min_scale = 0.8f;
+    static CGFloat max_sacle = 1.15f;/*控制放大的比例*/
+    static CGFloat min_scale = 0.8f;/*控制缩小的比例*/
     if (offset <= 1 && offset >= -1) {
         float tempScale = offset < 0 ? 1+offset : 1-offset;
         float slope = (max_sacle - min_scale) / 1;
@@ -124,6 +124,6 @@
         transform = CATransform3DScale(transform, min_scale, min_scale, 1);
     }
     
-    return CATransform3DTranslate(transform, offset * carousel.itemWidth * 1.4, 0.0, 0.0);
+    return CATransform3DTranslate(transform, offset * carousel.itemWidth * 1.35/*控制相互之间的间隔*/, 0.0, 0.0);
 }
 @end

@@ -9,6 +9,7 @@
 #import "ZGoodsDetailViewModel.h"
 #import "ZHomeListCollectionViewCellViewModel.h"
 #import "ZGoodsDetailCommentCellViewModel.h"
+#import "ZGoodsDetailImageCellViewModel.h"
 
 @implementation ZGoodsDetailViewModel
 - (void)z_initialize {
@@ -17,16 +18,26 @@
     [self.refreshDataCommand.executionSignals.switchToLatest subscribeNext:^(NSDictionary *dict) {
         
         @strongify(self);
+        NSMutableArray *imageArray = [[NSMutableArray alloc] init];
+        for (int i = 0; i < 1; i++) {
+            
+            ZGoodsDetailImageCellViewModel *viewModel = [[ZGoodsDetailImageCellViewModel alloc] init];
+            viewModel.image = @"15商品详情页";
+            [imageArray addObject:viewModel];
+        }
+        self.imageDataArray = imageArray;
+        
+        
         NSMutableArray *reArray = [[NSMutableArray alloc] init];
         for (int i = 0; i < 8; i++) {
             
             ZHomeListCollectionViewCellViewModel *viewModel = [[ZHomeListCollectionViewCellViewModel alloc] init];
-            viewModel.title = [NSString stringWithFormat:@"index:%d",i];
+            viewModel.image = [NSString stringWithFormat:@"%d",i+5];
             [reArray addObject:viewModel];
         }
         
         self.dataArray = reArray;
-        
+        [self.refreshUI sendNext:nil];
         [self.refreshEndSubject sendNext:@(LSFooterRefresh_HasMoreData)];
         DismissHud();
     }];
@@ -39,7 +50,7 @@
         for (int i = 0; i < 8; i++) {
             
             ZHomeListCollectionViewCellViewModel *viewModel = [[ZHomeListCollectionViewCellViewModel alloc] init];
-            viewModel.title = [NSString stringWithFormat:@"index:%ld",i+self.dataArray.count];
+            viewModel.image = [NSString stringWithFormat:@"%d",i+5];
             [reArray addObject:viewModel];
         }
         
@@ -138,6 +149,24 @@
     }
     
     return _dataArray;
+}
+- (NSArray *)imageDataArray {
+    
+    if (!_imageDataArray) {
+        
+        _imageDataArray = [[NSArray alloc] init];
+    }
+    
+    return _imageDataArray;
+}
+- (NSArray *)commentataArray {
+    
+    if (!_commentataArray) {
+        
+        _commentataArray = [[NSArray alloc] init];
+    }
+    
+    return _commentataArray;
 }
 
 - (RACSubject *)cellClickSubject {

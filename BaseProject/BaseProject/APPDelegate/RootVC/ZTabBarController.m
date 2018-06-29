@@ -36,6 +36,7 @@
     [self customizeTabBarForController:self];
     
     self.rdv_tabBarItem.y = iPhoneX? SCREEN_HEIGHT - IPHONEX_BOTTOM_H : self.rdv_tabBarItem.y;
+//    self.tabBar.backgroundColor = white_color;
 }
 - (void)customizeTabBarForController:(RDVTabBarController *)tabBarController {
     
@@ -66,6 +67,7 @@
         //修改tabberItem的title颜色
         tabberItem.selectedTitleAttributes = tabBarTitleSelectedDic;
         tabberItem.unselectedTitleAttributes = tabBarTitleUnselectedDic;
+        tabberItem.backgroundColor = white_color;
         
         UIImage *selectedimage = [UIImage imageNamed:string([tabBarItemImages objectAtIndex:index], @"-亮")];
         UIImage *unselectedimage = [UIImage imageNamed:string([tabBarItemImages objectAtIndex:index], @"-暗")];

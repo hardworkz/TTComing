@@ -13,4 +13,9 @@
 
 @property (strong, nonatomic) ZHomeListCollectionViewCellViewModel *viewModel;
 
+/**
+ 根绝重复计算cell的高度
+ @return cell的高度
+ */
+- (CGFloat)cellHeightForViewModel:(ZHomeListCollectionViewCellViewModel *)viewModel;
 @end

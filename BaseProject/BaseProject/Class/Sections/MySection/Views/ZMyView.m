@@ -98,8 +98,9 @@
 {
     if (!_bgImageView) {
         _bgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT * 0.2)];
+        _bgImageView.image = ImageNamed(@"个人主页背景");
+        _bgImageView.clipsToBounds = YES;
         _bgImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _bgImageView.backgroundColor = yellow_color;
         
     }
     return _bgImageView;
@@ -109,6 +110,7 @@
     if (!_contentView) {
         _contentView = [[UIImageView alloc] initWithFrame:CGRectMake(5, SCREEN_HEIGHT * 0.2 - 55, SCREEN_WIDTH - 10, SCREEN_HEIGHT * 0.2 + 50)];
         _contentView.image = [UIImage resizableImage:@"头像信息背景外发光"];
+        _contentView.userInteractionEnabled = YES;
         
         CGFloat userIconH = 100;
         

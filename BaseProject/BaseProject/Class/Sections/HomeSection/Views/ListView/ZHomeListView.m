@@ -29,6 +29,8 @@
 
 @property (nonatomic, strong) ZView *dailySpecialView;
 
+@property (nonatomic, strong) ZHomeListCollectionViewCell *tempCell;
+
 @end
 @implementation ZHomeListView
 
@@ -79,12 +81,12 @@
                 
                 [self.mainCollectionView.mj_header endRefreshing];
                 
-                if (self.mainCollectionView.mj_footer == nil) {
-                    self.mainCollectionView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-                        @strongify(self);
-                        [self.viewModel.nextPageCommand execute:nil];
-                    }];
-                }
+//                if (self.mainCollectionView.mj_footer == nil) {
+//                    self.mainCollectionView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+//                        @strongify(self);
+//                        [self.viewModel.nextPageCommand execute:nil];
+//                    }];
+//                }
             }
                 break;
             case LSHeaderRefresh_HasNoMoreData: {
@@ -133,9 +135,9 @@
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
         [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
         //设置每个item的大小
-        flowLayout.itemSize = CGSizeMake(SCREEN_WIDTH * 0.5 - 5,242);
+//        flowLayout.itemSize = CGSizeMake(SCREEN_WIDTH * 0.5 - 5,242);
         //设置headerView的尺寸大小
-        flowLayout.headerReferenceSize = CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT);
+        flowLayout.headerReferenceSize = CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT - 30);
         //设置CollectionView的属性
         _mainCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) collectionViewLayout:flowLayout];
         _mainCollectionView.backgroundColor = white_color;
@@ -154,10 +156,13 @@
             
             [weakSelf.viewModel.refreshDataCommand execute:nil];
         }];
-        _mainCollectionView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-            
-            [weakSelf.viewModel.nextPageCommand execute:nil];
-        }];
+//        _mainCollectionView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+//
+//            [weakSelf.viewModel.nextPageCommand execute:nil];
+//        }];
+        
+        self.tempCell = [[ZHomeListCollectionViewCell alloc] init];
+//        self.tempCell = [_mainCollectionView dequeueReusableCellWithReuseIdentifier:[NSString stringWithUTF8String:object_getClassName([ZHomeListCollectionViewCell class])] forIndexPath:[NSIndexPath indexPathWithIndex:0]];
     }
     return _mainCollectionView;
 }
@@ -222,13 +227,13 @@
         _dailySpecialView = [[ZView alloc] init];
         _dailySpecialView.backgroundColor = white_color;
         
-        UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[UIImage resizableImage:@"外发光背景"]];
+        UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[UIImage resizableImage:@"6381530175663_.pic"]];
         bgImageView.frame = CGRectMake(MARGIN_10, MARGIN_20, SCREEN_WIDTH - MARGIN_10*2, 200 - 30);
         [_dailySpecialView addSubview:bgImageView];
         
-        UIImageView *contentImageView = [[UIImageView alloc] initWithImage:ImageNamed(@"")];
-        contentImageView.frame = CGRectMake(MARGIN_15 + MARGIN_10, - MARGIN_15, 150, 200 - 40);
-        contentImageView.backgroundColor = purple_color;
+        UIImageView *contentImageView = [[UIImageView alloc] initWithImage:ImageNamed(@"4")];
+        contentImageView.frame = CGRectMake(MARGIN_15 + MARGIN_10, - MARGIN_15, 160 * 350/430, 200 - 40);
+        contentImageView.clipsToBounds = YES;
         contentImageView.contentMode = UIViewContentModeScaleAspectFill;
         [bgImageView addSubview:contentImageView];
         
@@ -238,8 +243,9 @@
 - (UIImageView *)bgImageView
 {
     if (!_bgImageView) {
-        _bgImageView = [[UIImageView alloc] initWithImage:ImageNamed(@"")];
+        _bgImageView = [[UIImageView alloc] initWithImage:ImageNamed(@"背景")];
         _bgImageView.backgroundColor = white_color;
+        _bgImageView.clipsToBounds = YES;
         _bgImageView.contentMode = UIViewContentModeScaleAspectFill;
     }
     return _bgImageView;
@@ -270,7 +276,17 @@
 #pragma mark  定义每个UICollectionView的大小
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(SCREEN_WIDTH * 0.5 - 5,242);
+    ZHomeListCollectionViewCellViewModel *viewModel = self.viewModel.dataArray[indexPath.row];
+    if (viewModel.cellHeight == 0) {
+        CGFloat cellHeight = [self.tempCell cellHeightForViewModel:viewModel];
+        
+        // 缓存给model
+        viewModel.cellHeight = cellHeight;
+        
+        return CGSizeMake(SCREEN_WIDTH * 0.5 - 5,cellHeight);
+    } else {
+        return CGSizeMake(SCREEN_WIDTH * 0.5 - 5,viewModel.cellHeight);
+    }
 }
 #pragma mark  定义整个CollectionViewCell与整个View的间距
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
@@ -309,10 +325,10 @@
     self.bgImageView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT * 0.5);
     [headerView addSubview:self.bgImageView];
     
-    self.adView.frame = CGRectMake(0, SCREEN_HEIGHT * 0.35, SCREEN_WIDTH, SCREEN_HEIGHT * 0.25);
+    self.adView.frame = CGRectMake(0, SCREEN_HEIGHT * 0.325, SCREEN_WIDTH, SCREEN_HEIGHT * 0.25);
     [headerView addSubview:self.adView];
     
-    self.buttonView.frame = CGRectMake(0, CGRectGetMaxY(self.adView.frame) - 20, SCREEN_WIDTH, 100);
+    self.buttonView.frame = CGRectMake(0, CGRectGetMaxY(self.adView.frame) - 40, SCREEN_WIDTH, 100);
     [headerView addSubview:self.buttonView];
     
     self.dailySpecialView.frame = CGRectMake(0, CGRectGetMaxY(self.buttonView.frame), SCREEN_WIDTH, 200);

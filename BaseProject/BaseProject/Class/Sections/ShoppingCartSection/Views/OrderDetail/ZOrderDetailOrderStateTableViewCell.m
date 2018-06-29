@@ -140,6 +140,7 @@
         _cancleLabel.font = SYSTEM_FONT(17);
         _cancleLabel.textAlignment = NSTextAlignmentCenter;
         _cancleLabel.text = @"已取消";
+        _cancleLabel.hidden = YES;
     }
     return _cancleLabel;
 }

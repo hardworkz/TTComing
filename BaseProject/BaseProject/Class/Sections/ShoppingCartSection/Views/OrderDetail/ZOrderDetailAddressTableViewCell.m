@@ -58,7 +58,7 @@
         make.leading.equalTo(paddingEdge);
         make.trailing.equalTo(0);
         make.bottom.equalTo(weakSelf.contentView);
-        make.height.equalTo(0.5);
+        make.height.equalTo(1);
     }];
     
     [super updateConstraints];
@@ -122,7 +122,7 @@
 {
     if (!_devider) {
         _devider = [[UIView alloc] init];
-        _devider.backgroundColor = lightGray_color;
+        _devider.backgroundColor = MAIN_LINE_COLOR;
     }
     return _devider;
 }

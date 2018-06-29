@@ -17,10 +17,10 @@
         
         @strongify(self);
         NSMutableArray *reArray = [[NSMutableArray alloc] init];
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 3; i++) {
             
             ZHomeAdContentViewModel *viewModel = [[ZHomeAdContentViewModel alloc] init];
-            viewModel.title = [NSString stringWithFormat:@"index:%d",i];
+            viewModel.image = [NSString stringWithFormat:@"%d",i+1];
             [reArray addObject:viewModel];
         }
         

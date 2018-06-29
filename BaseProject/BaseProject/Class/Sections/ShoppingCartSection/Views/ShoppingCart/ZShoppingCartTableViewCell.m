@@ -97,6 +97,8 @@
     }
     
     _viewModel = viewModel;
+    
+    self.productIcon.image = ImageNamed(viewModel.image);
 }
 
 #pragma mark - lazyLoad
@@ -105,7 +107,6 @@
     if (!_productIcon) {
         _productIcon = [[UIImageView alloc] init];
         _productIcon.contentMode = UIViewContentModeScaleAspectFill;
-        _productIcon.backgroundColor = red_color;
     }
     return _productIcon;
 }
@@ -127,7 +128,7 @@
         _productDescripton = [[UILabel alloc] init];
         _productDescripton.textColor = MAIN_TEXT_COLOR;
         _productDescripton.font = SYSTEM_FONT(14);
-        _productDescripton.backgroundColor = MAIN_LIGHT_LINE_COLOR;
+        _productDescripton.backgroundColor = MAIN_LINE_COLOR;
         _productDescripton.text = @"整装6盒 特别推荐...";
     }
     return _productDescripton;
@@ -194,9 +195,11 @@
                     UIImageView *img=(UIImageView *)v;
                     if (self.selected) {
                         img.image=[UIImage imageNamed:@"选中"];
+                        img.y = 0;
                     }else
                     {
                         img.image=[UIImage imageNamed:@"未选中"];
+                        img.y = 0;
                     }
                 }
             }
@@ -218,6 +221,7 @@
                     UIImageView *img=(UIImageView *)v;
                     if (!self.selected) {
                         img.image=[UIImage imageNamed:@"未选中"];
+                        img.y = 0;
                     }
                 }
             }

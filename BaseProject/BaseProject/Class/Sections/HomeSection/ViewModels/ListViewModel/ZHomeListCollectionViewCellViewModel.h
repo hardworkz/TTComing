@@ -10,6 +10,7 @@
 
 @interface ZHomeListCollectionViewCellViewModel : ZViewModel
 
-@property (strong, nonatomic) NSString *title;
+@property (strong, nonatomic) NSString *image;
 
+@property (assign, nonatomic) CGFloat cellHeight;
 @end

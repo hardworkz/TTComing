@@ -18,6 +18,8 @@
 
 @property (nonatomic, strong) UILabel *content;
 
+@property (nonatomic, strong) UIView *devider;
+
 @end
 @implementation ZGoodsDetailCommentCell
 - (void)z_setupViews {
@@ -26,6 +28,7 @@
     [self.contentView addSubview:self.name];
     [self.contentView addSubview:self.time];
     [self.contentView addSubview:self.content];
+    [self.contentView addSubview:self.devider];
     
     [self setNeedsUpdateConstraints];
     [self updateConstraintsIfNeeded];
@@ -53,6 +56,12 @@
         make.leading.equalTo(weakSelf.name);
         make.trailing.equalTo(-MARGIN_10);
         make.top.equalTo(weakSelf.name.mas_bottom).offset(MARGIN_15);
+    }];
+    [self.devider mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(weakSelf.userIcon.mas_leading);
+        make.trailing.equalTo(weakSelf.time.mas_trailing);
+        make.bottom.equalTo(weakSelf.contentView);
+        make.height.equalTo(1);
     }];
     
     [super updateConstraints];
@@ -111,5 +120,13 @@
         _content.text = @"哈哈哈，隐私性超好！";
     }
     return _content;
+}
+- (UIView *)devider
+{
+    if (!_devider) {
+        _devider = [[UIView alloc] init];
+        _devider.backgroundColor = MAIN_LINE_COLOR;
+    }
+    return _devider;
 }
 @end

@@ -18,10 +18,10 @@
         
         @strongify(self);
         NSMutableArray *reArray = [[NSMutableArray alloc] init];
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 10; i++) {
             
             ZHomeListCollectionViewCellViewModel *viewModel = [[ZHomeListCollectionViewCellViewModel alloc] init];
-            viewModel.title = [NSString stringWithFormat:@"index:%d",i];
+            viewModel.image = [NSString stringWithFormat:@"%d",i+5];
             [reArray addObject:viewModel];
         }
         
@@ -39,7 +39,7 @@
         for (int i = 0; i < 8; i++) {
             
             ZHomeListCollectionViewCellViewModel *viewModel = [[ZHomeListCollectionViewCellViewModel alloc] init];
-            viewModel.title = [NSString stringWithFormat:@"index:%ld",i+self.dataArray.count];
+            viewModel.image = [NSString stringWithFormat:@"index:%ld",i+self.dataArray.count];
             [reArray addObject:viewModel];
         }
         

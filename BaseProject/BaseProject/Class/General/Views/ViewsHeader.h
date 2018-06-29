@@ -16,5 +16,6 @@
 #import "CustomBottomAlertContentView.h"
 #import "DQAlertView.h"
 #import "TZImagePickerController.h"
+#import "IWTextView.h"
 
 #endif /* ViewsHeader_h */

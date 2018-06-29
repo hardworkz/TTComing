@@ -40,7 +40,7 @@
         make.centerY.equalTo(weakSelf.contentView);
         make.leading.equalTo(10);
         make.trailing.equalTo(-10);
-        make.size.equalTo(CGSizeMake(SCREEN_WIDTH - 20, 15 + 20 + 30 + 75));
+        make.size.equalTo(CGSizeMake(SCREEN_WIDTH - 20, 15 + 20 + 30 + 75 + MARGIN_15));
     }];
     [self.payBtnView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(weakSelf);
@@ -176,7 +176,7 @@
         [_payView addSubview:wechatPaySelectedIcon];
         
         UIView *devider = [[UIView alloc] init];
-        devider.backgroundColor = MAIN_LIGHT_LINE_COLOR;
+        devider.backgroundColor = MAIN_LINE_COLOR;
         [_payView addSubview:devider];
         
         UIImageView *alipayIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"支付宝")];
@@ -230,7 +230,7 @@
         }];
         [alipayIcon mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo(MARGIN_20);
-            make.top.equalTo(devider).offset(15);
+            make.top.equalTo(devider).offset(MARGIN_20);
             make.size.equalTo(CGSizeMake(20, 20));
         }];
         [alipayLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -240,7 +240,7 @@
         }];
         [alipaySelectedIcon mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(alipayIcon);
-            make.trailing.equalTo(-MARGIN_20);
+            make.trailing.equalTo(-MARGIN_20-MARGIN_5);
             make.size.equalTo(CGSizeMake(20, 20));
         }];
         

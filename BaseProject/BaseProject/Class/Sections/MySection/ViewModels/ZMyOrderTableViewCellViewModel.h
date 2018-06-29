@@ -10,6 +10,7 @@
 
 @interface ZMyOrderTableViewCellViewModel : ZViewModel
 
+@property (nonatomic, strong) NSString *image;
 
 @property (assign, nonatomic) CGFloat cellHeight;
 

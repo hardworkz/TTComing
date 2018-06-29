@@ -62,9 +62,7 @@
 //app浅灰色字体颜色
 #define MAIN_LIGHT_GRAY_TEXT_COLOR UIColorFromRGB(0xCBCBCB)
 //app线颜色-----------------------
-#define MAIN_LINE_COLOR COLOR(135, 135, 135, 1)
-//app浅色线颜色
-#define MAIN_LIGHT_LINE_COLOR UIColorFromRGB(0xCBCBCB)
+#define MAIN_LINE_COLOR UIColorFromRGB(0xe9e9e9)
 
 #define WS(weakSelf)  __weak __typeof(&*self)weakSelf = self;
 

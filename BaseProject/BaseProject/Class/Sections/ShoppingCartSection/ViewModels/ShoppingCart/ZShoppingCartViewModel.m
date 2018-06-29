@@ -17,10 +17,11 @@
         
         @strongify(self);
         NSMutableArray *reArray = [[NSMutableArray alloc] init];
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 3; i++) {
 
             ZShoppingCartTableViewCellViewModel *viewModel = [[ZShoppingCartTableViewCellViewModel alloc] init];
             viewModel.title = [NSString stringWithFormat:@"index:%d",i];
+            viewModel.image = @"11";
             [reArray addObject:viewModel];
         }
         

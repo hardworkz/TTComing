@@ -19,6 +19,8 @@
 @property (nonatomic, strong) RACCommand *nextPageCommand;
 
 @property (nonatomic, strong) NSArray *dataArray;
+@property (nonatomic, strong) NSArray *imageDataArray;
+@property (nonatomic, strong) NSArray *commentataArray;
 
 @property (nonatomic, strong) RACSubject *cellClickSubject;
 
