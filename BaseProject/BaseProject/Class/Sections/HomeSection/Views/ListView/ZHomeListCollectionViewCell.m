@@ -17,6 +17,11 @@
 @property (nonatomic, strong) UILabel *Description;
 
 @property (nonatomic, strong) UILabel *price;
+
+/**
+ 支付倒计时
+ */
+@property (nonatomic, strong) ZPayCountDown *payCountDown;
 @end
 @implementation ZHomeListCollectionViewCell
 - (void)z_setupViews {
@@ -95,7 +100,12 @@
         _name = [[UILabel alloc] init];
         _name.textColor = MAIN_TEXT_COLOR;
         _name.font = SYSTEM_FONT(15);
-        _name.text = @"拦精灵";
+        _payCountDown = [[ZPayCountDown alloc] init];
+        WS(weakSelf)
+        [_payCountDown countDownWithCreateTime:nil endTime:@"2018-07-03 09:00:00" completeBlock:^(NSInteger second) {
+            weakSelf.name.text = [NSString stringWithFormat:@"日期格式：%ld:%ld",second/60,second%60];
+        }];
+//        _name.text = @"拦精灵";
     }
     return _name;
 }
@@ -120,5 +130,9 @@
         _price.text = @"¥128";
     }
     return _price;
+}
+- (void)dealloc
+{
+    [_payCountDown destoryTimer];
 }
 @end

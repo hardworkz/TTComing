@@ -35,8 +35,8 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
     
 }
 // 点击通知进入应用iOS10+
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler
-{
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler
+API_AVAILABLE(ios(10.0)) API_AVAILABLE(ios(10.0)){
     
 }
 @end

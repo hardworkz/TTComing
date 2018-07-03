@@ -30,7 +30,7 @@
     
     WS(weakSelf)
     [self.mainView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(weakSelf.view).insets(UIEdgeInsetsMake(0, 0, iPhoneX?IPHONEX_BOTTOM_BACK_BAR_H:0, 0));
+        make.edges.equalTo(weakSelf.view);
     }];
     [self.searchView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(weakSelf.view);

@@ -7,31 +7,83 @@
 //
 
 #import "ZAboutUSViewController.h"
+#import "ZAboutUSView.h"
+#import "ZAboutUSViewModel.h"
 
 @interface ZAboutUSViewController ()
+
+@property (nonatomic, strong) ZAboutUSView *mainView;
+
+@property (nonatomic, strong) ZAboutUSViewModel *viewModel;
 
 @end
 
 @implementation ZAboutUSViewController
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
+#pragma mark - system
+- (void)updateViewConstraints {
+    WS(weakSelf)
+    [self.mainView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(weakSelf.view).insets(UIEdgeInsetsMake(kNavHeight, 0, 0, 0));
+    }];
+    [super updateViewConstraints];
+}
+#pragma mark - private
+- (void)z_addSubviews
+{
+    [self.view addSubview:self.mainView];
+}
+- (void)z_bindViewModel
+{
+    @weakify(self)
+    [self.viewModel.cellClickSubject subscribeNext:^(id  _Nullable x) {
+        @strongify(self);
+        //点击cell操作
+        switch ([x integerValue]) {
+            case 0:{
+            }
+                break;
+            case 1:{
+                
+            }
+                break;
+            case 2:{
+            }
+                
+                break;
+            case 3:
+                
+                break;
+            case 4:
+                
+                break;
+                
+            default:
+                break;
+        }
+    }];
+}
+- (void)z_layoutNavigation
+{
+    [self hideNavigationBar:YES animated:NO];
+    [self customNavigationBarWithTitle:@"个人信息" bgColor:white_color backBtn:@"" sel:nil rightBtn:nil sel:nil devider:NO];
+}
+#pragma mark - lazyload
+- (ZAboutUSView *)mainView
+{
+    if (!_mainView) {
+        _mainView = [[ZAboutUSView alloc] initWithViewModel:self.viewModel];
+    }
+    return _mainView;
+}
+- (ZAboutUSViewModel *)viewModel {
+    
+    if (!_viewModel) {
+        
+        _viewModel = [[ZAboutUSViewModel alloc] init];
+    }
+    
+    return _viewModel;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

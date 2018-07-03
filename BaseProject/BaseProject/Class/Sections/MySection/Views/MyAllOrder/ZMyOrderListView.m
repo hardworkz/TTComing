@@ -44,6 +44,7 @@
     
     [self setNeedsUpdateConstraints];
     [self updateConstraintsIfNeeded];
+    
 }
 - (void)z_bindViewModel
 {

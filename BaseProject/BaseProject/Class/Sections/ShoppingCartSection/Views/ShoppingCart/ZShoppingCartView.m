@@ -35,13 +35,13 @@
     WS(weakSelf)
     [self.mainTableView mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        make.edges.equalTo(weakSelf).insets(UIEdgeInsetsMake(0, 0, kTabBarHeight, 0));
+        make.edges.equalTo(weakSelf).insets(UIEdgeInsetsMake(0, 0, 50, 0));
     }];
     
     [self.editingView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(weakSelf);
-        make.height.equalTo(@45);
-        make.bottom.equalTo(weakSelf).offset(45 - kTabBarHeight);
+        make.height.equalTo(50);
+        make.bottom.equalTo(weakSelf);
     }];
     [super updateConstraints];
 }
@@ -138,28 +138,61 @@
 - (UIView *)editingView{
     if (!_editingView) {
         _editingView = [[UIView alloc] init];
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.backgroundColor = [UIColor redColor];
-        [button setTitle:@"删除" forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(p__buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [_editingView addSubview:button];
-        WS(weakSelf)
-        [button mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.right.bottom.equalTo(weakSelf.editingView);
-            make.width.equalTo(weakSelf.editingView).multipliedBy(0.5);
+        
+        UIView *devider = [[UIView alloc] init];
+        devider.backgroundColor = MAIN_LINE_COLOR;
+        [_editingView addSubview:devider];
+        [devider mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.trailing.equalTo(0);
+            make.top.equalTo(0);
+            make.height.equalTo(1);
         }];
         
-        button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.backgroundColor = [UIColor darkGrayColor];
-        [button setTitle:@"全选" forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(p__buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [_editingView addSubview:button];
-        [button mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.left.bottom.equalTo(weakSelf.editingView);
-            make.width.equalTo(weakSelf.editingView).multipliedBy(0.5);
+        UIButton *settlel = [UIButton buttonWithType:UIButtonTypeCustom];
+        settlel.backgroundColor = MAIN_COLOR;
+        [settlel setTitle:@"结算(0)" forState:UIControlStateNormal];
+        settlel.titleLabel.font = SYSTEM_FONT(15.0);
+        [settlel setTitleColor:MAIN_TEXT_COLOR forState:UIControlStateNormal];
+        [settlel addTarget:self action:@selector(p__buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+        settlel.layer.cornerRadius = 17.5;
+        [_editingView addSubview:settlel];
+        WS(weakSelf)
+        [settlel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.trailing.equalTo(-MARGIN_15);
+            make.centerY.equalTo(weakSelf.editingView);
+            make.height.equalTo(35);
+            make.width.equalTo(100);
         }];
+        
+        
+        UIButton *selectAll = [UIButton buttonWithType:UIButtonTypeCustom];
+        [selectAll setTitle:@"全选" forState:UIControlStateNormal];
+        selectAll.titleLabel.font = SYSTEM_FONT(14.0);
+        selectAll.titleEdgeInsets = UIEdgeInsetsMake(0, MARGIN_10, 0, 0);
+        [selectAll setImage:ImageNamed(@"未选中") forState:UIControlStateNormal];
+        [selectAll setImage:ImageNamed(@"选中") forState:UIControlStateSelected];
+        [selectAll setTitleColor:MAIN_TEXT_COLOR forState:UIControlStateNormal];
+        [selectAll addTarget:self action:@selector(p__buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_editingView addSubview:selectAll];
+        [selectAll mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.equalTo(0);
+            make.centerY.equalTo(weakSelf.editingView);
+            make.height.equalTo(50);
+            make.width.equalTo(100);
+        }];
+        
+        UILabel *price = [[UILabel alloc] init];
+        price.text = @"¥128";
+        price.textColor = MAIN_TEXT_COLOR;
+        price.font = SYSTEM_FONT(15.0);
+        price.textAlignment = NSTextAlignmentRight;
+        [_editingView addSubview:price];
+        [price mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.trailing.equalTo(settlel.mas_leading).offset(-MARGIN_15);
+            make.leading.equalTo(selectAll.mas_trailing).offset(MARGIN_15);
+            make.centerY.equalTo(weakSelf.editingView);
+        }];
+                                 
     }
     return _editingView;
 }
@@ -247,13 +280,13 @@
             [self.mainTableView reloadData];
         }
         
-    }else if ([[sender titleForState:UIControlStateNormal] isEqualToString:@"全选"]) {
+    }else if (sender.selected == NO) {
         [self.viewModel.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             [self.mainTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
         }];
         
-        [sender setTitle:@"全不选" forState:UIControlStateNormal];
-    }else if ([[sender titleForState:UIControlStateNormal] isEqualToString:@"全不选"]){
+        sender.selected = YES;
+    }else if (sender.selected == YES){
         [self.mainTableView reloadData];
         /** 遍历反选
          [[self.tableView indexPathsForSelectedRows] enumerateObjectsUsingBlock:^(NSIndexPath * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -261,8 +294,7 @@
          }];
          */
         
-        [sender setTitle:@"全选" forState:UIControlStateNormal];
-        
+        sender.selected = NO;
     }
 }
 - (void)showEitingView:(BOOL)isShow{

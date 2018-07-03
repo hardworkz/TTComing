@@ -24,6 +24,8 @@
 
 @property (nonatomic, strong) RACSubject *cellClickSubject;
 
+@property (nonatomic, strong) RACSubject *imageCellClickSubject;
+
 @property (nonatomic, strong) RACSubject *alertClickSubject;
 
 @property (nonatomic, strong) RACSubject *moreClickSubject;

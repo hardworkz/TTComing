@@ -80,7 +80,7 @@
     
     if (!_mainTableView) {
         
-        _mainTableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStyleGrouped];
+        _mainTableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
         _mainTableView.backgroundColor = white_color;
@@ -212,6 +212,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    [self.viewModel.cellClickSubject sendNext:nil];
+    [self.viewModel.cellClickSubject sendNext:[NSNumber numberWithInteger:indexPath.row]];
 }
 @end

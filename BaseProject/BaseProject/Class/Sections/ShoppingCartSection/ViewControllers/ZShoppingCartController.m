@@ -24,7 +24,7 @@
 - (void)updateViewConstraints {
     WS(weakSelf)
     [self.mainView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(weakSelf.view).insets(UIEdgeInsetsMake(kNavHeight, 0, 0, 0));
+        make.edges.equalTo(weakSelf.view);
     }];
     [super updateViewConstraints];
 }

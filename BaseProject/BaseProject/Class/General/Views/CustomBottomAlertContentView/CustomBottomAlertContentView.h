@@ -21,6 +21,10 @@
  *  遮盖
  */
 @property (nonatomic , weak) UIButton *cover;
+/**
+ *  遮盖点击回调block
+ */
+@property (copy, nonatomic) void (^coverClickBlock)(NSInteger status);
 
 - (void)show;
 - (void)coverClick;

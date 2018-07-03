@@ -39,12 +39,16 @@
 }
 - (void)coverClick
 {
+    if (self.coverClickBlock) {
+        self.coverClickBlock(0);
+    }
     [UIView animateWithDuration:0.25 animations:^{
         self.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, self.alertHeight);
         self.cover.alpha = 0;
     } completion:^(BOOL finished) {
         [self removeFromSuperview];
         [self.cover removeFromSuperview];
+        
     }];
 }
 @end

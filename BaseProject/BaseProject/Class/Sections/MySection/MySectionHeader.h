@@ -15,6 +15,13 @@
 #import "ZMyWaitPayViewController.h"
 #import "ZMyWaitReceiveViewController.h"
 #import "ZMyWaitCommentViewController.h"
+#import "ZAddAddressViewController.h"
+#import "ZSetPasswordViewController.h"
+#import "ZSetNicknameViewController.h"
+#import "ZSetSignatureViewController.h"
+#import "ZAboutUSViewController.h"
+#import "ZUserCenterViewController.h"
+#import "ZFeedBackViewController.h"
 
 #import "ZMyOrderTableViewCell.h"
 #import "ZMyOrderTableViewCellViewModel.h"

@@ -14,9 +14,13 @@
 #import "ZHomeListCollectionViewCellViewModel.h"
 #import "ZGoodsDetailImageCell.h"
 #import "ZGoodsDetailImageCellViewModel.h"
+#import "YBImageBrowser.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
-@interface ZGoodsDetailView ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate>
-
+@interface ZGoodsDetailView ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,YBImageBrowserDelegate,YBImageBrowserDataSource>
+{
+    NSIndexPath *currentTouchIndexPath;
+}
 @property (strong, nonatomic) UICollectionView *mainCollectionView;
 
 @property (strong, nonatomic) UICollectionView *imageCollectionView;
@@ -497,7 +501,7 @@
     if ([collectionView isEqual:self.mainCollectionView]) {
         return self.viewModel.dataArray.count;
     }else if ([collectionView isEqual:self.imageCollectionView]) {
-        return self.viewModel.dataArray.count;
+        return self.viewModel.imageDataArray.count;
     }else{
         return self.viewModel.dataArray.count;
     }
@@ -584,7 +588,8 @@
     if ([collectionView isEqual:self.mainCollectionView]) {
         [self.viewModel.cellClickSubject sendNext:nil];
     }else if ([collectionView isEqual:self.imageCollectionView]) {
-        [self.viewModel.cellClickSubject sendNext:nil];
+        currentTouchIndexPath = indexPath;
+        [self showWithTouchIndexPath:indexPath];
     }else{
     }
 }
@@ -638,6 +643,47 @@
 //    targetContentOffset->x = pageNum*pageWidth;
 //
 //    self.currentIndex = pageNum;
+    
+}
+
+#pragma mark YBImageBrowser 图片浏览器
+
+- (void)showWithTouchIndexPath:(NSIndexPath *)indexPath {
+    
+    //创建图片浏览器（注意：更多功能请看 YBImageBrowser.h 文件或者 github readme）
+    YBImageBrowser *browser = [YBImageBrowser new];
+    browser.dataSource = self;
+    browser.currentIndex = indexPath.row;
+    
+    //展示
+    [browser show];
+}
+
+//YBImageBrowserDataSource 代理实现赋值数据
+- (NSInteger)numberInYBImageBrowser:(YBImageBrowser *)imageBrowser {
+    return self.viewModel.imageDataArray.count;
+}
+- (YBImageBrowserModel *)yBImageBrowser:(YBImageBrowser *)imageBrowser modelForCellAtIndex:(NSInteger)index {
+    YBImageBrowserModel *model = [YBImageBrowserModel new];
+    model.url = [NSURL URLWithString:@"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1524118914981&di=7fa3504d8767ab709c4fb519ad67cf09&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201410%2F05%2F20141005221124_awAhx.jpeg"];//网络图片
+//    ZGoodsDetailImageCellViewModel *viewModel = self.viewModel.imageDataArray[index];
+//    NSString *filePath = [[NSBundle mainBundle] pathForResource:viewModel.image ofType:@"png"];
+//    [model setImageWithFileName:filePath fileType:@"png"];//本地图片
+    model.sourceImageView = [self getImageViewOfCellByIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    return model;
+}
+- (UIImageView *)imageViewOfTouchForImageBrowser:(YBImageBrowser *)imageBrowser {
+    return [self getImageViewOfCellByIndexPath:currentTouchIndexPath];
+}
+// YBImageBrowser-tool
+- (UIImageView *)getImageViewOfCellByIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [self.imageCollectionView cellForItemAtIndexPath:indexPath];
+    if (!cell) return nil;
+//    UIView *subView = [cell.contentView.subviews firstObject];
+    return [cell.contentView.subviews firstObject];
+}
+- (void)yBImageBrowser:(YBImageBrowser *)imageBrowser didScrollToIndex:(NSInteger)index
+{
     
 }
 @end

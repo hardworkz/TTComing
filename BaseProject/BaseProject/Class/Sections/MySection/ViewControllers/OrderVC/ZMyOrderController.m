@@ -20,13 +20,15 @@
     [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
+    
+    if (self.index != 0) {
+        [self setSelectIndex:(int)self.index];
+    }
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self setNavigationBarView];
-    
-    [self setFd_interactivePopDisabled:YES];
     
 }
 - (void)setNavigationBarView {

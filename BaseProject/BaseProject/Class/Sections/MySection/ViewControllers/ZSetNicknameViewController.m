@@ -41,7 +41,7 @@
 - (void)z_layoutNavigation
 {
     [self hideNavigationBar:YES animated:NO];
-    [self customNavigationBarWithTitle:@"icon_back_black" bgColor:white_color backBtn:@"" sel:nil rightBtn:nil sel:nil devider:NO];
+    [self customNavigationBarWithTitle:@"我的昵称" bgColor:white_color backBtn:@"icon_back_black" sel:nil rightBtn:nil sel:nil devider:NO];
 }
 - (ZView *)nicknameView
 {

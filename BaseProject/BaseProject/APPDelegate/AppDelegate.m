@@ -26,7 +26,7 @@
     
     [APPDELEGATE setRootViewController];
     
-//    [APPDELEGATE setTabbarController];
+    [APPDELEGATE setTabbarController];
     
     return YES;
 }

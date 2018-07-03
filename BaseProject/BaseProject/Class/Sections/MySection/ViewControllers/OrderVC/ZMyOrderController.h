@@ -10,4 +10,6 @@
 
 @interface ZMyOrderController : WMPageController
 
+@property (assign, nonatomic) NSInteger index;
+
 @end

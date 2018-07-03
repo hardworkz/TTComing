@@ -48,13 +48,15 @@
 #import "InterfaceConfigManager.h"//自定义网络请求baseUrl
 #import "DataCache.h"//数据缓存
 #import "Single.h"//创建单例宏文件
+#import "ZPayCountDown.h"//支付倒计时，一般倒计时
 
 #import <Reachability/Reachability.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <SDWebImage/UIButton+WebCache.h>
 #import "AvoidCrash.h"//对服务器数据的空值进行处理，防止数组，字典，字符串等空值引起的crash
 #import "HMSegmentedControl.h"
-#import "RDVTabBarController.h"
+#import <LCTabBarController/LCTabBarController.h>//应用主tabbarVC
+#import <LCTabBarController/LCTabBarCONST.h>
 #import "WMPageController.h"//新闻类型分页控制器
 #import <MJRefresh/MJRefresh.h>
 #import <SVProgressHUD/SVProgressHUD.h>

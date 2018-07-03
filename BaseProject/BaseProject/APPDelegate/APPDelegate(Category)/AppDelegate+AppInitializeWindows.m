@@ -7,8 +7,7 @@
 //
 
 #import "AppDelegate+AppInitializeWindows.h"
-#import "RDVTabBarController.h"
-#import "ZTabBarController.h"
+#import "ZRootTabBarController.h"
 
 @implementation AppDelegate (AppInitializeWindows)
 - (void)setAppWindows
@@ -48,7 +47,7 @@
 }
 - (void)setTabbarController
 {
-    [[[UIApplication sharedApplication].delegate window] setRootViewController:[[ZTabBarController alloc] init]/*需要切换的控制器*/];
+    [[[UIApplication sharedApplication].delegate window] setRootViewController:[[ZRootTabBarController alloc] init]/*需要切换的控制器*/];
     
     //切换根控制器动画方案二
     CATransition *animation = [CATransition animation];

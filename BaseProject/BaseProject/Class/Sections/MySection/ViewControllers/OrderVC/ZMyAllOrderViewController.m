@@ -32,7 +32,7 @@
 - (void)z_addSubviews
 {
     [self.view addSubview:self.mainView];
-    [self rightSwipeWithView:self.mainView];
+//    [self rightSwipeWithView:self.mainView];
 }
 - (void)z_bindViewModel
 {

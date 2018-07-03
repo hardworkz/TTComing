@@ -178,6 +178,15 @@
     
     return _cellClickSubject;
 }
+- (RACSubject *)imageCellClickSubject {
+    
+    if (!_imageCellClickSubject) {
+        
+        _imageCellClickSubject = [RACSubject subject];
+    }
+    
+    return _imageCellClickSubject;
+}
 - (RACSubject *)alertClickSubject {
     
     if (!_alertClickSubject) {
