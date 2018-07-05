@@ -357,6 +357,30 @@
         [self->_imageCollectionView reloadData];
     }];
 }
+#pragma mark - UIImagePickerController
+- (UIImagePickerController *)imagePickerVc {
+    if (_imagePickerVc == nil) {
+        _imagePickerVc = [[UIImagePickerController alloc] init];
+        _imagePickerVc.delegate = self;
+        // set appearance / 改变相册选择页的导航栏外观
+        if (iOS7Later) {
+            _imagePickerVc.navigationBar.barTintColor = self.navigationController.navigationBar.barTintColor;
+        }
+        _imagePickerVc.navigationBar.tintColor = self.navigationController.navigationBar.tintColor;
+        UIBarButtonItem *tzBarItem, *BarItem;
+        if (iOS9Later) {
+            tzBarItem = [UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[TZImagePickerController class]]];
+            BarItem = [UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[UIImagePickerController class]]];
+        } else {
+            tzBarItem = [UIBarButtonItem appearanceWhenContainedIn:[TZImagePickerController class], nil];
+            BarItem = [UIBarButtonItem appearanceWhenContainedIn:[UIImagePickerController class], nil];
+        }
+        NSDictionary *titleTextAttributes = [tzBarItem titleTextAttributesForState:UIControlStateNormal];
+        [BarItem setTitleTextAttributes:titleTextAttributes forState:UIControlStateNormal];
+        
+    }
+    return _imagePickerVc;
+}
 #pragma mark - TZImagePickerController
 
 - (void)pushTZImagePickerController {

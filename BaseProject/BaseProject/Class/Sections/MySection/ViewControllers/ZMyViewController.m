@@ -66,8 +66,11 @@
                 
                 break;
             case 4:{
-                ZAboutUSViewController *aboutUSVC = [[ZAboutUSViewController alloc] init];
-                [self.navigationController pushViewController:aboutUSVC animated:YES];
+//                ZAboutUSViewController *aboutUSVC = [[ZAboutUSViewController alloc] init];
+//                [self.navigationController pushViewController:aboutUSVC animated:YES];
+                
+                ZSetPasswordViewController *pwdVC = [[ZSetPasswordViewController alloc] init];
+                [self.navigationController pushViewController:pwdVC animated:YES];
             }
                 
                 break;

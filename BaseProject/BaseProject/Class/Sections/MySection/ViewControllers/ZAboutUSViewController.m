@@ -65,7 +65,7 @@
 - (void)z_layoutNavigation
 {
     [self hideNavigationBar:YES animated:NO];
-    [self customNavigationBarWithTitle:@"个人信息" bgColor:white_color backBtn:@"" sel:nil rightBtn:nil sel:nil devider:NO];
+    [self customNavigationBarWithTitle:@"个人信息" bgColor:white_color backBtn:@"icon_back_black" sel:nil rightBtn:nil sel:nil devider:NO];
 }
 #pragma mark - lazyload
 - (ZAboutUSView *)mainView

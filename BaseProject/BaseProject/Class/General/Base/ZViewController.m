@@ -78,7 +78,7 @@
         return self.statusBarStyle;
     } else {
         
-        return UIStatusBarStyleLightContent;
+        return UIStatusBarStyleDefault;
     }
 }
 
