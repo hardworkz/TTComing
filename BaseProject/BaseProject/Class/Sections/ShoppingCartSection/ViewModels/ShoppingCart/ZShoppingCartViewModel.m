@@ -91,4 +91,13 @@
     
     return _cellClickSubject;
 }
+- (RACSubject *)deleteClickSubject {
+    
+    if (!_deleteClickSubject) {
+        
+        _deleteClickSubject = [RACSubject subject];
+    }
+    
+    return _deleteClickSubject;
+}
 @end

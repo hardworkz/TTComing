@@ -7,6 +7,7 @@
 //
 
 #import "ZViewController.h"
+#import "JZNavigationExtension.h"
 
 @interface ZViewController ()
 
@@ -67,8 +68,9 @@
     }
     
     self.view.backgroundColor = white_color;
+    
+    self.navigationItem.titleView = [UIView new];
 }
-
 #pragma mark - system
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -150,7 +152,6 @@
 
 - (void)hideNavigationBar:(BOOL)isHide
                  animated:(BOOL)animated{
-    
     if (animated) {
         [UIView animateWithDuration:0.25 animations:^{
             self.navigationController.navigationBarHidden=isHide;
@@ -158,6 +159,12 @@
     }
     else{
         self.navigationController.navigationBarHidden=isHide;
+    }
+    //处理手势返回时系统导航栏突然显示隐藏，一闪而过的问题
+    if (isHide) {
+        self.jz_navigationBarBackgroundAlpha = 0;
+    }else{
+        self.jz_navigationBarBackgroundAlpha = 1;
     }
 }
 
@@ -225,6 +232,48 @@
         rightBtn.frame = CGRectMake(SCREEN_WIDTH - kTopBarHeight, kStatusBarHeight, kTopBarHeight, kTopBarHeight);
         rightBtn.imageView.contentMode = UIViewContentModeCenter;
         [rightBtn setImage:[UIImage imageNamed:rightString] forState:UIControlStateNormal];
+        [rightBtn addTarget:self action:rightAction forControlEvents:UIControlEventTouchUpInside];
+        [navigationBarView addSubview:rightBtn];
+    }
+    
+    if (show) {
+        UIView *seperatorLine = [[UIView alloc]initWithFrame:CGRectMake(0, kNavHeight - 0.5, SCREEN_WIDTH, 0.5)];
+        [seperatorLine setBackgroundColor:MAIN_LINE_COLOR];
+        [navigationBarView addSubview:seperatorLine];
+    }
+}
+- (void)customNavigationBarWithTitle:(NSString *)title bgColor:(UIColor *)color backBtn:(NSString *)string sel:(SEL)backSel rightBtnTitle:(NSString *)rightTitle sel:(SEL)rightAction devider:(BOOL)show
+{
+    UIView *navigationBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, kNavHeight)];
+    navigationBarView.backgroundColor = color;
+    [self.view addSubview:navigationBarView];
+    
+    if (string) {
+        UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        leftBtn.frame = CGRectMake(0, kStatusBarHeight, kTopBarHeight, kTopBarHeight);
+        //    [leftBtn setImageEdgeInsets:UIEdgeInsetsMake(5, 0, 5, 10)];
+        leftBtn.imageView.contentMode = UIViewContentModeCenter;
+        [leftBtn setImage:[UIImage imageNamed:string] forState:UIControlStateNormal];
+        [leftBtn addTarget:self action:backSel?backSel:@selector(backClicked) forControlEvents:UIControlEventTouchUpInside];
+        [navigationBarView addSubview:leftBtn];
+    }
+    
+    if (title) {
+        UILabel *topLab = [[UILabel alloc]initWithFrame:CGRectMake(kTopBarHeight, kStatusBarHeight, SCREEN_WIDTH - 2 * kTopBarHeight, kTopBarHeight)];
+        topLab.textColor = [UIColor blackColor];
+        topLab.font = [UIFont boldSystemFontOfSize:17.0f];
+        topLab.text = title;
+        topLab.textAlignment = NSTextAlignmentCenter;
+        [navigationBarView addSubview:topLab];
+    }
+    
+    if (rightTitle) {
+        UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        rightBtn.frame = CGRectMake(SCREEN_WIDTH - kTopBarHeight - MARGIN_10, kStatusBarHeight, kTopBarHeight, kTopBarHeight);
+        rightBtn.imageView.contentMode = UIViewContentModeCenter;
+        [rightBtn setTitle:rightTitle forState:UIControlStateNormal];
+        [rightBtn setTitleColor:MAIN_TEXT_COLOR forState:UIControlStateNormal];
+        rightBtn.titleLabel.font = SYSTEM_FONT(15);
         [rightBtn addTarget:self action:rightAction forControlEvents:UIControlEventTouchUpInside];
         [navigationBarView addSubview:rightBtn];
     }

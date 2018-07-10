@@ -46,7 +46,7 @@
 - (void)z_layoutNavigation
 {
     [self hideNavigationBar:YES animated:NO];
-    [self customNavigationBarWithTitle:@"购物车" bgColor:white_color backBtn:nil sel:nil rightBtn:nil sel:nil devider:NO];
+    [self customNavigationBarWithTitle:@"购物车" bgColor:white_color backBtn:nil sel:nil rightBtnTitle:@"删除" sel:@selector(deleteClicked:) devider:NO];
 }
 #pragma mark - lazyload
 - (ZShoppingCartView *)mainView
@@ -65,5 +65,12 @@
     
     return _viewModel;
 }
-
+- (void)deleteClicked:(UIButton *)delete {
+    [self.viewModel.deleteClickSubject sendNext:delete.titleLabel.text];
+    if ([delete.titleLabel.text isEqualToString:@"删除"]) {
+        [delete setTitle:@"完成" forState:UIControlStateNormal];
+    }else{
+        [delete setTitle:@"删除" forState:UIControlStateNormal];
+    }
+}
 @end

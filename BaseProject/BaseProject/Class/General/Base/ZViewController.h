@@ -6,10 +6,9 @@
 //  Copyright © 2018年 com.general.*. All rights reserved.
 //
 
-#import "ViewController.h"
 #import "ZViewControllerProtocol.h"
 
-@interface ZViewController : ViewController<ZViewControllerProtocol>
+@interface ZViewController : UIViewController<ZViewControllerProtocol>
 
 /**
  *  VIEW是否渗透导航栏
@@ -67,6 +66,17 @@
  @param rightAction 右边按钮方法
  */
 - (void)customNavigationBarWithTitle:(NSString *)title bgColor:(UIColor *)color backBtn:(NSString *)string sel:(SEL)backSel rightBtn:(NSString *)rightString sel:(SEL)rightAction devider:(BOOL)show;
+/**
+ 导航栏隐藏状态下自定义基础导航栏
+ 
+ @param title 标题
+ @param color 导航栏背景色
+ @param string 返回按钮图片名称
+ @param backSel 返回按钮方法
+ @param rightTitle 右边按钮title
+ @param rightAction 右边按钮方法
+ */
+- (void)customNavigationBarWithTitle:(NSString *)title bgColor:(UIColor *)color backBtn:(NSString *)string sel:(SEL)backSel rightBtnTitle:(NSString *)rightTitle sel:(SEL)rightAction devider:(BOOL)show;
 
 /**
  判断颜色是否相同

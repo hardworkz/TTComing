@@ -28,6 +28,12 @@
     
     [APPDELEGATE setTabbarController];
     
+    //推送唤醒APP处理
+    NSDictionary *userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (userInfo) {
+        [[MiPushSDKManager sharedManager] miPushDidClickNotification:userInfo];
+    }
+    
     return YES;
 }
 

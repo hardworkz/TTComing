@@ -240,7 +240,7 @@
         }];
         [alipaySelectedIcon mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(alipayIcon);
-            make.trailing.equalTo(-MARGIN_20-MARGIN_5);
+            make.trailing.equalTo(-MARGIN_20);
             make.size.equalTo(CGSizeMake(20, 20));
         }];
         

@@ -11,7 +11,6 @@
 
 @interface ZMyOrderListView () <UITableViewDelegate,UITableViewDataSource>
 
-@property (nonatomic, strong) UITableView *mainTableView;
 
 @property (nonatomic, strong) ZMyOrderListViewModel *viewModel;
 

@@ -10,4 +10,6 @@
 
 @interface ZMyOrderListView : ZView
 
+@property (nonatomic, strong) UITableView *mainTableView;
+
 @end

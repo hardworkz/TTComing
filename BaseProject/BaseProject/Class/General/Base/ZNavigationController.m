@@ -18,6 +18,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    // 设置导航栏标题和返回按钮颜色
+    self.navigationBar.tintColor = clear_color;
+    [self.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : clear_color}];
 }
 
 - (void)didReceiveMemoryWarning {

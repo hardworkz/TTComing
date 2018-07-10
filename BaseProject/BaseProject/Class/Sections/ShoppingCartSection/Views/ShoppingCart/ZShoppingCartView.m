@@ -15,10 +15,24 @@
 @property (nonatomic, strong) UITableView *mainTableView;
 
 @property (strong, nonatomic) UIView *editingView;
+/**
+ 购物车全选按钮
+ */
+@property (nonatomic, strong) UIButton *selectAll;
+/**
+ 结算按钮
+ */
+@property (nonatomic, strong) UIButton *settlel;
+/**
+ 订单总价格
+ */
+@property (nonatomic, strong) UILabel *price;
 
 @property (nonatomic, strong) ZView *headView;
 
 @property (nonatomic, strong) ZShoppingCartViewModel *viewModel;
+
+@property (nonatomic, strong) NSMutableArray *selectDataArray;
 
 @end
 @implementation ZShoppingCartView
@@ -35,7 +49,7 @@
     WS(weakSelf)
     [self.mainTableView mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        make.edges.equalTo(weakSelf).insets(UIEdgeInsetsMake(0, 0, 50, 0));
+        make.edges.equalTo(weakSelf).insets(UIEdgeInsetsMake(kNavHeight, 0, 50, 0));
     }];
     
     [self.editingView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -67,8 +81,29 @@
         @strongify(self);
         [self.mainTableView reloadData];
     }];
+    [self.viewModel.deleteClickSubject subscribeNext:^(id  _Nullable x) {
+        @strongify(self);
+        if ([x isEqualToString:@"删除"]) {//进入删除状态
+            [self.settlel setTitle:@"删除" forState:UIControlStateNormal];
+            [self.settlel setTitleColor:white_color forState:UIControlStateNormal];
+            self.settlel.backgroundColor = red_color;
+            self.price.hidden = YES;
+        }else{//结束删除状态
+            [self.settlel setTitle:@"结算(0)" forState:UIControlStateNormal];
+            [self.settlel setTitleColor:MAIN_TEXT_COLOR forState:UIControlStateNormal];
+            self.settlel.backgroundColor = MAIN_COLOR;
+            self.price.hidden = NO;
+        }
+    }];
 }
 #pragma mark - lazyLoad
+- (NSMutableArray *)selectDataArray
+{
+    if (!_selectDataArray) {
+        _selectDataArray = [NSMutableArray array];
+    }
+    return _selectDataArray;
+}
 - (ZShoppingCartViewModel *)viewModel {
     
     if (!_viewModel) {
@@ -148,16 +183,16 @@
             make.height.equalTo(1);
         }];
         
-        UIButton *settlel = [UIButton buttonWithType:UIButtonTypeCustom];
-        settlel.backgroundColor = MAIN_COLOR;
-        [settlel setTitle:@"结算(0)" forState:UIControlStateNormal];
-        settlel.titleLabel.font = SYSTEM_FONT(15.0);
-        [settlel setTitleColor:MAIN_TEXT_COLOR forState:UIControlStateNormal];
-        [settlel addTarget:self action:@selector(p__buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-        settlel.layer.cornerRadius = 17.5;
-        [_editingView addSubview:settlel];
+        _settlel = [UIButton buttonWithType:UIButtonTypeCustom];
+        _settlel.backgroundColor = MAIN_COLOR;
+        [_settlel setTitle:@"结算(0)" forState:UIControlStateNormal];
+        _settlel.titleLabel.font = SYSTEM_FONT(15.0);
+        [_settlel setTitleColor:MAIN_TEXT_COLOR forState:UIControlStateNormal];
+        [_settlel addTarget:self action:@selector(p__buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+        _settlel.layer.cornerRadius = 17.5;
+        [_editingView addSubview:_settlel];
         WS(weakSelf)
-        [settlel mas_makeConstraints:^(MASConstraintMaker *make) {
+        [_settlel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.trailing.equalTo(-MARGIN_15);
             make.centerY.equalTo(weakSelf.editingView);
             make.height.equalTo(35);
@@ -165,31 +200,31 @@
         }];
         
         
-        UIButton *selectAll = [UIButton buttonWithType:UIButtonTypeCustom];
-        [selectAll setTitle:@"全选" forState:UIControlStateNormal];
-        selectAll.titleLabel.font = SYSTEM_FONT(14.0);
-        selectAll.titleEdgeInsets = UIEdgeInsetsMake(0, MARGIN_10, 0, 0);
-        [selectAll setImage:ImageNamed(@"未选中") forState:UIControlStateNormal];
-        [selectAll setImage:ImageNamed(@"选中") forState:UIControlStateSelected];
-        [selectAll setTitleColor:MAIN_TEXT_COLOR forState:UIControlStateNormal];
-        [selectAll addTarget:self action:@selector(p__buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [_editingView addSubview:selectAll];
-        [selectAll mas_makeConstraints:^(MASConstraintMaker *make) {
+        _selectAll = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_selectAll setTitle:@"全选" forState:UIControlStateNormal];
+        _selectAll.titleLabel.font = SYSTEM_FONT(14.0);
+        _selectAll.titleEdgeInsets = UIEdgeInsetsMake(0, MARGIN_10, 0, 0);
+        [_selectAll setImage:ImageNamed(@"未选中") forState:UIControlStateNormal];
+        [_selectAll setImage:ImageNamed(@"选中") forState:UIControlStateSelected];
+        [_selectAll setTitleColor:MAIN_TEXT_COLOR forState:UIControlStateNormal];
+        [_selectAll addTarget:self action:@selector(p__buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_editingView addSubview:_selectAll];
+        [_selectAll mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo(0);
             make.centerY.equalTo(weakSelf.editingView);
             make.height.equalTo(50);
             make.width.equalTo(100);
         }];
         
-        UILabel *price = [[UILabel alloc] init];
-        price.text = @"¥128";
-        price.textColor = MAIN_TEXT_COLOR;
-        price.font = SYSTEM_FONT(15.0);
-        price.textAlignment = NSTextAlignmentRight;
-        [_editingView addSubview:price];
-        [price mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.trailing.equalTo(settlel.mas_leading).offset(-MARGIN_15);
-            make.leading.equalTo(selectAll.mas_trailing).offset(MARGIN_15);
+        _price = [[UILabel alloc] init];
+        _price.text = @"¥128";
+        _price.textColor = MAIN_TEXT_COLOR;
+        _price.font = SYSTEM_FONT(15.0);
+        _price.textAlignment = NSTextAlignmentRight;
+        [_editingView addSubview:_price];
+        [_price mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.trailing.equalTo(weakSelf.settlel.mas_leading).offset(-MARGIN_15);
+            make.leading.equalTo(weakSelf.selectAll.mas_trailing).offset(MARGIN_15);
             make.centerY.equalTo(weakSelf.editingView);
         }];
                                  
@@ -222,34 +257,34 @@
     return 140;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self.viewModel.cellClickSubject sendNext:nil];
-    if (tableView.isEditing) {
-        return;
+    //添加选中的购物车商品数据
+    [self.selectDataArray addObject:self.viewModel.dataArray[indexPath.row]];
+    
+    if (self.selectDataArray.count == self.viewModel.dataArray.count) {
+        self.selectAll.selected = YES;
     }
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+    //删除选中的购物车商品数据
+    [self.selectDataArray removeObject:self.viewModel.dataArray[indexPath.row]];
+    
+    if (self.selectDataArray.count <= self.viewModel.dataArray.count) {
+        self.selectAll.selected = NO;
+    }
+}
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
     return UITableViewCellEditingStyleDelete | UITableViewCellEditingStyleInsert;
 }
-// 设置 cell 是否允许移动
-//- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return true;
-//}
-// 移动 cell 时触发
-//- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-//    // 移动cell之后更换数据数组里的循序
-//    [self.viewModel.dataArray exchangeObjectAtIndex:sourceIndexPath.row withObjectAtIndex:destinationIndexPath.row];
-//}
+
 #pragma mark - TableView 占位图
 
 - (UIImage *)xy_noDataViewImage {
     return [UIImage imageNamed:@"购物车提示"];
 }
 
-//- (NSString *)xy_noDataViewMessage {
-//    return @"啊哦，你的购物车空空如也\n~~~";
-//}
+- (NSString *)xy_noDataViewMessage {
+    return @"";
+}
 //- (NSInteger)xy_noDataViewMessageLineNum {
 //    return 2;
 //}
@@ -296,6 +331,15 @@
         
         sender.selected = NO;
     }
+}
+
+/**
+ 计算选中的订单总价格
+
+ @param array 选中商品
+ */
+- (NSString *)calculateTotalPriceWithSelectedOrder:(NSArray *)array {
+    return @"";
 }
 - (void)showEitingView:(BOOL)isShow{
     [self.editingView mas_updateConstraints:^(MASConstraintMaker *make) {
