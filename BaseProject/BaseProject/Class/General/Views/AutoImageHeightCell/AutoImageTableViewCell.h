@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AutoImageViewHeightFrameModel.h"
 
 @class AutoImageViewHeightFrameModel;
 @interface AutoImageTableViewCell : UITableViewCell

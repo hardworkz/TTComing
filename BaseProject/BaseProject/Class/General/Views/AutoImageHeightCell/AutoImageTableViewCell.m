@@ -7,7 +7,6 @@
 //
 
 #import "AutoImageTableViewCell.h"
-#import "AutoImageViewHeightFrameModel.h"
 
 @interface AutoImageTableViewCell ()
 {
@@ -15,15 +14,12 @@
 }
 @end
 @implementation AutoImageTableViewCell
-+ (NSString *)ID
-{
-    return @"AutoImageTableViewCell";
-}
+
 +(AutoImageTableViewCell *)cellWithTableView:(UITableView *)tableView
 {
-    AutoImageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[AutoImageTableViewCell ID]];
+    AutoImageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[NSString stringWithUTF8String:object_getClassName([AutoImageTableViewCell class])]];
     if (cell == nil) {
-        cell = [[AutoImageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[AutoImageTableViewCell ID]];
+        cell = [[AutoImageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[NSString stringWithUTF8String:object_getClassName([AutoImageTableViewCell class])]];
     }
     return cell;
 }

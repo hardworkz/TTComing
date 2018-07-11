@@ -14,12 +14,15 @@
 
 @property (nonatomic, strong) RACSubject *refreshUI;
 
+//@property (nonatomic, strong) RACSubject *refreshDetailIMageCellHeight;
+
 @property (nonatomic, strong) RACCommand *refreshDataCommand;
 
 @property (nonatomic, strong) RACCommand *nextPageCommand;
 
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, strong) NSArray *imageDataArray;
+@property (nonatomic, strong) NSArray *detailImageDataArray;
 @property (nonatomic, strong) NSArray *commentataArray;
 
 @property (nonatomic, strong) RACSubject *cellClickSubject;

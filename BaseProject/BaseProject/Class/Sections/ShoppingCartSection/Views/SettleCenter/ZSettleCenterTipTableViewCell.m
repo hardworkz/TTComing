@@ -94,7 +94,7 @@
     
     if (!_Description) {
         _Description = [[UILabel alloc] init];
-        _Description.textColor = MAIN_LIGHT_GRAY_TEXT_COLOR;
+        _Description.textColor = gray_color;
         _Description.font = SYSTEM_FONT(14);
         _Description.numberOfLines = 0;
         //设置该属性，让label撑开cell的高度，否则只会计算一行高度
@@ -105,9 +105,8 @@
 - (UIImageView *)tipIcon
 {
     if (!_tipIcon) {
-        _tipIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"")];
+        _tipIcon = [[UIImageView alloc] initWithImage:ImageNamed(@"说明-点")];
         _tipIcon.contentMode = UIViewContentModeCenter;
-        _tipIcon.backgroundColor = gray_color;
     }
     return _tipIcon;
 }

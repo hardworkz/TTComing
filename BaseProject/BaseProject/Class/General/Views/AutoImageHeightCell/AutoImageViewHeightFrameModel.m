@@ -23,14 +23,14 @@
             if(!img)
                 img = [[SDWebImageManager sharedManager].imageCache imageFromDiskCacheForKey:[[SDWebImageManager sharedManager] cacheKeyForURL:[NSURL URLWithString:imageUrl]]];
             weakSelf.image = img;
-            weakSelf.imageViewF = CGRectMake(weakSelf.leftRightMargin?weakSelf.leftRightMargin:5, weakSelf.topBottomMargin?weakSelf.topBottomMargin:5, SCREEN_WIDTH - 10, (SCREEN_WIDTH - 10)/img.size.width * img.size.height);
-            weakSelf.cellHeight = CGRectGetMaxY(weakSelf.imageViewF) + 2* weakSelf.topBottomMargin?weakSelf.topBottomMargin:5;
+            weakSelf.imageViewF = CGRectMake(weakSelf.leftRightMargin?weakSelf.leftRightMargin:0, weakSelf.topBottomMargin?weakSelf.topBottomMargin:0, SCREEN_WIDTH - 10, (SCREEN_WIDTH - 10)/img.size.width * img.size.height);
+            weakSelf.cellHeight = CGRectGetMaxY(weakSelf.imageViewF) + 2*( weakSelf.topBottomMargin?weakSelf.topBottomMargin:0);
         }else{
             [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageRetryFailed|SDWebImageLowPriority progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, BOOL finished) {
                 if (image) {
                     weakSelf.image = image;
-                    weakSelf.imageViewF = CGRectMake(weakSelf.leftRightMargin?weakSelf.leftRightMargin:5, weakSelf.topBottomMargin?weakSelf.topBottomMargin:5, SCREEN_WIDTH - 10, (SCREEN_WIDTH - 10)/image.size.width * image.size.height);
-                    weakSelf.cellHeight = CGRectGetMaxY(weakSelf.imageViewF) + 2* weakSelf.topBottomMargin?weakSelf.topBottomMargin:5;
+                    weakSelf.imageViewF = CGRectMake(weakSelf.leftRightMargin?weakSelf.leftRightMargin:0, weakSelf.topBottomMargin?weakSelf.topBottomMargin:0, SCREEN_WIDTH - 10, (SCREEN_WIDTH - 10)/image.size.width * image.size.height);
+                    weakSelf.cellHeight = CGRectGetMaxY(weakSelf.imageViewF) + 2*( weakSelf.topBottomMargin?weakSelf.topBottomMargin:0);
                     //block通知界面刷新对应行cell
                     if (weakSelf.downLoadImageSuccess) {
                         weakSelf.downLoadImageSuccess(image);

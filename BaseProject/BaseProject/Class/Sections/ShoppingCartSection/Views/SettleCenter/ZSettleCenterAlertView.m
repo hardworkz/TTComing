@@ -96,9 +96,8 @@
 {
     if (!_closeBtn) {
         _closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_closeBtn setImage:ImageNamed(@"") forState:UIControlStateNormal];
+        [_closeBtn setImage:ImageNamed(@"说明-打叉") forState:UIControlStateNormal];
         _closeBtn.imageView.contentMode = UIViewContentModeCenter;
-        _closeBtn.backgroundColor = red_color;
         [[_closeBtn rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(__kindof UIControl * _Nullable x) {
             
         }];
@@ -131,7 +130,7 @@
         
         // 缓存给model
         viewModel.cellHeight = cellHeight;
-        ZLog(@"%f",cellHeight);
+        
         return cellHeight;
     } else {
         return viewModel.cellHeight;

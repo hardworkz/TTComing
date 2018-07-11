@@ -17,10 +17,12 @@
 #import "YBImageBrowser.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface ZGoodsDetailView ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,YBImageBrowserDelegate,YBImageBrowserDataSource>
+@interface ZGoodsDetailView ()<UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,YBImageBrowserDelegate,YBImageBrowserDataSource>
 {
     NSIndexPath *currentTouchIndexPath;
 }
+@property (nonatomic, strong) UITableView *mainTableView;
+
 @property (strong, nonatomic) UICollectionView *mainCollectionView;
 
 @property (strong, nonatomic) UICollectionView *imageCollectionView;
@@ -69,7 +71,9 @@
 #pragma mark - private
 - (void)z_setupViews {
     
-    [self addSubview:self.mainCollectionView];
+    [self addSubview:self.mainTableView];
+    self.mainTableView.tableHeaderView = self.headContentView;
+    self.mainTableView.tableFooterView = self.mainCollectionView;
     
     [self setNeedsUpdateConstraints];
     [self updateConstraintsIfNeeded];
@@ -83,6 +87,15 @@
     [self.viewModel.refreshUI subscribeNext:^(id x) {
         
         @strongify(self);
+        //转换详情图片的frameModel数据
+        self.viewModel.detailImageDataArray = [AutoImageViewHeightFrameModel frameArrayWithImageUrlArray:[NSMutableArray array] tableView:self.mainTableView starIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        
+        //计算相关推荐的mainCollectionView总高度
+        ZHomeListCollectionViewCellViewModel *viewModel = self.viewModel.dataArray[0];
+        CGFloat cellHeight = [self.tempCell cellHeightForViewModel:viewModel];
+        int result = (int)roundf(self.viewModel.dataArray.count/2.0);
+        self.mainCollectionView.frame = CGRectMake(0, 0, SCREEN_WIDTH, (cellHeight + 10) * result);
+        
         [self.mainCollectionView reloadData];
         [self.imageCollectionView reloadData];
         [self.commentCollectionView reloadData];
@@ -92,6 +105,12 @@
             self.indexImage.hidden = YES;
         }
     }];
+//    [self.viewModel.refreshDetailIMageCellHeight subscribeNext:^(id  _Nullable x) {
+//        @strongify(self);
+//        //刷新对应详情图片cell
+//        [self.mainTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[x intValue] inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+//        
+//    }];
     
     [self.viewModel.refreshEndSubject subscribeNext:^(id x) {
         @strongify(self);
@@ -161,19 +180,20 @@
         //设置每个item的大小
 //        flowLayout.itemSize = CGSizeMake(SCREEN_WIDTH * 0.5 - 5,242);
         //设置headerView的尺寸大小
-        flowLayout.headerReferenceSize = CGSizeMake(SCREEN_WIDTH, 770);
+//        flowLayout.headerReferenceSize = CGSizeMake(SCREEN_WIDTH, 770);
         //设置CollectionView的属性
         _mainCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) collectionViewLayout:flowLayout];
         _mainCollectionView.backgroundColor = white_color;
         _mainCollectionView.delegate = self;
         _mainCollectionView.dataSource = self;
+        _mainCollectionView.scrollEnabled = NO;
         if (@available(iOS 11.0, *)) {
             _mainCollectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         }
         //注册Cell
         [_mainCollectionView registerClass:[ZHomeListCollectionViewCell class] forCellWithReuseIdentifier:[NSString stringWithUTF8String:object_getClassName([ZHomeListCollectionViewCell class])]];
         //注册headerView  此处的ReuseIdentifier 必须和 cellForItemAtIndexPath 方法中 一致  均为reusableView
-        [_mainCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"reusableGoodsDetailView"];
+//        [_mainCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"reusableGoodsDetailView"];
         
         WS(weakSelf)
         _mainCollectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
@@ -235,7 +255,7 @@
 - (ZView *)headContentView
 {
     if (!_headContentView) {
-        _headContentView = [[ZView alloc] init];
+        _headContentView = [[ZView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 770)];
         _headContentView.backgroundColor = white_color;
         
         [_headContentView addSubview:self.imagePickerView];
@@ -484,6 +504,52 @@
     }
     return _instructionsView;
 }
+
+- (UITableView *)mainTableView{
+    if (!_mainTableView) {
+        _mainTableView = [[UITableView alloc] init];
+        _mainTableView.dataSource = self;
+        _mainTableView.delegate = self;
+        _mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _mainTableView.estimatedRowHeight = 200; //预估行高 可以提高性能
+        _mainTableView.backgroundColor = [UIColor whiteColor];
+        _mainTableView.tableFooterView = [[UIView alloc] init];
+        [_mainTableView registerClass:[AutoImageTableViewCell class] forCellReuseIdentifier:[NSString stringWithUTF8String:object_getClassName([AutoImageTableViewCell class])]];
+    }
+    return _mainTableView;
+}
+
+#pragma mark - table datasource
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.viewModel.detailImageDataArray.count;
+}
+
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    
+    AutoImageTableViewCell *cell = [AutoImageTableViewCell cellWithTableView:tableView];
+    //点击详情图片操作
+    cell.tapImage = ^(UITapGestureRecognizer *tap) {
+        
+    };
+    
+    if (self.viewModel.detailImageDataArray.count > indexPath.row) {
+        
+        cell.frameModel = self.viewModel.detailImageDataArray[indexPath.row];
+    }
+    
+    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    AutoImageViewHeightFrameModel *frameModel = self.viewModel.detailImageDataArray[indexPath.row];
+    
+    return frameModel.cellHeight;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+}
+
 #pragma mark - action
 - (void)more {
     [self.viewModel.moreClickSubject sendNext:nil];
@@ -603,21 +669,21 @@
 //    }
 }
 #pragma mark  设置SupplementaryViewOfKind 来设置头部或者底部的view，其中 ReuseIdentifier 的值必须和 注册是填写的一致，本例都为 “reusableView”
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
-    if ([collectionView isEqual:self.mainCollectionView]) {
-        UICollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"reusableGoodsDetailView" forIndexPath:indexPath];
-        headerView.backgroundColor =[UIColor grayColor];
-        
-        [headerView addSubview:self.headContentView];
-        [self.headContentView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(headerView);
-        }];
-        
-        return headerView;
-    }
-    return nil;
-}
+//- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+//{
+//    if ([collectionView isEqual:self.mainCollectionView]) {
+//        UICollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"reusableGoodsDetailView" forIndexPath:indexPath];
+//        headerView.backgroundColor =[UIColor grayColor];
+//
+//        [headerView addSubview:self.headContentView];
+//        [self.headContentView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.edges.equalTo(headerView);
+//        }];
+//
+//        return headerView;
+//    }
+//    return nil;
+//}
 #pragma mark - scrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {

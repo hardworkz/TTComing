@@ -17,5 +17,8 @@
 #import "DQAlertView.h"
 #import "TZImagePickerController.h"
 #import "IWTextView.h"
+#import "AutoImageTableViewCell.h"
+#import "AutoImageViewHeightFrameModel.h"
+
 
 #endif /* ViewsHeader_h */

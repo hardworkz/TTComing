@@ -15,12 +15,12 @@
 @property (copy, nonatomic) void (^downLoadImageSuccess)(UIImage *image);
 
 /**
- 图片在cell上左右屏间隔距离，默认为5
+ 图片在cell上左右屏间隔距离，默认为0
  */
 @property (assign, nonatomic) CGFloat leftRightMargin;
 
 /**
- 图片在cell上下间隔距离，默认为5
+ 图片在cell上下间隔距离，默认为0
  */
 @property (assign, nonatomic) CGFloat topBottomMargin;
 

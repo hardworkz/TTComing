@@ -18,6 +18,7 @@
     [self.refreshDataCommand.executionSignals.switchToLatest subscribeNext:^(NSDictionary *dict) {
         
         @strongify(self);
+        
         NSMutableArray *imageArray = [[NSMutableArray alloc] init];
         for (int i = 0; i < 1; i++) {
             
@@ -35,6 +36,7 @@
             viewModel.image = [NSString stringWithFormat:@"%d",i+5];
             [reArray addObject:viewModel];
         }
+        
         
         self.dataArray = reArray;
         [self.refreshUI sendNext:nil];
@@ -70,6 +72,16 @@
     
     return _refreshUI;
 }
+//- (RACSubject *)refreshDetailIMageCellHeight {
+//    
+//    if (!_refreshDetailIMageCellHeight) {
+//        
+//        _refreshDetailIMageCellHeight = [RACSubject subject];
+//    }
+//    
+//    return _refreshDetailIMageCellHeight;
+//}
+
 
 - (RACSubject *)refreshEndSubject {
     
@@ -158,6 +170,15 @@
     }
     
     return _imageDataArray;
+}
+- (NSArray *)detailImageDataArray {
+    
+    if (!_detailImageDataArray) {
+        
+        _detailImageDataArray = [[NSArray alloc] init];
+    }
+    
+    return _detailImageDataArray;
 }
 - (NSArray *)commentataArray {
     
